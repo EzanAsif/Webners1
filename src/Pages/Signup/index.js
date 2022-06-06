@@ -56,12 +56,12 @@ const Signup = () => {
         <CardContent className="auth-mui-card">
           <Button
             size="large"
-            style={{ fontSize: 12, marginTop: "5px" }}
+            style={{ marginTop: "5px" }}
             fullWidth={true}
             variant="contained"
             onClick={setToken}
           >
-            Signup with a referral code
+            Signup by referral code
           </Button>
           <Typography
             align="center"
@@ -100,9 +100,9 @@ const Signup = () => {
             fullWidth={true}
             variant="outlined"
             onClick={setToken}
-            style={{ fontSize: 12, marginTop : "15px" }}
+            style={{ marginTop: "15px" }}
           >
-            Signup with email
+            Signup by email
           </Button>
         </CardContent>
         {/* </CardActions> */}

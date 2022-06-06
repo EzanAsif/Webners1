@@ -46,6 +46,7 @@ const Login = () => {
             placeholder="Enter your email here"
             margin="normal"
             size="small"
+            fullWidth = {true}
           />
         </div>
         <div style={{ margin: "0px 0px 20px" }}>
@@ -59,6 +60,7 @@ const Login = () => {
             placeholder="Enter your password here"
             margin="dense"
             size="small"
+            fullWidth = {true}
           />
         </div>
         <CardActions>
