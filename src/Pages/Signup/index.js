@@ -5,13 +5,15 @@ import { setUserDataFunc } from "../../App/user";
 import AuthenticationLayout from "../Layouts/Authentication Screen";
 import {
   Button,
-  CardActions,
   CardContent,
   InputLabel,
   TextField,
   Typography,
 } from "@mui/material";
 import { Link } from "react-router-dom";
+// import MuiPhoneNumber from "material-ui-phone-number";
+import "react-phone-number-input/style.css";
+import PhoneInput from "react-phone-number-input";
 
 const Signup = () => {
   const dispatch = useDispatch();
@@ -53,24 +55,7 @@ const Signup = () => {
           style={{ margin: "15px 0px" }}
           className="authentication-form-container"
         > */}
-        <CardContent className="auth-mui-card">
-          <Button
-            size="large"
-            style={{ marginTop: "5px" }}
-            fullWidth={true}
-            variant="contained"
-            onClick={setToken}
-          >
-            Signup by referral code
-          </Button>
-          <Typography
-            align="center"
-            style={{ fontSize: 12, marginTop: "15px" }}
-            color="text.secondary"
-            gutterBottom
-          >
-            OR
-          </Typography>
+        <CardContent>
           <div>
             <InputLabel shrink="true">Email</InputLabel>
             <TextField
@@ -95,10 +80,44 @@ const Signup = () => {
               size="small"
             />
           </div>
+          <div>
+            <InputLabel shrink="true">
+              Referral Code
+              <span style={{ fontSize: 12, marginLeft: 5 }}>OPTIONAL</span>
+            </InputLabel>
+            <TextField
+              InputLabelProps={"Email"}
+              id="login"
+              variant="outlined"
+              placeholder="Enter a referral code if you have one"
+              style={{ marginBottom: "20px" }}
+              fullWidth={true}
+              size="small"
+            />
+          </div>
+          <div>
+            <InputLabel shrink={true}>Phone Number</InputLabel>
+            <PhoneInput
+              placeholder="Enter phone number"
+              // value={value}
+              onChange={(val) => {
+                console.log(val);
+              }}
+            />
+            {/* <TextField
+              InputLabelProps={"Email"}
+              id="login"
+              variant="outlined"
+              placeholder="Enter your phone number here"
+              style={{ marginBottom: "20px" }}
+              fullWidth={true}
+              size="small"
+            /> */}
+          </div>
           <Button
             size="large"
             fullWidth={true}
-            variant="outlined"
+            variant="contained"
             onClick={setToken}
             style={{ marginTop: "15px" }}
           >
@@ -108,7 +127,7 @@ const Signup = () => {
         {/* </CardActions> */}
         <Typography
           align="center"
-          sx={{ fontSize: 12, margin: "5px 0px" }}
+          sx={{ fontSize: 12, margin: "0px 0px 5px" }}
           color="text.secondary"
           gutterBottom
         >

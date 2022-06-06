@@ -31,7 +31,7 @@ const Login = () => {
   };
   return (
     <AuthenticationLayout>
-      <CardContent className=" auth-mui-card">
+      <CardContent >
         <Typography gutterBottom align="center" variant="h5">
           Login
         </Typography>

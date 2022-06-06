@@ -3,7 +3,7 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh;
 }
 .authentication-form-container {
   display: flex;
@@ -25,11 +25,13 @@
   font-size: 12px;
 }
 
+.auth-mui-card{
+  margin: 20px 0px;
+}
+
 @media only screen and (max-width: 600px) {
   .auth-mui-card {
     width: 95% !important;
-  }
-  .auth-mui-card {
     margin-right: 0 !important;
   }
 }

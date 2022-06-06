@@ -5,26 +5,24 @@ import "./styles.css";
 const AuthenticationLayout = ({ children }) => {
   return (
     <div className="authentication-layout-container">
-      <AppBar position="static">
+      <AppBar style={{ backgroundColor: "#f6f6f6" }} position="sticky">
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <img src={AppLogo} width={50} height={50} />
             <Typography
               variant="h6"
-              noWrap
-              component="a"
-              href="/"
               sx={{
-                mr: 2,
-                display: { xs: "none", md: "flex" },
-                fontFamily: "monospace",
-                fontWeight: 700,
-                letterSpacing: ".3rem",
-                color: "inherit",
+                mr: 6,
+                width: "-webkit-fill-available",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                color: "#141414",
                 textDecoration: "none",
+                textAlign: "center",
               }}
             >
-              LOGO
+              Sam's Club
             </Typography>
           </Toolbar>
         </Container>
