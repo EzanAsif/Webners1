@@ -1,0 +1,25 @@
+.authentication-layout-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  height: 100vh;
+}
+.authentication-form-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: space-between;
+  height: max-content;
+  /* max-height: 85vh ; */
+}
+
+.authentication-footer {
+  display: flex;
+  align-items: center;
+  background-color: #1976d2;
+  width: 100%;
+  justify-content: center;
+  height: 3vh;
+  font-size: 12px;
+}

@@ -4,6 +4,8 @@ import { useDispatch } from "react-redux";
 import { userDataFromLocalStorage } from "./Store/Reducers/AuthReducer";
 import { getUserDataFunc } from "./App/user";
 import AppRoutes from "./Navigation";
+import { createTheme } from "@mui/material";
+import { ThemeProvider } from "@emotion/react";
 
 const UserAuthenticated = () => {
   const dispatch = useDispatch();
@@ -25,10 +27,17 @@ const UserAuthenticated = () => {
 };
 
 function App() {
+  const theme = createTheme({
+    typography: {
+      fontFamily: ["poppins"],
+    },
+  });
   return (
     <>
       <UserAuthenticated />
-      <AppRoutes />
+      <ThemeProvider theme={theme}>
+        <AppRoutes />
+      </ThemeProvider>
     </>
   );
 }

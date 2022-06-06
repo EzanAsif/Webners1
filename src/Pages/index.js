@@ -1,3 +1,4 @@
 import DemoScreen from "./DemoScreen";
 import Login from "./Login";
-export { DemoScreen, Login };
+import Signup from "./Signup";
+export { DemoScreen, Login, Signup };
