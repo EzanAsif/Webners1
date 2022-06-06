@@ -30,7 +30,9 @@ const AuthenticationLayout = ({ children }) => {
         </Container>
       </AppBar>
 
-      <Card variant="outlined">{children}</Card>
+      <Card className="auth-mui-card" variant="outlined">
+        {children}
+      </Card>
 
       <footer className="authentication-footer">
         <img

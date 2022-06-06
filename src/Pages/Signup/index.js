@@ -53,13 +53,13 @@ const Signup = () => {
           style={{ margin: "15px 0px" }}
           className="authentication-form-container"
         > */}
-        <CardContent>
+        <CardContent className="auth-mui-card">
           <Button
+            size="large"
             style={{ fontSize: 12, marginTop: "5px" }}
             fullWidth={true}
             variant="contained"
             onClick={setToken}
-            size="large"
           >
             Signup with a referral code
           </Button>
@@ -80,6 +80,7 @@ const Signup = () => {
               placeholder="Enter your email here"
               style={{ marginBottom: "20px" }}
               fullWidth={true}
+              size="small"
             />
           </div>
           <div>
@@ -91,6 +92,7 @@ const Signup = () => {
               placeholder="Enter your password here"
               style={{ marginBottom: "20px" }}
               fullWidth={true}
+              size="small"
             />
           </div>
           <Button
@@ -98,6 +100,7 @@ const Signup = () => {
             fullWidth={true}
             variant="outlined"
             onClick={setToken}
+            style={{ fontSize: 12, marginTop : "15px" }}
           >
             Signup with email
           </Button>

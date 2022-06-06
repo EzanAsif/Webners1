@@ -31,7 +31,7 @@ const Login = () => {
   };
   return (
     <AuthenticationLayout>
-      <CardContent className="authentication-form-container">
+      <CardContent className=" auth-mui-card">
         <Typography gutterBottom align="center" variant="h5">
           Login
         </Typography>
@@ -45,6 +45,7 @@ const Login = () => {
             variant="outlined"
             placeholder="Enter your email here"
             margin="normal"
+            size="small"
           />
         </div>
         <div style={{ margin: "0px 0px 20px" }}>
@@ -57,6 +58,7 @@ const Login = () => {
             variant="outlined"
             placeholder="Enter your password here"
             margin="dense"
+            size="small"
           />
         </div>
         <CardActions>
