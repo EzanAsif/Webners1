@@ -11,7 +11,6 @@ import {
   Typography,
 } from "@mui/material";
 import { Link } from "react-router-dom";
-// import MuiPhoneNumber from "material-ui-phone-number";
 import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
 
@@ -42,89 +41,85 @@ const Signup = () => {
         >
           SignUp
         </Typography>
-        <Typography
-          align="center"
-          sx={{ fontSize: 12, margin: "5px 0px 0px 0px" }}
-          color="text.secondary"
-          gutterBottom
+        <form
+          onSubmit={(e) => {
+            alert("form submitted");
+            e.preventDefault();
+            setToken();
+          }}
         >
-          loremLaboris velit nostrud id et velit consectetur aliquip
-          exercitation.
-        </Typography>
-        {/* <CardActions
-          style={{ margin: "15px 0px" }}
-          className="authentication-form-container"
-        > */}
-        <CardContent>
-          <div>
-            <InputLabel shrink="true">Email</InputLabel>
-            <TextField
-              InputLabelProps={"Email"}
-              id="login"
-              variant="outlined"
-              placeholder="Enter your email here"
-              style={{ marginBottom: "20px" }}
-              fullWidth={true}
-              size="small"
-            />
-          </div>
-          <div>
-            <InputLabel shrink="true">Password</InputLabel>
-            <TextField
-              InputLabelProps={"Email"}
-              id="Signup"
-              variant="outlined"
-              placeholder="Enter your password here"
-              style={{ marginBottom: "20px" }}
-              fullWidth={true}
-              size="small"
-            />
-          </div>
-          <div>
-            <InputLabel shrink="true">
-              Referral Code
-              <span style={{ fontSize: 12, marginLeft: 5 }}>OPTIONAL</span>
-            </InputLabel>
-            <TextField
-              InputLabelProps={"Email"}
-              id="login"
-              variant="outlined"
-              placeholder="Enter a referral code if you have one"
-              style={{ marginBottom: "20px" }}
-              fullWidth={true}
-              size="small"
-            />
-          </div>
-          <div>
-            <InputLabel shrink={true}>Phone Number</InputLabel>
-            <PhoneInput
-              placeholder="Enter phone number"
-              // value={value}
-              onChange={(val) => {
-                console.log(val);
+          <CardContent>
+            <>
+              <div>
+                <InputLabel shrink="true">Email</InputLabel>
+                <TextField
+                  InputLabelProps={"Email"}
+                  id="login"
+                  variant="outlined"
+                  placeholder="Enter your email here"
+                  style={{ marginBottom: "20px" }}
+                  fullWidth={true}
+                  size="small"
+                />
+              </div>
+              <div>
+                <InputLabel shrink="true">Password</InputLabel>
+                <TextField
+                  InputLabelProps={"Email"}
+                  id="Signup"
+                  variant="outlined"
+                  placeholder="Enter your password here"
+                  style={{ marginBottom: "20px" }}
+                  fullWidth={true}
+                  size="small"
+                />
+              </div>
+              <div>
+                <InputLabel shrink="true">
+                  Referral Code
+                  <span style={{ fontSize: 12, marginLeft: 5 }}>OPTIONAL</span>
+                </InputLabel>
+                <TextField
+                  InputLabelProps={"Email"}
+                  id="login"
+                  variant="outlined"
+                  placeholder="Enter a referral code if you have one"
+                  style={{ marginBottom: "20px" }}
+                  fullWidth={true}
+                  size="small"
+                />
+              </div>
+              <div>
+                <InputLabel shrink={true}>Phone Number</InputLabel>
+                <PhoneInput
+                  placeholder="Enter phone number"
+                  // value={value}
+                  onChange={(val) => {
+                    console.log(val);
+                  }}
+                />
+              </div>
+            </>
+            <button
+              style={{
+                width: "100%",
+                border: "none",
+                background: "none",
+                padding: 0,
+                margin: 0,
               }}
-            />
-            {/* <TextField
-              InputLabelProps={"Email"}
-              id="login"
-              variant="outlined"
-              placeholder="Enter your phone number here"
-              style={{ marginBottom: "20px" }}
-              fullWidth={true}
-              size="small"
-            /> */}
-          </div>
-          <Button
-            size="large"
-            fullWidth={true}
-            variant="contained"
-            onClick={setToken}
-            style={{ marginTop: "15px" }}
-          >
-            Signup by email
-          </Button>
-        </CardContent>
-        {/* </CardActions> */}
+            >
+              <Button
+                size="large"
+                fullWidth={true}
+                variant="contained"
+                style={{ marginTop: "25px" }}
+              >
+                Signup by email
+              </Button>
+            </button>
+          </CardContent>
+        </form>
         <Typography
           align="center"
           sx={{ fontSize: 12, margin: "0px 0px 5px" }}
