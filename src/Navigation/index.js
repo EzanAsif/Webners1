@@ -1,6 +1,6 @@
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
-import { Login, DemoScreen, Signup } from "../Pages/index";
+import { Login, DemoScreen, Signup, HomeScreen } from "../Pages/";
 import { useSelector } from "react-redux";
 
 const AppRoutes = () => {
@@ -14,25 +14,26 @@ const AppRoutes = () => {
     } else {
       setUserData(null);
     }
-  }, [reducerData]);
+  }, [auth]);
 
   return (
     <Routes>
       {userData && userData.userId ? (
         <>
-          <Route path="/" element={<DemoScreen />} />
+          <Route path="*" element={<>404 Page not found</>} />
+          <Route path="/" element={<HomeScreen />} />
+          {/* REDIRECTING */}
           <Route path="/login" element={<Navigate to="/" />} />
           <Route path="/signup" element={<Navigate to="/" />} />
-          <Route path="/signup" element={<Navigate to="/" />} />
-          <Route path="*" element={<>Page not found</>} />
         </>
       ) : (
         <>
+          <Route path="*" element={<>404 Page not found</>} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/signup" element={<Signup />} />
+          {/* Redirecting */}
           <Route path="/" element={<Navigate to="/login" />} />
-          <Route path="*" element={<>Page not found</>} />
         </>
       )}
     </Routes>

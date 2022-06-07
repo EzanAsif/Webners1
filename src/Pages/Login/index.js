@@ -2,7 +2,7 @@ import React from "react";
 import { userDataFromLocalStorage } from "../../Store/Reducers/AuthReducer";
 import { useDispatch } from "react-redux";
 import { setUserDataFunc } from "../../App/user";
-import AuthenticationLayout from "../Layouts/Authentication Screen";
+import AuthenticationLayout from "../../Components/Layouts/Authentication Screen";
 import {
   Button,
   CardActions,
@@ -44,7 +44,7 @@ const Login = () => {
         >
           <>
             <div style={{ margin: "20px 0px" }}>
-              <InputLabel shrink="true" margin="dense">
+              <InputLabel shrink={true} margin="dense">
                 Email
               </InputLabel>
               <TextField
@@ -58,7 +58,7 @@ const Login = () => {
               />
             </div>
             <div style={{ margin: "0px 0px 20px" }}>
-              <InputLabel shrink="true" margin="dense">
+              <InputLabel shrink={true} margin="dense">
                 Password
               </InputLabel>
               <TextField
@@ -73,7 +73,10 @@ const Login = () => {
             </div>
           </>
           <CardActions>
-            <button
+            <Button
+              size="large"
+              fullWidth={true}
+              variant="contained"
               style={{
                 width: "100%",
                 border: "none",
@@ -81,16 +84,10 @@ const Login = () => {
                 padding: 0,
                 margin: 0,
               }}
+              // onClick={setToken}
             >
-              <Button
-                size="large"
-                fullWidth={true}
-                variant="contained"
-                // onClick={setToken}
-              >
-                Login
-              </Button>
-            </button>
+              Login
+            </Button>
           </CardActions>
         </form>
         <Typography
