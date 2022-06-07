@@ -31,48 +31,68 @@ const Login = () => {
   };
   return (
     <AuthenticationLayout>
-      <CardContent >
+      <CardContent>
         <Typography gutterBottom align="center" variant="h5">
           Login
         </Typography>
-        <div style={{ margin: "20px 0px" }}>
-          <InputLabel shrink="true" margin="dense">
-            Email
-          </InputLabel>
-          <TextField
-            InputLabelProps={"Email"}
-            id="login"
-            variant="outlined"
-            placeholder="Enter your email here"
-            margin="normal"
-            size="small"
-            fullWidth = {true}
-          />
-        </div>
-        <div style={{ margin: "0px 0px 20px" }}>
-          <InputLabel shrink="true" margin="dense">
-            Password
-          </InputLabel>
-          <TextField
-            InputLabelProps={"Email"}
-            id="Signup"
-            variant="outlined"
-            placeholder="Enter your password here"
-            margin="dense"
-            size="small"
-            fullWidth = {true}
-          />
-        </div>
-        <CardActions>
-          <Button
-            size="large"
-            fullWidth={true}
-            variant="contained"
-            onClick={setToken}
-          >
-            Login
-          </Button>
-        </CardActions>
+        <form
+          onSubmit={(e) => {
+            alert("form submitted");
+            e.preventDefault();
+            setToken();
+          }}
+        >
+          <>
+            <div style={{ margin: "20px 0px" }}>
+              <InputLabel shrink="true" margin="dense">
+                Email
+              </InputLabel>
+              <TextField
+                InputLabelProps={"Email"}
+                id="login"
+                variant="outlined"
+                placeholder="Enter your email here"
+                margin="normal"
+                size="small"
+                fullWidth={true}
+              />
+            </div>
+            <div style={{ margin: "0px 0px 20px" }}>
+              <InputLabel shrink="true" margin="dense">
+                Password
+              </InputLabel>
+              <TextField
+                InputLabelProps={"Email"}
+                id="Signup"
+                variant="outlined"
+                placeholder="Enter your password here"
+                margin="dense"
+                size="small"
+                fullWidth={true}
+              />
+            </div>
+          </>
+          <CardActions>
+            <button
+              style={{
+                width: "100%",
+                border: "none",
+                background: "none",
+                padding: 0,
+                margin: 0,
+              }}
+            >
+              <Button
+                size="large"
+                fullWidth={true}
+                variant="contained"
+                // onClick={setToken}
+              >
+                Login
+              </Button>
+            </button>
+          </CardActions>
+        </form>
         <Typography
           align="center"
           sx={{ fontSize: 12, marginTop: "5px" }}
