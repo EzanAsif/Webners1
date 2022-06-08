@@ -1,0 +1,19 @@
+.currentBalanceContainer {
+  padding: 20px 10px;
+  background-color: #f3f3f3;
+  margin: 25px 0px;
+  border-radius: 10px;
+}
+
+.currentBalance {
+  font-weight: 600 !important;
+  font-size: 24px !important;
+  font-family: "Lato", sans-serif !important;
+  margin: 10px 0px 20px 0px !important;
+}
+
+.depositWithdrawBtns {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}

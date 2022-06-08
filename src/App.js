@@ -29,7 +29,7 @@ const UserAuthenticated = () => {
 function App() {
   const theme = createTheme({
     typography: {
-      fontFamily: ["poppins"],
+      fontFamily: ["Lato", "poppins"],
     },
   });
   return (
