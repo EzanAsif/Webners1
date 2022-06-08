@@ -34,13 +34,13 @@ const HomeScreen = () => {
             label="Deposit"
             variant="outlined"
             style={{ width: "48% !important" }}
-            size="small"
+            size="large"
           />
           <CtaBtn
             label="Withdraw"
             variant="contained"
             style={{ width: "48% !important" }}
-            size="small"
+            size="large"
           />
         </div>
       </div>
