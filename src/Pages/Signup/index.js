@@ -2,7 +2,7 @@ import React from "react";
 import { userDataFromLocalStorage } from "../../Store/Reducers/AuthReducer";
 import { useDispatch } from "react-redux";
 import { setUserDataFunc } from "../../App/user";
-import AuthenticationLayout from "../../Components/Layouts/Authentication Screen";
+import AuthenticationLayout from "../../Components/Layouts/AuthenticationScreen";
 import {
   Button,
   CardContent,
@@ -51,7 +51,7 @@ const Signup = () => {
           <CardContent>
             <>
               <div>
-                <InputLabel shrink={true}>Email</InputLabel>
+                <InputLabel shrink="true">Email</InputLabel>
                 <TextField
                   InputLabelProps={"Email"}
                   id="login"
@@ -63,7 +63,7 @@ const Signup = () => {
                 />
               </div>
               <div>
-                <InputLabel shrink={true}>Password</InputLabel>
+                <InputLabel shrink="true">Password</InputLabel>
                 <TextField
                   InputLabelProps={"Email"}
                   id="Signup"
@@ -75,7 +75,7 @@ const Signup = () => {
                 />
               </div>
               <div>
-                <InputLabel shrink={true}>
+                <InputLabel shrink="true">
                   Referral Code
                   <span style={{ fontSize: 12, marginLeft: 5 }}>OPTIONAL</span>
                 </InputLabel>

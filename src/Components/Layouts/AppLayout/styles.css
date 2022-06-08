@@ -1,4 +1,19 @@
-.App-wrapper{
-    width: 90%;
-    border: 1px solid;
+.App-wrapper {
+  width: 600px;
+  margin: 0 auto;
+  height: 80vh;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+.App-wrapper::-webkit-scrollbar {
+  display: none;
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none; /* Firefox */
+}
+
+@media only screen and (max-width: 600px) {
+  .App-wrapper {
+    width: 95% !important;
+  }
 }

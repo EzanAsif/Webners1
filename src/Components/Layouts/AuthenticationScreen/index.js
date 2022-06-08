@@ -2,6 +2,7 @@ import { AppBar, Container, Toolbar, Typography, Card } from "@mui/material";
 import React from "react";
 import AppLogo from "../../../Assets/logo-sams-club.jpeg";
 import "./styles.css";
+
 const AuthenticationLayout = ({ children }) => {
   return (
     <div className="authentication-layout-container">

@@ -9,7 +9,7 @@ const HomeScreen = () => {
   const navigate = useNavigate();
   return (
     <AppLayout>
-      <h2>HomeScreen</h2>
+      <h2>Profile</h2>
       <div style={{ display: "flex", flexDirection: "column" }}>
         {[1, 24, 2, 45, 5, 25, , 5, 42, 34, 24, 24, 2].map((obj, index) => {
           return (

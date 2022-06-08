@@ -7,16 +7,29 @@ import HomeIcon from "@mui/icons-material/Home";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import HelpIcon from "@mui/icons-material/Help";
 import ReceiptIcon from "@mui/icons-material/Receipt";
+import { useNavigate, useLocation } from "react-router-dom";
+import "./styles.css";
 
 const AppWrapper = ({ children }) => {
   return <div className="App-wrapper">{children}</div>;
 };
 
 const AppLayout = ({ children }) => {
-  const [value, setValue] = React.useState("home");
+  const navigate = useNavigate();
+  const location = useLocation();
+  console.log(location, location.pathname, "location");
+  const [value, setValue] = React.useState(
+    location && location.pathname == "/" ? "home" : location.pathname.slice(1)
+  );
+  console.log(value, "value");
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+    if (newValue !== "home") {
+      navigate(`/${newValue}`);
+    } else {
+      navigate(`/`);
+    }
   };
   return (
     <div
