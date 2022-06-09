@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { userDataFromLocalStorage } from "../../Store/Reducers/AuthReducer";
 import { useDispatch } from "react-redux";
 import { setUserDataFunc } from "../../App/user";
@@ -10,16 +10,27 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
+import {
+  UserSignupWithoutRefferalCode,
+  UserSignupWithRefferalCode,
+} from "../../Store/Reducers/AuthReducer";
 
 const Signup = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+  const [refCode, setRefCode] = useState();
+  const [phNum, setPhNum] = useState();
+
   const setToken = async (value) => {
     try {
       const v = {
-        userId: "5555-1275673-123123-3145",
+        token: value,
       };
       let userToken = await setUserDataFunc(v);
       if (userToken) {
@@ -30,6 +41,38 @@ const Signup = () => {
       console.log(e);
     }
   };
+
+  const userSignup = (e) => {
+    e.preventDefault();
+    if (refCode) {
+      let body = { email, password, refCode, phNum };
+      dispatch(UserSignupWithRefferalCode(body))
+        .unwrap()
+        .then((res) => {
+          alert("signed up");
+          console.log(res);
+        })
+        .catch((e) => {
+          alert(e);
+          console.log(e);
+        });
+    } else {
+      let body = { email, password, phNum };
+      console.log(body, "body");
+      dispatch(UserSignupWithoutRefferalCode(body))
+        .unwrap()
+        .then((res) => {
+          alert("signed up");
+          console.log(res);
+          // navigate("/");
+        })
+        .catch((e) => {
+          alert(e);
+          console.log(e);
+        });
+    }
+  };
+
   return (
     <AuthenticationLayout>
       <CardContent className="authentication-form-container">
@@ -41,18 +84,16 @@ const Signup = () => {
         >
           SignUp
         </Typography>
-        <form
-          onSubmit={(e) => {
-            alert("form submitted");
-            e.preventDefault();
-            setToken();
-          }}
-        >
+        <form onSubmit={userSignup}>
           <CardContent>
             <>
               <div>
                 <InputLabel shrink="true">Email</InputLabel>
                 <TextField
+                  required
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                  }}
                   InputLabelProps={"Email"}
                   id="login"
                   variant="outlined"
@@ -65,6 +106,8 @@ const Signup = () => {
               <div>
                 <InputLabel shrink="true">Password</InputLabel>
                 <TextField
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
                   InputLabelProps={"Email"}
                   id="Signup"
                   variant="outlined"
@@ -80,7 +123,7 @@ const Signup = () => {
                   <span style={{ fontSize: 12, marginLeft: 5 }}>OPTIONAL</span>
                 </InputLabel>
                 <TextField
-                  InputLabelProps={"Email"}
+                  onChange={(e) => setRefCode(e.target.value)}
                   id="login"
                   variant="outlined"
                   placeholder="Enter a referral code if you have one"
@@ -92,10 +135,11 @@ const Signup = () => {
               <div>
                 <InputLabel shrink={true}>Phone Number</InputLabel>
                 <PhoneInput
+                  required
                   placeholder="Enter phone number"
                   // value={value}
                   onChange={(val) => {
-                    console.log(val);
+                    setPhNum(val);
                   }}
                 />
               </div>

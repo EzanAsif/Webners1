@@ -14,19 +14,10 @@ import { useSelector } from "react-redux";
 const AppRoutes = () => {
   const reducerData = useSelector((state) => state);
   const { auth } = reducerData;
-  const [userData, setUserData] = React.useState({});
-
-  React.useEffect(() => {
-    if (auth.userData && auth.userData.userId) {
-      setUserData(auth.userData);
-    } else {
-      setUserData(null);
-    }
-  }, [auth]);
 
   return (
     <Routes>
-      {userData && userData.userId ? (
+      {auth.userData && auth.userData.token ? (
         <>
           <Route path="*" element={<>404 Page not found</>} />
           <Route path="/" element={<HomeScreen />} />

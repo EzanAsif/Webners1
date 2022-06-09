@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { userDataFromLocalStorage } from "./Store/Reducers/AuthReducer";
 import { getUserDataFunc } from "./App/user";
 import AppRoutes from "./Navigation";
@@ -9,19 +9,16 @@ import { ThemeProvider } from "@emotion/react";
 
 const UserAuthenticated = () => {
   const dispatch = useDispatch();
+  const { auth } = useSelector((state) => state);
   React.useEffect(() => {
     (async () => {
-      getUserDataFunc().then((res) => {
-        let v;
-        if (res) v = JSON.parse(res);
-        if (v && v.userId) {
-          dispatch(userDataFromLocalStorage(v));
-        }
+      await getUserDataFunc().then((res) => {
+        if (res) dispatch(userDataFromLocalStorage(res));
       });
     })().catch((err) => {
       console.error(err);
     });
-  }, [localStorage]);
+  }, []);
 
   return null;
 };

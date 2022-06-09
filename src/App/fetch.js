@@ -1,12 +1,11 @@
-import axios from 'axios';
-// import localStorage from '@react-native-async-storage/async-storage';
+import axios from "axios";
 
 export const postRequest = async (api, body) => {
   const res = await fetch(api, {
-    method: 'post',
+    method: "post",
     headers: {
-      'Content-Type': 'application/json',
-    //   Authorization: localStorage.getItem('token'),
+      "Content-Type": "application/json",
+      //   Authorization: localStorage.getItem('token'),
     },
     body: JSON.stringify(body),
   });
@@ -17,7 +16,7 @@ export const getRequest = async (api, type) => {
   const res = await fetch(api, {
     method: type,
     headers: {
-    //   Authorization: localStorage.getItem('token'),
+      //   Authorization: localStorage.getItem('token'),
     },
   });
   return await res.json();
@@ -25,10 +24,10 @@ export const getRequest = async (api, type) => {
 
 export const putRequest = async (api, body) => {
   const res = await fetch(api, {
-    method: 'put',
+    method: "put",
     headers: {
-      'Content-Type': 'application/json',
-    //   Authorization: localStorage.getItem('token'),
+      "Content-Type": "application/json",
+      //   Authorization: localStorage.getItem('token'),
     },
 
     body: JSON.stringify(body),
@@ -38,10 +37,10 @@ export const putRequest = async (api, body) => {
 
 export const deleteRequest = async (api, body) => {
   const res = await fetch(api, {
-    method: 'delete',
+    method: "delete",
     headers: {
-      'Content-Type': 'application/json',
-    //   Authorization: localStorage.getItem('token'),
+      "Content-Type": "application/json",
+      //   Authorization: localStorage.getItem('token'),
     },
 
     body: JSON.stringify(body),
@@ -51,10 +50,10 @@ export const deleteRequest = async (api, body) => {
 
 export const getDataByBody = async (api, body) => {
   const res = await axios.request({
-    method: 'POST',
+    method: "POST",
     url: api,
     headers: {
-    //   Authorization: localStorage.getItem('token'),
+      //   Authorization: localStorage.getItem('token'),
     },
     data: body,
   });
@@ -63,10 +62,10 @@ export const getDataByBody = async (api, body) => {
 
 export const getDataByBodyParams = async (api, body) => {
   const res = await axios.request({
-    method: 'GET',
+    method: "GET",
     url: api,
     headers: {
-    //   Authorization: localStorage.getItem('token'),
+      //   Authorization: localStorage.getItem('token'),
     },
     params: body,
   });

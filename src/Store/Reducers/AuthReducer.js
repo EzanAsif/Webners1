@@ -14,13 +14,25 @@ const initialState = {
 };
 
 // POST REQUEST
-export const UserSignup = createAsyncThunk("UserSignup", async (body) => {
-  const result = await postRequest(`${BASE_URL}/UserSignup`, body);
-  return result;
-});
+export const UserSignupWithoutRefferalCode = createAsyncThunk(
+  "UserSignupWithoutRefferalCode",
+  async (body) => {
+    const result = await postRequest(`${BASE_URL}/user/signup`, body);
+    console.log(result, "result");
+    return result;
+  }
+);
+
+export const UserSignupWithRefferalCode = createAsyncThunk(
+  "UserSignupWithRefferalCode",
+  async (body) => {
+    const result = await postRequest(`${BASE_URL}/user/signup/${body}`, body);
+    return result;
+  }
+);
 
 export const UserLogin = createAsyncThunk("UserLogin", async (body) => {
-  const result = await getDataByBody(`${BASE_URL}/UserLogin`, body);
+  const result = await getDataByBody(`${BASE_URL}/user/signin`, body);
   return result;
 });
 
@@ -29,7 +41,7 @@ const AuthReducer = createSlice({
   initialState,
   reducers: {
     userDataFromLocalStorage: (state, action) => {
-      state.userData = action.payload;
+      state.userData.token = action.payload;
     },
     removeuserDataFromLocalStorage: (state, action) => {
       localStorage.removeItem("token");
@@ -37,16 +49,30 @@ const AuthReducer = createSlice({
     },
   },
   extraReducers: {
-    [UserSignup.pending]: (state, action) => {
+    [UserSignupWithoutRefferalCode.pending]: (state, action) => {
       state.status = "Pending";
     },
-    [UserSignup.rejected]: (state, action) => {
+    [UserSignupWithoutRefferalCode.rejected]: (state, action) => {
       state.status = "Error";
       state.error = action.payload;
     },
-    [UserSignup.fulfilled]: (state, action) => {
+    [UserSignupWithoutRefferalCode.fulfilled]: (state, action) => {
       if (action.payload) {
-        state.userData.push(action.payload);
+        state.userData = action.payload;
+        state.status = "Ok";
+        state.error = "none";
+      }
+    },
+    [UserSignupWithRefferalCode.pending]: (state, action) => {
+      state.status = "Pending";
+    },
+    [UserSignupWithRefferalCode.rejected]: (state, action) => {
+      state.status = "Error";
+      state.error = action.payload;
+    },
+    [UserSignupWithRefferalCode.fulfilled]: (state, action) => {
+      if (action.payload) {
+        state.userData = action.payload;
         state.status = "Ok";
         state.error = "none";
       }
@@ -60,7 +86,7 @@ const AuthReducer = createSlice({
     },
     [UserLogin.fulfilled]: (state, action) => {
       if (action.payload) {
-        state.userData.push(action.payload);
+        state.userData.token = action.payload.token;
         state.status = "Ok";
         state.error = "none";
       }

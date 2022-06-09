@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect, useSelector } from "react";
 import { userDataFromLocalStorage } from "../../Store/Reducers/AuthReducer";
 import { useDispatch } from "react-redux";
 import { setUserDataFunc } from "../../App/user";
@@ -11,43 +11,64 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { UserLogin } from "../../Store/Reducers/AuthReducer";
 
 const Login = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const [userTokenAfterApiCall, setUserTokenAfterApiCall] = useState("");
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+
+  // useEffect(() => {}, []);
+
   const setToken = async (value) => {
     try {
-      const v = {
-        userId: "5555-1275673-123123-3145",
-      };
-      let userToken = await setUserDataFunc(v);
+      let userToken = await setUserDataFunc(value);
       if (userToken) {
         let parsedUserData = JSON.parse(userToken);
+        console.log(parsedUserData);
         dispatch(userDataFromLocalStorage(parsedUserData));
       }
     } catch (e) {
       console.log(e);
     }
   };
+
+  const userLoginFunc = (e) => {
+    e.preventDefault();
+    let body = { email, password };
+    dispatch(UserLogin(body))
+      .unwrap()
+      .then((res) => {
+        console.log(res);
+        alert("User Logged In");
+        setToken(res.token);
+        navigate("/");
+      })
+      .catch((e) => {
+        console.log(e);
+        alert("error");
+      });
+  };
+
   return (
     <AuthenticationLayout>
       <CardContent>
         <Typography gutterBottom align="center" variant="h5">
           Login
         </Typography>
-        <form
-          onSubmit={(e) => {
-            alert("form submitted");
-            e.preventDefault();
-            setToken();
-          }}
-        >
+        <form onSubmit={userLoginFunc}>
           <>
             <div style={{ margin: "20px 0px" }}>
               <InputLabel shrink="true" margin="dense">
                 Email
               </InputLabel>
               <TextField
+                required
+                onChange={(e) => setEmail(e.target.value)}
                 InputLabelProps={"Email"}
                 id="login"
                 variant="outlined"
@@ -62,7 +83,8 @@ const Login = () => {
                 Password
               </InputLabel>
               <TextField
-                InputLabelProps={"Email"}
+                required
+                onChange={(e) => setPassword(e.target.value)}
                 id="Signup"
                 variant="outlined"
                 placeholder="Enter your password here"
