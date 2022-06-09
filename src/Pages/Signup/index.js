@@ -4,8 +4,10 @@ import { useDispatch } from "react-redux";
 import { setUserDataFunc } from "../../App/user";
 import AuthenticationLayout from "../../Components/Layouts/AuthenticationScreen";
 import {
+  Backdrop,
   Button,
   CardContent,
+  CircularProgress,
   InputLabel,
   TextField,
   Typography,
@@ -18,10 +20,11 @@ import {
   UserSignupWithRefferalCode,
 } from "../../Store/Reducers/AuthReducer";
 
-const Signup = () => {
+const Signup = ({ muiAlert, setMuiAlert }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const [open, setOpen] = useState(false);
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [refCode, setRefCode] = useState();
@@ -29,12 +32,10 @@ const Signup = () => {
 
   const setToken = async (value) => {
     try {
-      const v = {
-        token: value,
-      };
-      let userToken = await setUserDataFunc(v);
+      let userToken = await setUserDataFunc(value);
       if (userToken) {
         let parsedUserData = JSON.parse(userToken);
+        console.log(parsedUserData);
         dispatch(userDataFromLocalStorage(parsedUserData));
       }
     } catch (e) {
@@ -46,14 +47,41 @@ const Signup = () => {
     e.preventDefault();
     if (refCode) {
       let body = { email, password, refCode, phNum };
+
       dispatch(UserSignupWithRefferalCode(body))
         .unwrap()
         .then((res) => {
-          alert("signed up");
-          console.log(res);
+          if (res.token) {
+            setOpen(false);
+            setMuiAlert({
+              open: true,
+              alertStatus: "success",
+              alertMessage: "User SignedIn Success",
+            });
+            setToken(res.token);
+            setTimeout(() => {
+              setMuiAlert({ ...muiAlert, open: false });
+              // navigate("/");
+            }, 4000);
+            console.log(res);
+          } else {
+            setMuiAlert({
+              open: true,
+              alertStatus: "error",
+              alertMessage: `User SignedIn error - ${res.message}`,
+            });
+          }
         })
         .catch((e) => {
-          alert(e);
+          setMuiAlert({
+            open: true,
+            alertStatus: "error",
+            alertMessage: `User SignedIn error - ${e.message}`,
+          });
+          setTimeout(() => {
+            setMuiAlert({ ...muiAlert, open: false });
+            // navigate("/");
+          }, 4000);
           console.log(e);
         });
     } else {
@@ -62,121 +90,156 @@ const Signup = () => {
       dispatch(UserSignupWithoutRefferalCode(body))
         .unwrap()
         .then((res) => {
-          alert("signed up");
-          console.log(res);
-          // navigate("/");
+          if (res.token) {
+            setOpen(false);
+            setMuiAlert({
+              open: true,
+              alertStatus: "success",
+              alertMessage: "User SignedIn Success",
+            });
+            setToken(res.token);
+            setTimeout(() => {
+              setMuiAlert({ ...muiAlert, open: false });
+              // navigate("/");
+            }, 4000);
+            console.log(res);
+          } else {
+            setMuiAlert({
+              open: true,
+              alertStatus: "error",
+              alertMessage: `User SignedIn error - ${res.message}`,
+            });
+          }
         })
         .catch((e) => {
-          alert(e);
+          setMuiAlert({
+            open: true,
+            alertStatus: "error",
+            alertMessage: `User SignedIn error - ${e.message}`,
+          });
+          setTimeout(() => {
+            setMuiAlert({ ...muiAlert, open: false });
+            // navigate("/");
+          }, 4000);
           console.log(e);
         });
     }
   };
 
   return (
-    <AuthenticationLayout>
-      <CardContent className="authentication-form-container">
-        <Typography
-          style={{ margin: "15px 0px 15px" }}
-          gutterBottom
-          align="center"
-          variant="h5"
-        >
-          SignUp
-        </Typography>
-        <form onSubmit={userSignup}>
-          <CardContent>
-            <>
-              <div>
-                <InputLabel shrink="true">Email</InputLabel>
-                <TextField
-                  required
-                  onChange={(e) => {
-                    setEmail(e.target.value);
-                  }}
-                  InputLabelProps={"Email"}
-                  id="login"
-                  variant="outlined"
-                  placeholder="Enter your email here"
-                  style={{ marginBottom: "20px" }}
-                  fullWidth={true}
-                  size="small"
-                />
-              </div>
-              <div>
-                <InputLabel shrink="true">Password</InputLabel>
-                <TextField
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  InputLabelProps={"Email"}
-                  id="Signup"
-                  variant="outlined"
-                  placeholder="Enter your password here"
-                  style={{ marginBottom: "20px" }}
-                  fullWidth={true}
-                  size="small"
-                />
-              </div>
-              <div>
-                <InputLabel shrink="true">
-                  Referral Code
-                  <span style={{ fontSize: 12, marginLeft: 5 }}>OPTIONAL</span>
-                </InputLabel>
-                <TextField
-                  onChange={(e) => setRefCode(e.target.value)}
-                  id="login"
-                  variant="outlined"
-                  placeholder="Enter a referral code if you have one"
-                  style={{ marginBottom: "20px" }}
-                  fullWidth={true}
-                  size="small"
-                />
-              </div>
-              <div>
-                <InputLabel shrink={true}>Phone Number</InputLabel>
-                <PhoneInput
-                  required
-                  placeholder="Enter phone number"
-                  // value={value}
-                  onChange={(val) => {
-                    setPhNum(val);
-                  }}
-                />
-              </div>
-            </>
-            <button
-              style={{
-                width: "100%",
-                border: "none",
-                background: "none",
-                padding: 0,
-                margin: 0,
-              }}
-            >
-              <Button
-                size="large"
-                fullWidth={true}
-                variant="contained"
-                style={{ marginTop: "25px" }}
+    <>
+      <Backdrop
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={open}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
+      <AuthenticationLayout>
+        <CardContent className="authentication-form-container">
+          <Typography
+            style={{ margin: "15px 0px 15px" }}
+            gutterBottom
+            align="center"
+            variant="h5"
+          >
+            SignUp
+          </Typography>
+          <form onSubmit={userSignup}>
+            <CardContent>
+              <>
+                <div>
+                  <InputLabel shrink="true">Email</InputLabel>
+                  <TextField
+                    required
+                    onChange={(e) => {
+                      setEmail(e.target.value);
+                    }}
+                    InputLabelProps={"Email"}
+                    id="login"
+                    variant="outlined"
+                    placeholder="Enter your email here"
+                    style={{ marginBottom: "20px" }}
+                    fullWidth={true}
+                    size="small"
+                  />
+                </div>
+                <div>
+                  <InputLabel shrink="true">Password</InputLabel>
+                  <TextField
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    InputLabelProps={"Email"}
+                    id="Signup"
+                    variant="outlined"
+                    placeholder="Enter your password here"
+                    style={{ marginBottom: "20px" }}
+                    fullWidth={true}
+                    size="small"
+                  />
+                </div>
+                <div>
+                  <InputLabel shrink="true">
+                    Referral Code
+                    <span style={{ fontSize: 12, marginLeft: 5 }}>
+                      OPTIONAL
+                    </span>
+                  </InputLabel>
+                  <TextField
+                    onChange={(e) => setRefCode(e.target.value)}
+                    id="login"
+                    variant="outlined"
+                    placeholder="Enter a referral code if you have one"
+                    style={{ marginBottom: "20px" }}
+                    fullWidth={true}
+                    size="small"
+                  />
+                </div>
+                <div>
+                  <InputLabel shrink={true}>Phone Number</InputLabel>
+                  <PhoneInput
+                    required
+                    placeholder="Enter phone number"
+                    // value={value}
+                    onChange={(val) => {
+                      setPhNum(val);
+                    }}
+                  />
+                </div>
+              </>
+              <button
+                style={{
+                  width: "100%",
+                  border: "none",
+                  background: "none",
+                  padding: 0,
+                  margin: 0,
+                }}
               >
-                Signup by email
-              </Button>
-            </button>
-          </CardContent>
-        </form>
-        <Typography
-          align="center"
-          sx={{ fontSize: 12, margin: "0px 0px 5px" }}
-          color="text.secondary"
-          gutterBottom
-        >
-          Already an account?{" "}
-          <Link to="/login" style={{ color: "#323232", fontWeight: "500" }}>
-            Login
-          </Link>
-        </Typography>
-      </CardContent>
-    </AuthenticationLayout>
+                <Button
+                  size="large"
+                  fullWidth={true}
+                  variant="contained"
+                  style={{ marginTop: "25px" }}
+                >
+                  Signup by email
+                </Button>
+              </button>
+            </CardContent>
+          </form>
+          <Typography
+            align="center"
+            sx={{ fontSize: 12, margin: "0px 0px 5px" }}
+            color="text.secondary"
+            gutterBottom
+          >
+            Already an account?{" "}
+            <Link to="/login" style={{ color: "#323232", fontWeight: "500" }}>
+              Login
+            </Link>
+          </Typography>
+        </CardContent>
+      </AuthenticationLayout>
+    </>
   );
 };
 

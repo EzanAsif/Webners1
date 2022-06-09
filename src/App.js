@@ -1,11 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import "./App.css";
 import { useDispatch, useSelector } from "react-redux";
 import { userDataFromLocalStorage } from "./Store/Reducers/AuthReducer";
 import { getUserDataFunc } from "./App/user";
 import AppRoutes from "./Navigation";
-import { createTheme } from "@mui/material";
+import { createTheme, Snackbar } from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
+import CloseIcon from "@mui/icons-material/Close";
+import { Alert, IconButton } from "@mui/material";
+import Slide from "@mui/material/Slide";
 
 const UserAuthenticated = () => {
   const dispatch = useDispatch();
@@ -29,11 +32,45 @@ function App() {
       fontFamily: ["Lato", "poppins"],
     },
   });
+
+  const [muiAlert, setMuiAlert] = useState({
+    open: false,
+    alertStatus: "",
+    alertMessage: "",
+  });
+  function TransitionRight(props) {
+    return <Slide {...props} direction="right" />;
+  }
+
   return (
     <>
       <UserAuthenticated />
       <ThemeProvider theme={theme}>
-        <AppRoutes />
+        {muiAlert.open && (
+          <Snackbar
+            TransitionComponent={TransitionRight}
+            open={muiAlert.open}
+            autoHideDuration={4000}
+            anchorOrigin={{ vertical: "top", horizontal: "right" }}
+            onClose={() => {}}
+          >
+            <Alert
+              // onClose={handleClose}
+              severity={muiAlert.alertStatus}
+              sx={{ width: "100%" }}
+            >
+              {muiAlert.alertMessage}
+              <IconButton
+                onClick={() => {
+                  setMuiAlert({ ...muiAlert, open: false });
+                }}
+              >
+                <CloseIcon />
+              </IconButton>
+            </Alert>
+          </Snackbar>
+        )}
+        <AppRoutes muiAlert={muiAlert} setMuiAlert={setMuiAlert} />
       </ThemeProvider>
     </>
   );

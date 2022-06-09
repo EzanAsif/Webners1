@@ -11,7 +11,7 @@ import {
 } from "../Pages/";
 import { useSelector } from "react-redux";
 
-const AppRoutes = () => {
+const AppRoutes = ({ muiAlert, setMuiAlert }) => {
   const reducerData = useSelector((state) => state);
   const { auth } = reducerData;
 
@@ -31,9 +31,14 @@ const AppRoutes = () => {
       ) : (
         <>
           <Route path="*" element={<>404 Page not found</>} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/signup" element={<Signup />} />
+          <Route
+            path="/login"
+            element={<Login muiAlert={muiAlert} setMuiAlert={setMuiAlert} />}
+          />
+          <Route
+            path="/signup"
+            element={<Signup muiAlert={muiAlert} setMuiAlert={setMuiAlert} />}
+          />
           {/* Redirecting */}
           <Route path="/" element={<Navigate to="/login" />} />
         </>
