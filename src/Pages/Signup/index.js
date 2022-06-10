@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { userDataFromLocalStorage } from "../../Store/Reducers/AuthReducer";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setUserDataFunc } from "../../App/user";
 import AuthenticationLayout from "../../Components/Layouts/AuthenticationScreen";
 import {
@@ -23,6 +23,7 @@ import {
 const Signup = ({ muiAlert, setMuiAlert }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { auth } = useSelector((state) => state);
 
   const [open, setOpen] = useState(false);
   const [email, setEmail] = useState();
@@ -52,12 +53,13 @@ const Signup = ({ muiAlert, setMuiAlert }) => {
       dispatch(UserSignupWithRefferalCode(body))
         .unwrap()
         .then((res) => {
+          setOpen(true);
           if (res.token) {
             setOpen(false);
             setMuiAlert({
               open: true,
               alertStatus: "success",
-              alertMessage: "User SignedIn Success",
+              alertMessage: "User SignUp Success",
             });
             console.log(res, "res in signup");
             setTokenAndUser(res.token, res.user);
@@ -67,18 +69,20 @@ const Signup = ({ muiAlert, setMuiAlert }) => {
             }, 4000);
             console.log(res);
           } else {
+            setOpen(false);
             setMuiAlert({
               open: true,
               alertStatus: "error",
-              alertMessage: `User SignedIn error - ${res.message}`,
+              alertMessage: `User Signup error - ${res.message}`,
             });
           }
         })
         .catch((e) => {
+          setOpen(false);
           setMuiAlert({
             open: true,
             alertStatus: "error",
-            alertMessage: `User SignedIn error - ${e.message}`,
+            alertMessage: `User SignUp error - ${e.message}`,
           });
           setTimeout(() => {
             setMuiAlert({ ...muiAlert, open: false });
@@ -92,12 +96,13 @@ const Signup = ({ muiAlert, setMuiAlert }) => {
       dispatch(UserSignupWithoutRefferalCode(body))
         .unwrap()
         .then((res) => {
+          setOpen(true);
           if (res.token) {
             setOpen(false);
             setMuiAlert({
               open: true,
               alertStatus: "success",
-              alertMessage: "User SignedIn Success",
+              alertMessage: "User SignUp Success",
             });
             setTokenAndUser(res.token, res.user);
             setTimeout(() => {
@@ -106,18 +111,20 @@ const Signup = ({ muiAlert, setMuiAlert }) => {
             }, 4000);
             console.log(res);
           } else {
+            setOpen(false);
             setMuiAlert({
               open: true,
               alertStatus: "error",
-              alertMessage: `User SignedIn error - ${res.message}`,
+              alertMessage: `User SignUp error - ${res.message}`,
             });
           }
         })
         .catch((e) => {
+          setOpen(false);
           setMuiAlert({
             open: true,
             alertStatus: "error",
-            alertMessage: `User SignedIn error - ${e.message}`,
+            alertMessage: `User SignUp error - ${e.message}`,
           });
           setTimeout(() => {
             setMuiAlert({ ...muiAlert, open: false });
@@ -132,7 +139,7 @@ const Signup = ({ muiAlert, setMuiAlert }) => {
     <>
       <Backdrop
         sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={open}
+        open={open || auth.status == "Pending"}
       >
         <CircularProgress color="inherit" />
       </Backdrop>

@@ -63,6 +63,7 @@ const Login = ({ setMuiAlert, muiAlert }) => {
         }, 4000);
       })
       .catch((e) => {
+        setOpen(false);
         console.log(e);
         if (e.message == "Request failed with status code 401") {
           setMuiAlert({
