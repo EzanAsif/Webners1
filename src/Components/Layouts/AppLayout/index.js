@@ -1,4 +1,5 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { AppBar, Container, Toolbar, Typography } from "@mui/material";
 import AppLogo from "../../../Assets/logo-sams-club.jpeg";
 import BottomNavigation from "@mui/material/BottomNavigation";
@@ -17,6 +18,8 @@ const AppWrapper = ({ children }) => {
 const AppLayout = ({ children }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { auth } = useSelector((state) => state);
+
   console.log(location, location.pathname, "location");
   const [value, setValue] = React.useState(
     location && location.pathname == "/" ? "home" : location.pathname.slice(1)

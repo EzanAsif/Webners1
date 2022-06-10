@@ -16,6 +16,7 @@ const UserAuthenticated = () => {
   React.useEffect(() => {
     (async () => {
       await getUserDataFunc().then((res) => {
+        console.log(res, 'localstoragedata')
         if (res) dispatch(userDataFromLocalStorage(res));
       });
     })().catch((err) => {

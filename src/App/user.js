@@ -1,8 +1,12 @@
 export const getUserDataFunc = async () => {
   try {
-    let value;
-    value = await localStorage.getItem("token");
-    if (value) return value;
+    let token;
+    let user;
+    token = await localStorage.getItem("token");
+    user = await localStorage.getItem("user");
+    token = JSON.parse(token)
+    user = JSON.parse(user)
+    if (token && user) return { token, user };
   } catch (e) {
     console.log(e);
   }

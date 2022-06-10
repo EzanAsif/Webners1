@@ -45,7 +45,7 @@ const AuthReducer = createSlice({
   initialState,
   reducers: {
     userDataFromLocalStorage: (state, action) => {
-      state.userData.token = action.payload;
+      state.userData = action.payload;
     },
     removeuserDataFromLocalStorage: (state, action) => {
       localStorage.removeItem("token");

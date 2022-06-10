@@ -143,6 +143,7 @@ const Login = ({ setMuiAlert, muiAlert }) => {
                 }}
               >
                 <Button
+                  disabled={auth.status == "Pending"}
                   size="large"
                   fullWidth={true}
                   variant="contained"
