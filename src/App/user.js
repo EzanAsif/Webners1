@@ -8,8 +8,10 @@ export const getUserDataFunc = async () => {
   }
 };
 
-export const setUserDataFunc = async (v) => {
-  await localStorage.setItem("token", JSON.stringify(v));
+export const setUserDataFunc = async (token, userData) => {
+  await localStorage.setItem("user", JSON.stringify(userData));
+  await localStorage.setItem("token", JSON.stringify(token));
   let userToken = await localStorage.getItem("token");
-  return userToken;
+  let userDataRes = await localStorage.getItem("user");
+  return { userToken, userDataRes };
 };

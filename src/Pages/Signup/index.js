@@ -30,9 +30,9 @@ const Signup = ({ muiAlert, setMuiAlert }) => {
   const [refCode, setRefCode] = useState();
   const [phNum, setPhNum] = useState();
 
-  const setToken = async (value) => {
+  const setTokenAndUser = async (token, userData) => {
     try {
-      let userToken = await setUserDataFunc(value);
+      let userToken = await setUserDataFunc(token, userData);
       if (userToken) {
         let parsedUserData = JSON.parse(userToken);
         console.log(parsedUserData);
@@ -46,8 +46,9 @@ const Signup = ({ muiAlert, setMuiAlert }) => {
   const userSignup = (e) => {
     e.preventDefault();
     if (refCode) {
-      let body = { email, password, refCode, phNum };
-
+      let body = { email, password, phoneNo: phNum, referralCode: refCode };
+      console.log(body, "body");
+      console.log(refCode);
       dispatch(UserSignupWithRefferalCode(body))
         .unwrap()
         .then((res) => {
@@ -58,7 +59,8 @@ const Signup = ({ muiAlert, setMuiAlert }) => {
               alertStatus: "success",
               alertMessage: "User SignedIn Success",
             });
-            setToken(res.token);
+            console.log(res, "res in signup");
+            setTokenAndUser(res.token, res.user);
             setTimeout(() => {
               setMuiAlert({ ...muiAlert, open: false });
               // navigate("/");
@@ -97,7 +99,7 @@ const Signup = ({ muiAlert, setMuiAlert }) => {
               alertStatus: "success",
               alertMessage: "User SignedIn Success",
             });
-            setToken(res.token);
+            setTokenAndUser(res.token, res.user);
             setTimeout(() => {
               setMuiAlert({ ...muiAlert, open: false });
               // navigate("/");

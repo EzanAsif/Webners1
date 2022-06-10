@@ -1,15 +1,16 @@
 import axios from "axios";
 
 export const postRequest = async (api, body) => {
-  const res = await fetch(api, {
-    method: "post",
+  const res = await axios.request({
+    method: "POST",
+    url: api,
     headers: {
       "Content-Type": "application/json",
       //   Authorization: localStorage.getItem('token'),
     },
-    body: JSON.stringify(body),
+    data: body,
   });
-  return await res.json();
+  return await res;
 };
 
 export const getRequest = async (api, type) => {

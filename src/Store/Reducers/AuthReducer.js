@@ -18,21 +18,25 @@ export const UserSignupWithoutRefferalCode = createAsyncThunk(
   "UserSignupWithoutRefferalCode",
   async (body) => {
     const result = await postRequest(`${BASE_URL}/user/signup`, body);
-    console.log(result, "result");
-    return result;
+    console.log(result, "resilt");
+    return result.data;
   }
 );
 
 export const UserSignupWithRefferalCode = createAsyncThunk(
   "UserSignupWithRefferalCode",
   async (body) => {
-    const result = await postRequest(`${BASE_URL}/user/signup/${body}`, body);
-    return result;
+    const result = await postRequest(
+      `${BASE_URL}/user/signupWithReferralCode`,
+      body
+    );
+    return result.data;
   }
 );
 
 export const UserLogin = createAsyncThunk("UserLogin", async (body) => {
   const result = await getDataByBody(`${BASE_URL}/user/signin`, body);
+  console.log(result, "result in login");
   return result;
 });
 
@@ -45,6 +49,7 @@ const AuthReducer = createSlice({
     },
     removeuserDataFromLocalStorage: (state, action) => {
       localStorage.removeItem("token");
+      localStorage.removeItem("user");
       state.userData = {};
     },
   },
@@ -54,11 +59,12 @@ const AuthReducer = createSlice({
     },
     [UserSignupWithoutRefferalCode.rejected]: (state, action) => {
       state.status = "Error";
-      state.error = action.payload;
+      state.error = action.type;
     },
     [UserSignupWithoutRefferalCode.fulfilled]: (state, action) => {
       if (action.payload) {
-        state.userData = action.payload;
+        state.userData.token = action.payload.token;
+        state.userData.user = action.payload.user;
         state.status = "Ok";
         state.error = "none";
       }
@@ -68,11 +74,13 @@ const AuthReducer = createSlice({
     },
     [UserSignupWithRefferalCode.rejected]: (state, action) => {
       state.status = "Error";
-      state.error = action.payload;
+      console.log(action);
+      state.error = action.type;
     },
     [UserSignupWithRefferalCode.fulfilled]: (state, action) => {
       if (action.payload) {
-        state.userData = action.payload;
+        state.userData.token = action.payload.token;
+        state.userData.user = action.payload.user;
         state.status = "Ok";
         state.error = "none";
       }
@@ -81,8 +89,10 @@ const AuthReducer = createSlice({
       state.status = "Pending";
     },
     [UserLogin.rejected]: (state, action) => {
+      console.log(action);
+      state.status = "Rejected";
       state.status = "Error";
-      state.error = action.payload;
+      state.error = action.type;
     },
     [UserLogin.fulfilled]: (state, action) => {
       if (action.payload) {

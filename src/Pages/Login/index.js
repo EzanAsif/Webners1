@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useSelector } from "react";
+import React, { useState, useEffect } from "react";
 import { userDataFromLocalStorage } from "../../Store/Reducers/AuthReducer";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setUserDataFunc } from "../../App/user";
 import AuthenticationLayout from "../../Components/Layouts/AuthenticationScreen";
 import {
@@ -19,15 +19,16 @@ import { UserLogin } from "../../Store/Reducers/AuthReducer";
 const Login = ({ setMuiAlert, muiAlert }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { auth } = useSelector((state) => state);
 
   const [open, setOpen] = useState(false);
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   // useEffect(() => {}, []);
 
-  const setToken = async (value) => {
+  const setTokenAndUser = async (token, userData) => {
     try {
-      let userToken = await setUserDataFunc(value);
+      let userToken = await setUserDataFunc(token, userData);
       if (userToken) {
         let parsedUserData = JSON.parse(userToken);
         console.log(parsedUserData);
@@ -37,6 +38,7 @@ const Login = ({ setMuiAlert, muiAlert }) => {
       console.log(e);
     }
   };
+
   console.log(muiAlert);
   const userLoginFunc = (e) => {
     e.preventDefault();
@@ -47,13 +49,14 @@ const Login = ({ setMuiAlert, muiAlert }) => {
     dispatch(UserLogin(body))
       .unwrap()
       .then((res) => {
+        console.log(res);
         setOpen(false);
         setMuiAlert({
           open: true,
           alertStatus: "success",
           alertMessage: "User Loggedin Success",
         });
-        setToken(res.token);
+        setTokenAndUser(res.token, res.user);
         setTimeout(() => {
           setMuiAlert({ ...muiAlert, open: false });
           // navigate("/");
@@ -61,11 +64,20 @@ const Login = ({ setMuiAlert, muiAlert }) => {
       })
       .catch((e) => {
         console.log(e);
-        setMuiAlert({
-          open: true,
-          alertStatus: "error",
-          alertMessage: `User Login Failed - ${e}`,
-        });
+        if (e.message == "Request failed with status code 401") {
+          setMuiAlert({
+            open: true,
+            alertStatus: "error",
+            alertMessage: `User Login Failed - Invalid user name or password`,
+          });
+        } else {
+          setMuiAlert({
+            open: true,
+            alertStatus: "error",
+            alertMessage: `User Login Failed - ${auth.error}`,
+          });
+        }
+
         setTimeout(() => {
           setMuiAlert({ ...muiAlert, open: false });
         }, 2000);
@@ -76,7 +88,7 @@ const Login = ({ setMuiAlert, muiAlert }) => {
     <>
       <Backdrop
         sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={open}
+        open={open && auth.status == "Pending"}
       >
         <CircularProgress color="inherit" />
       </Backdrop>
