@@ -1,6 +1,6 @@
 .currentBalanceContainer {
   padding: 20px 10px;
-  background-color: #f3f3f3;
+  background-color: #f9f9f9;
   margin: 25px 0px;
   border-radius: 10px;
 }
@@ -16,4 +16,19 @@
   display: flex;
   justify-content: space-between;
   margin-bottom: 5px;
+  flex-wrap: wrap;
+}
+
+.indivDepositWithdrawBtn {
+  width: 48% !important;
+}
+
+@media only screen and (max-width: 600px) {
+  .indivDepositWithdrawBtn {
+    width: 95% !important;
+    margin: 10px 0px 5px 0px !important;
+  }
+  .currentBalanceContainer {
+    padding: 10px 10px;
+  }
 }

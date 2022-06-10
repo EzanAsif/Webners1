@@ -1,6 +1,9 @@
 import React from "react";
+import "./styles.css";
+import WithdrawIcon from "../../Assets/withdraw.png";
+import DepositIcon from "../../Assets/deposit.png";
 
-const index = () => {
+const index = ({ isDeposit = false, dateTime, transactionAmount }) => {
   return (
     <div
       style={{
@@ -13,7 +16,16 @@ const index = () => {
         borderRadius: "5px",
       }}
     >
-      <h8>IndividualTransaction</h8>
+      <div className="indivTransIcon">
+        <img src={isDeposit ? DepositIcon : WithdrawIcon} />
+      </div>
+      <div className="indivTransDetails">
+        <div className="indivTransType">
+          {isDeposit ? "Deposit" : "Withdraw"}
+        </div>
+        <div className="indivTransDateTime">{dateTime}</div>
+      </div>
+      <div className="indivTransAmount">{transactionAmount}</div>
     </div>
   );
 };

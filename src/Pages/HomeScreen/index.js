@@ -28,7 +28,7 @@ const HomeScreen = () => {
           <div style={{ margin: "20px 0px" }}>
             <Typography
               align="left"
-              sx={{ fontSize: 16, margin: "5px 0px", fontWeight: "500" }}
+              sx={{ fontSize: 14, margin: "5px 0px", fontWeight: "500" }}
               color="text.secondary"
               gutterBottom
             >
@@ -36,7 +36,7 @@ const HomeScreen = () => {
               <Typography
                 variant="h6"
                 align="left"
-                sx={{ fontSize: 18, margin: "5px 0px" }}
+                sx={{ fontSize: 16, margin: "5px 0px" }}
                 color="text.primary"
                 gutterBottom
               >
@@ -66,20 +66,20 @@ const HomeScreen = () => {
             <CtaBtn
               label="Deposit"
               variant="outlined"
-              style={{ width: "48% !important" }}
+              className="indivDepositWithdrawBtn"
               size="large"
             />
             <CtaBtn
               label="Withdraw"
+              className="indivDepositWithdrawBtn"
               variant="contained"
-              style={{ width: "48% !important" }}
               size="large"
             />
           </div>
         </div>
         <div
           style={{
-            margin: "40px auto",
+            margin: "30px auto 20px auto",
             padding: "0px 10px",
             backgroundColor: "#1976d2",
             borderRadius: 10,
@@ -91,7 +91,7 @@ const HomeScreen = () => {
         >
           <Typography
             align="center"
-            // sx={{ fontSize: 12, margin: "5px 0px" }}
+            sx={{ fontSize: 12, margin: "5px 0px" }}
             style={{ margin: "20px auto" }}
             color="#fff"
           >
@@ -114,16 +114,37 @@ const HomeScreen = () => {
               variant="outlined"
               endIcon={<ContentCopyIcon color="white" />}
             >
-              {auth.userData.user._id}
+              {auth.userData.user._id && auth.userData.user._id.slice(0, 12)}...
             </Button>
           )}
         </div>
         <div className="latestTransactions">
-          <Typography gutterBottom align="left" variant="h6">
+          <Typography
+            gutterBottom
+            align="left"
+            style={{ fontSize: 18, fontWeight: "500" }}
+          >
             Latest Transactions
           </Typography>
           {[1, 2, 3, 4, 5].map((obj, index) => {
-            return <IndividualTransaction key={index} />;
+            if (index % 2 == 0) {
+              return (
+                <IndividualTransaction
+                  isDeposit={true}
+                  dateTime="27th March Tue, 9:00pm"
+                  transactionAmount="200$"
+                  key={index}
+                />
+              );
+            } else {
+              return (
+                <IndividualTransaction
+                  dateTime="27th March Tue, 9:00pm"
+                  transactionAmount="200$"
+                  key={index}
+                />
+              );
+            }
           })}
         </div>
       </AppLayout>

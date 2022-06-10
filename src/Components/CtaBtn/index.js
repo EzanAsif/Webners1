@@ -1,10 +1,17 @@
 import { Button } from "@mui/material";
 import React from "react";
-import "./styles.css";
 
-const index = ({ label, variant, onClickFunc, style, size = "large" }) => {
+const index = ({
+  className = "",
+  label,
+  variant,
+  onClickFunc,
+  style,
+  size = "large",
+}) => {
   return (
     <Button
+      className={className}
       size={size}
       fullWidth={true}
       variant={variant}
