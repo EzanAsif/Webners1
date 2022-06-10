@@ -24,6 +24,27 @@ const HomeScreen = () => {
         </Alert>
       </Snackbar>
       <AppLayout>
+        {auth.userData.user && auth.userData.user.email && (
+          <div style={{ margin: "20px 0px" }}>
+            <Typography
+              align="left"
+              sx={{ fontSize: 16, margin: "5px 0px", fontWeight: "500" }}
+              color="text.secondary"
+              gutterBottom
+            >
+              Hi, <br />
+              <Typography
+                variant="h6"
+                align="left"
+                sx={{ fontSize: 18, margin: "5px 0px" }}
+                color="text.primary"
+                gutterBottom
+              >
+                {auth.userData.user.email}
+              </Typography>
+            </Typography>
+          </div>
+        )}
         <div className="currentBalanceContainer">
           <Typography
             align="center"
@@ -101,7 +122,7 @@ const HomeScreen = () => {
           <Typography gutterBottom align="left" variant="h6">
             Latest Transactions
           </Typography>
-          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((obj, index) => {
+          {[1, 2, 3, 4, 5].map((obj, index) => {
             return <IndividualTransaction key={index} />;
           })}
         </div>
