@@ -97,6 +97,7 @@ const AuthReducer = createSlice({
     [UserLogin.fulfilled]: (state, action) => {
       if (action.payload) {
         state.userData.token = action.payload.token;
+        state.userData.user = action.payload.user;
         state.status = "Ok";
         state.error = "none";
       }
