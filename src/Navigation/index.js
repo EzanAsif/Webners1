@@ -30,8 +30,6 @@ const AppRoutes = ({ muiAlert, setMuiAlert }) => {
         </>
       ) : (
         <>
-          <Route path="/help" element={<Help />} />
-          <Route path="/profile" element={<Profile />} />
           <Route path="*" element={<>404 Page not found</>} />
           <Route
             path="/login"
@@ -41,11 +39,8 @@ const AppRoutes = ({ muiAlert, setMuiAlert }) => {
             path="/signup"
             element={<Signup muiAlert={muiAlert} setMuiAlert={setMuiAlert} />}
           />
-          <Route path="/" element={<HomeScreen />} />
-          <Route path="/transactions" element={<Transactions />} />
-
           {/* Redirecting */}
-          {/* <Route path="/" element={<Navigate to="/login" />} /> */}
+          <Route path="/" element={<Navigate to="/login" />} />
         </>
       )}
     </Routes>

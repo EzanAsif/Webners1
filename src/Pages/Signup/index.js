@@ -8,6 +8,7 @@ import {
   Button,
   CardContent,
   CircularProgress,
+  Grid,
   InputLabel,
   TextField,
   Typography,
@@ -27,6 +28,7 @@ const Signup = ({ muiAlert, setMuiAlert }) => {
 
   const [open, setOpen] = useState(false);
   const [email, setEmail] = useState();
+  const [name, setName] = useState();
   const [password, setPassword] = useState();
   const [refCode, setRefCode] = useState();
   const [phNum, setPhNum] = useState();
@@ -47,7 +49,13 @@ const Signup = ({ muiAlert, setMuiAlert }) => {
   const userSignup = (e) => {
     e.preventDefault();
     if (refCode) {
-      let body = { email, password, phoneNo: phNum, referralCode: refCode };
+      let body = {
+        name,
+        email,
+        password,
+        phoneNo: phNum,
+        referralCode: refCode,
+      };
       console.log(body, "body");
       console.log(refCode);
       dispatch(UserSignupWithRefferalCode(body))
@@ -91,7 +99,7 @@ const Signup = ({ muiAlert, setMuiAlert }) => {
           console.log(e);
         });
     } else {
-      let body = { email, password, phNum };
+      let body = { email, password, phoneNo: phNum, name };
       console.log(body, "body");
       dispatch(UserSignupWithoutRefferalCode(body))
         .unwrap()
@@ -155,8 +163,29 @@ const Signup = ({ muiAlert, setMuiAlert }) => {
           </Typography>
           <form onSubmit={userSignup}>
             <CardContent>
-              <>
-                <div>
+              <Grid
+                fullWidth={true}
+                style={{ width: "100%" }}
+                spacing={2}
+                container
+              >
+                <Grid className="abc" item lg={6} md={6} sm={12}>
+                  <InputLabel shrink="true">Name</InputLabel>
+                  <TextField
+                    required
+                    onChange={(e) => {
+                      setName(e.target.value);
+                    }}
+                    InputLabelProps={"Name"}
+                    id="Name"
+                    variant="outlined"
+                    placeholder="Enter your full name here"
+                    style={{ marginBottom: "20px" }}
+                    fullWidth={true}
+                    size="small"
+                  />
+                </Grid>
+                <Grid className="abc" item lg={6} md={6} sm={12}>
                   <InputLabel shrink="true">Email</InputLabel>
                   <TextField
                     required
@@ -171,8 +200,8 @@ const Signup = ({ muiAlert, setMuiAlert }) => {
                     fullWidth={true}
                     size="small"
                   />
-                </div>
-                <div>
+                </Grid>
+                <Grid className="abc" item lg={6} md={6} sm={12}>
                   <InputLabel shrink="true">Password</InputLabel>
                   <TextField
                     onChange={(e) => setPassword(e.target.value)}
@@ -185,8 +214,8 @@ const Signup = ({ muiAlert, setMuiAlert }) => {
                     fullWidth={true}
                     size="small"
                   />
-                </div>
-                <div>
+                </Grid>
+                <Grid className="abc" item lg={6} md={6} sm={12}>
                   <InputLabel shrink="true">
                     Referral Code
                     <span style={{ fontSize: 12, marginLeft: 5 }}>
@@ -202,10 +231,11 @@ const Signup = ({ muiAlert, setMuiAlert }) => {
                     fullWidth={true}
                     size="small"
                   />
-                </div>
-                <div>
+                </Grid>
+                <Grid className="abc" item lg={6} md={12} sm={12}>
                   <InputLabel shrink={true}>Phone Number</InputLabel>
                   <PhoneInput
+                    fullWidth={true}
                     required
                     placeholder="Enter phone number"
                     // value={value}
@@ -213,8 +243,8 @@ const Signup = ({ muiAlert, setMuiAlert }) => {
                       setPhNum(val);
                     }}
                   />
-                </div>
-              </>
+                </Grid>
+              </Grid>
               <button
                 style={{
                   width: "100%",

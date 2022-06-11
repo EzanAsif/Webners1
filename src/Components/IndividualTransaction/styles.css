@@ -16,7 +16,7 @@
   background-color: #e4f7e18a;
 }
 
-.indivTransCard .indivTransIcon {
+.indivTransIcon {
   width: 45px;
   height: 45px;
   display: flex;
@@ -25,12 +25,12 @@
   border-radius: 10px;
 }
 
-.indivTransCard .indivTransIcon.withdraw {
+.indivTransIcon.withdraw {
   color: #f80022;
   background-color: #f7e1e2;
 }
 
-.indivTransCard .indivTransIcon.deposit {
+.indivTransIcon.deposit {
   color: #276800;
   background-color: #e4f7e1;
 }

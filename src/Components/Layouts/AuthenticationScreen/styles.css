@@ -10,9 +10,23 @@
   flex-direction: column;
   justify-content: center;
   align-items: space-between;
-  height: max-content;
+  max-width: 600px;
+}
 
-  /* max-height: 85vh ; */
+/* .auth-mui-card {
+  height: 80vh;
+  overflow-y: scroll !important;
+} */
+
+.auth-mui-card::-webkit-scrollbar {
+  background-color: none;
+  width: 5px;
+}
+
+.auth-mui-card::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+  width: 100%;
 }
 
 .authentication-footer {
@@ -35,6 +49,7 @@
   padding: 8.5px 14px;
   border: 1.75px solid rgba(0, 0, 0, 0.225);
   border-radius: 5px;
+  width: -webkit-fill-available !important;
 }
 
 .PhoneInput:hover {
@@ -60,6 +75,15 @@
 }
 
 @media only screen and (max-width: 600px) {
+  .abc {
+    width: 100%;
+  }
+  .authentication-form-container {
+    width: 95%;
+  }
+  .authentication-layout-container {
+    max-height: max-content;
+  }
   .auth-mui-card {
     width: 95% !important;
     margin-right: 0 !important;
