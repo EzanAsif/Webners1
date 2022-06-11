@@ -33,10 +33,11 @@ const Signup = ({ muiAlert, setMuiAlert }) => {
   const [refCode, setRefCode] = useState();
   const [phNum, setPhNum] = useState();
 
-  const setTokenAndUser = async (token, userData) => {
+  const setTokenAndUser = async (token, userData, refreshToken) => {
     try {
-      let userToken = await setUserDataFunc(token, userData);
+      let userToken = await setUserDataFunc(token, userData, refreshToken);
       if (userToken) {
+        console.log(userToken, "userToken");
         let parsedUserData = JSON.parse(userToken);
         console.log(parsedUserData);
         dispatch(userDataFromLocalStorage(parsedUserData));
@@ -45,7 +46,7 @@ const Signup = ({ muiAlert, setMuiAlert }) => {
       console.log(e);
     }
   };
-
+  
   const userSignup = (e) => {
     e.preventDefault();
     if (refCode) {
@@ -70,7 +71,7 @@ const Signup = ({ muiAlert, setMuiAlert }) => {
               alertMessage: "User SignUp Success",
             });
             console.log(res, "res in signup");
-            setTokenAndUser(res.token, res.user);
+            setTokenAndUser(res.token, res.user, res.refreshToken);
             setTimeout(() => {
               setMuiAlert({ ...muiAlert, open: false });
               // navigate("/");
@@ -112,7 +113,7 @@ const Signup = ({ muiAlert, setMuiAlert }) => {
               alertStatus: "success",
               alertMessage: "User SignUp Success",
             });
-            setTokenAndUser(res.token, res.user);
+            setTokenAndUser(res.token, res.user, res.refreshToken);
             setTimeout(() => {
               setMuiAlert({ ...muiAlert, open: false });
               // navigate("/");

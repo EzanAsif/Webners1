@@ -26,10 +26,11 @@ const Login = ({ setMuiAlert, muiAlert }) => {
   const [password, setPassword] = useState();
   // useEffect(() => {}, []);
 
-  const setTokenAndUser = async (token, userData) => {
+  const setTokenAndUser = async (token, userData, refreshToken) => {
     try {
-      let userToken = await setUserDataFunc(token, userData);
+      let userToken = await setUserDataFunc(token, userData, refreshToken);
       if (userToken) {
+        console.log(userToken, "userToken");
         let parsedUserData = JSON.parse(userToken);
         console.log(parsedUserData);
         dispatch(userDataFromLocalStorage(parsedUserData));
@@ -56,7 +57,7 @@ const Login = ({ setMuiAlert, muiAlert }) => {
           alertStatus: "success",
           alertMessage: "User Loggedin Success",
         });
-        setTokenAndUser(res.token, res.user);
+        setTokenAndUser(res.token, res.user, res.refreshToken);
         setTimeout(() => {
           setMuiAlert({ ...muiAlert, open: false });
           // navigate("/");

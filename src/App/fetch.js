@@ -6,7 +6,7 @@ export const postRequest = async (api, body) => {
     url: api,
     headers: {
       "Content-Type": "application/json",
-      //   Authorization: localStorage.getItem('token'),
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
     data: body,
   });
