@@ -1,7 +1,7 @@
 import Login from "./Login";
 import Signup from "./Signup";
 import HomeScreen from "./HomeScreen";
-import Transactions from "./Profile";
+import Transactions from "./Transactions";
 import Help from "./Help";
 import Profile from "./Profile";
 

@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { AppLayout } from "../../Components/Layouts/AppLayout";
 import { removeuserDataFromLocalStorage } from "../../Store/Reducers/AuthReducer";
 import { useNavigate } from "react-router-dom";
+import IndividualTransaction from "../../Components/IndividualTransaction";
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
@@ -11,19 +12,25 @@ const HomeScreen = () => {
     <AppLayout>
       <h2>Transactions</h2>
       <div style={{ display: "flex", flexDirection: "column" }}>
-        {[1, 24, 2, 45, 5, 25, , 5, 42, 34, 24, 24, 2].map((obj, index) => {
-          return (
-            <button
-              key={index}
-              style={{ margin: "20px 0px" }}
-              onClick={() => {
-                dispatch(removeuserDataFromLocalStorage());
-                navigate("/");
-              }}
-            >
-              Logout
-            </button>
-          );
+        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((obj, index) => {
+          if (index % 2 == 0) {
+            return (
+              <IndividualTransaction
+                isDeposit={true}
+                dateTime="27th March Tue, 9:00pm"
+                transactionAmount="200$"
+                key={index}
+              />
+            );
+          } else {
+            return (
+              <IndividualTransaction
+                dateTime="27th March Tue, 9:00pm"
+                transactionAmount="200$"
+                key={index}
+              />
+            );
+          }
         })}
       </div>
     </AppLayout>

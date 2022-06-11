@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppLayout } from "../../Components/Layouts/AppLayout";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Alert, Button, Snackbar, Typography } from "@mui/material";
 import "./styles.css";
 import CtaBtn from "../../Components/CtaBtn";
@@ -24,27 +24,6 @@ const HomeScreen = () => {
         </Alert>
       </Snackbar>
       <AppLayout>
-        {auth.userData.user && auth.userData.user.email && (
-          <div style={{ margin: "20px 0px" }}>
-            <Typography
-              align="left"
-              sx={{ fontSize: 14, margin: "5px 0px", fontWeight: "500" }}
-              color="text.secondary"
-              gutterBottom
-            >
-              Hi, <br />
-              <Typography
-                variant="h6"
-                align="left"
-                sx={{ fontSize: 16, margin: "5px 0px" }}
-                color="text.primary"
-                gutterBottom
-              >
-                {auth.userData.user.email}
-              </Typography>
-            </Typography>
-          </div>
-        )}
         <div className="currentBalanceContainer">
           <Typography
             align="center"
@@ -79,7 +58,7 @@ const HomeScreen = () => {
         </div>
         <div
           style={{
-            margin: "30px auto 20px auto",
+            margin: "30px auto 30px auto",
             padding: "0px 10px",
             backgroundColor: "#1976d2",
             borderRadius: 10,
@@ -119,13 +98,16 @@ const HomeScreen = () => {
           )}
         </div>
         <div className="latestTransactions">
-          <Typography
-            gutterBottom
-            align="left"
-            style={{ fontSize: 18, fontWeight: "500" }}
-          >
-            Latest Transactions
-          </Typography>
+          <div className="header">
+            <Typography
+              gutterBottom
+              align="left"
+              style={{ fontSize: 18, fontWeight: "500" }}
+            >
+              Latest Transactions
+            </Typography>
+            <Link to="/transactions">See All</Link>
+          </div>
           {[1, 2, 3, 4, 5].map((obj, index) => {
             if (index % 2 == 0) {
               return (

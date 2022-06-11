@@ -1,23 +1,23 @@
 import React from "react";
 import "./styles.css";
-import WithdrawIcon from "../../Assets/withdraw.png";
-import DepositIcon from "../../Assets/deposit.png";
+// import WithdrawIcon from "../../Assets/withdraw.png";
+// import DepositIcon from "../../Assets/deposit.png";
+import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
+import AddCardIcon from "@mui/icons-material/AddCard";
 
-const index = ({ isDeposit = false, dateTime, transactionAmount }) => {
+const IndividualTransaction = ({
+  isDeposit = false,
+  dateTime,
+  transactionAmount,
+}) => {
   return (
-    <div
-      style={{
-        margin: "20px 0px",
-        padding: "15px 10px",
-        backgroundColor: "#f3f3f3",
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        borderRadius: "5px",
-      }}
-    >
-      <div className="indivTransIcon">
-        <img src={isDeposit ? DepositIcon : WithdrawIcon} />
+    <div className={`indivTransCard ${isDeposit ? "deposit" : "withdraw"}`}>
+      <div className={`indivTransIcon ${isDeposit ? "deposit" : "withdraw"}`}>
+        {isDeposit ? (
+          <AddCardIcon />
+        ) : (
+          <ArrowUpwardIcon style={{ transform: "rotate(225deg)" }} />
+        )}
       </div>
       <div className="indivTransDetails">
         <div className="indivTransType">
@@ -30,4 +30,4 @@ const index = ({ isDeposit = false, dateTime, transactionAmount }) => {
   );
 };
 
-export default index;
+export default IndividualTransaction;

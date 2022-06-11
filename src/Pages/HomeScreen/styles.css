@@ -23,6 +23,17 @@
   width: 48% !important;
 }
 
+.latestTransactions .header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.latestTransactions .header a {
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.6);
+}
+
 @media only screen and (max-width: 600px) {
   .indivDepositWithdrawBtn {
     width: 95% !important;
