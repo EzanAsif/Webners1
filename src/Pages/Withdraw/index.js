@@ -14,8 +14,6 @@ import {
 } from "@mui/material";
 import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
 import "./styles.css";
-import PropTypes from "prop-types";
-import NumberFormat from "react-number-format";
 import CurrencyTextField from "@unicef/material-ui-currency-textfield";
 
 const Withdraw = ({ setMuiAlert, muiAlert }) => {
@@ -24,39 +22,6 @@ const Withdraw = ({ setMuiAlert, muiAlert }) => {
   const navigate = useNavigate();
   const [amount, setAmount] = useState("");
   const { auth } = useSelector((state) => state);
-
-  const NumberFormatCustom = React.forwardRef(function NumberFormatCustom(
-    props,
-    ref
-  ) {
-    const { onChange, ...other } = props;
-
-    return (
-      <NumberFormat
-        {...other}
-        getInputRef={ref}
-        onValueChange={(values) => {
-          console.log(values, props, "values, props");
-          onChange({
-            target: {
-              name: props.name,
-              value: values.value,
-            },
-          });
-        }}
-        thousandSeparator
-        isNumericString
-        // prefix="$"
-      />
-    );
-  });
-
-  NumberFormatCustom.propTypes = {
-    name: PropTypes.string.isRequired,
-    onChange: PropTypes.func.isRequired,
-  };
-
-  console.log(amount);
 
   return (
     <>
