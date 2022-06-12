@@ -20,10 +20,26 @@ const AppRoutes = ({ muiAlert, setMuiAlert }) => {
       {auth.userData && auth.userData.token ? (
         <>
           <Route path="*" element={<>404 Page not found</>} />
-          <Route path="/" element={<HomeScreen />} />
-          <Route path="/transactions" element={<Transactions />} />
-          <Route path="/help" element={<Help />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route
+            path="/"
+            element={
+              <HomeScreen muiAlert={muiAlert} setMuiAlert={setMuiAlert} />
+            }
+          />
+          <Route
+            path="/transactions"
+            element={
+              <Transactions muiAlert={muiAlert} setMuiAlert={setMuiAlert} />
+            }
+          />
+          <Route
+            path="/help"
+            element={<Help muiAlert={muiAlert} setMuiAlert={setMuiAlert} />}
+          />
+          <Route
+            path="/profile"
+            element={<Profile muiAlert={muiAlert} setMuiAlert={setMuiAlert} />}
+          />
           {/* REDIRECTING */}
           <Route path="/login" element={<Navigate to="/" />} />
           <Route path="/signup" element={<Navigate to="/" />} />

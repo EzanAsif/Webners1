@@ -46,7 +46,7 @@ const Signup = ({ muiAlert, setMuiAlert }) => {
       console.log(e);
     }
   };
-  
+
   const userSignup = (e) => {
     e.preventDefault();
     if (refCode) {
@@ -62,21 +62,23 @@ const Signup = ({ muiAlert, setMuiAlert }) => {
       dispatch(UserSignupWithRefferalCode(body))
         .unwrap()
         .then((res) => {
-          setOpen(true);
-          if (res.token) {
-            setOpen(false);
-            setMuiAlert({
-              open: true,
-              alertStatus: "success",
-              alertMessage: "User SignUp Success",
-            });
-            console.log(res, "res in signup");
-            setTokenAndUser(res.token, res.user, res.refreshToken);
-            setTimeout(() => {
-              setMuiAlert({ ...muiAlert, open: false });
-              // navigate("/");
-            }, 4000);
-            console.log(res);
+          if (res.status !== "rejected") {
+            setOpen(true);
+            if (res.token) {
+              setOpen(false);
+              setMuiAlert({
+                open: true,
+                alertStatus: "success",
+                alertMessage: "User SignUp Success",
+              });
+              console.log(res, "res in signup");
+              setTokenAndUser(res.token, res.user, res.refreshToken);
+              setTimeout(() => {
+                setMuiAlert({ ...muiAlert, open: false });
+                // navigate("/");
+              }, 4000);
+              console.log(res);
+            }
           } else {
             setOpen(false);
             setMuiAlert({
@@ -105,20 +107,22 @@ const Signup = ({ muiAlert, setMuiAlert }) => {
       dispatch(UserSignupWithoutRefferalCode(body))
         .unwrap()
         .then((res) => {
-          setOpen(true);
-          if (res.token) {
-            setOpen(false);
-            setMuiAlert({
-              open: true,
-              alertStatus: "success",
-              alertMessage: "User SignUp Success",
-            });
-            setTokenAndUser(res.token, res.user, res.refreshToken);
-            setTimeout(() => {
-              setMuiAlert({ ...muiAlert, open: false });
-              // navigate("/");
-            }, 4000);
-            console.log(res);
+          if (res.status !== "rejected") {
+            setOpen(true);
+            if (res.token) {
+              setOpen(false);
+              setMuiAlert({
+                open: true,
+                alertStatus: "success",
+                alertMessage: "User SignUp Success",
+              });
+              setTokenAndUser(res.token, res.user, res.refreshToken);
+              setTimeout(() => {
+                setMuiAlert({ ...muiAlert, open: false });
+                // navigate("/");
+              }, 4000);
+              console.log(res);
+            }
           } else {
             setOpen(false);
             setMuiAlert({

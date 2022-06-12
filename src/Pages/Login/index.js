@@ -51,17 +51,30 @@ const Login = ({ setMuiAlert, muiAlert }) => {
       .unwrap()
       .then((res) => {
         console.log(res);
-        setOpen(false);
-        setMuiAlert({
-          open: true,
-          alertStatus: "success",
-          alertMessage: "User Loggedin Success",
-        });
-        setTokenAndUser(res.token, res.user, res.refreshToken);
-        setTimeout(() => {
-          setMuiAlert({ ...muiAlert, open: false });
-          // navigate("/");
-        }, 4000);
+        if (res.status !== "rejected") {
+          setOpen(false);
+          setMuiAlert({
+            open: true,
+            alertStatus: "success",
+            alertMessage: "User Loggedin Success",
+          });
+          setTokenAndUser(res.token, res.user, res.refreshToken);
+          setTimeout(() => {
+            setMuiAlert({ ...muiAlert, open: false });
+            // navigate("/");
+          }, 4000);
+        } else {
+          setOpen(false);
+          setMuiAlert({
+            open: true,
+            alertStatus: "error",
+            alertMessage: `User Login Failed - ${res.message}`,
+          });
+          setTimeout(() => {
+            setMuiAlert({ ...muiAlert, open: false });
+            // navigate("/");
+          }, 4000);
+        }
       })
       .catch((e) => {
         setOpen(false);
