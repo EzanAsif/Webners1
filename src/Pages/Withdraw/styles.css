@@ -32,12 +32,18 @@
 .withdraw-deposit-page .amount-input-div {
   max-height: -webkit-fill-available;
   min-height: 300px;
-  width: 350px;
+  width: 280px;
   margin: 30px auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.currency-input .MuiInputBase-input {
+  font-family: "lato";
+  font-size: 26px;
+  text-align: center;
 }
 
 @media only screen and (max-width: 350px) {
