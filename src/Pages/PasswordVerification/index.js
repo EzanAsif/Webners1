@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { getUserDataFunc } from "../../App/user";
 import {
   Backdrop,
@@ -14,12 +14,18 @@ import {
 import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import { WithdrawTransaction } from "../../Store/Reducers/Transactions";
+import { RefreshToken } from "../../Store/Reducers/AuthReducer";
 
 const PasswordVerification = ({ setMuiAlert, muiAlert }) => {
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { auth } = useSelector((state) => state);
+  const location = useLocation();
+  const {
+    auth,
+    transactions: { status: transactionStatus },
+  } = useSelector((state) => state);
 
   const [values, setValues] = React.useState({
     amount: "",
@@ -41,11 +47,126 @@ const PasswordVerification = ({ setMuiAlert, muiAlert }) => {
     event.preventDefault();
   };
 
+  const withdrawTransactionFunc = () => {
+    let dateTime = new Date().toLocaleString();
+    setOpen(true);
+    dispatch(
+      WithdrawTransaction({
+        timeStamp: dateTime,
+        amount: location.state.amount,
+        refreshToken: JSON.parse(localStorage.getItem("refreshToken")),
+        password: values.password,
+      })
+    )
+      .unwrap()
+      .then((res) => {
+        if (res.status == "rejected") {
+          if (res.message == "Auth failed") {
+            dispatch(
+              RefreshToken({
+                refreshToken: JSON.parse(localStorage.getItem("refreshToken")),
+              })
+            )
+              .unwrap()
+              .then((res) => {
+                let newRefreshToken = res.token;
+                newRefreshToken = JSON.stringify(newRefreshToken);
+                localStorage.setItem("token", newRefreshToken);
+                dispatch(
+                  WithdrawTransaction({
+                    timeStamp: dateTime,
+                    amount: location.state.amount,
+                    refreshToken: JSON.parse(
+                      localStorage.getItem("refreshToken")
+                    ),
+                    password: values.password,
+                  })
+                )
+                  .unwrap()
+                  .then((result) => {
+                    setMuiAlert({
+                      open: true,
+                      alertStatus: "success",
+                      alertMessage: "Amount Withdrawn",
+                    });
+                    setTimeout(() => {
+                      setMuiAlert({ ...muiAlert, open: false });
+                      setOpen(false);
+                      navigate("/");
+                    }, 2000);
+                  })
+                  .catch((e) => {
+                    setMuiAlert({
+                      open: true,
+                      alertStatus: "error",
+                      alertMessage: `Error performing transaction - ${e.message}`,
+                    });
+                    setTimeout(() => {
+                      setMuiAlert({ ...muiAlert, open: false });
+                      setOpen(false);
+                      // navigate("/");
+                    }, 2000);
+                  });
+              })
+              .catch((e) => {
+                setMuiAlert({
+                  open: true,
+                  alertStatus: "error",
+                  alertMessage: `Error performing transaction - ${e.message}`,
+                });
+                setTimeout(() => {
+                  setMuiAlert({ ...muiAlert, open: false });
+                  setOpen(false);
+                  // navigate("/");
+                }, 2000);
+              });
+          }
+          if (res.message == "Invalid Password") {
+            setMuiAlert({
+              open: true,
+              alertStatus: "error",
+              alertMessage: "Invalid Password",
+            });
+            setTimeout(() => {
+              setMuiAlert({ ...muiAlert, open: false });
+              setOpen(false);
+              // navigate("/");
+            }, 2000);
+          }
+        } else {
+          setMuiAlert({
+            open: true,
+            alertStatus: "success",
+            alertMessage: "Amount Withdrawn",
+          });
+          setTimeout(() => {
+            setMuiAlert({ ...muiAlert, open: false });
+            setOpen(false);
+            navigate("/");
+          }, 2000);
+        }
+      })
+      .catch((e) => {
+        setMuiAlert({
+          open: true,
+          alertStatus: "error",
+          alertMessage: `Error performing transaction - ${e.message}`,
+        });
+        setTimeout(() => {
+          setMuiAlert({ ...muiAlert, open: false });
+          setOpen(false);
+          // navigate("/");
+        }, 2000);
+      });
+  };
+
   return (
     <>
       <Backdrop
         sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={open && auth.status == "Pending"}
+        open={
+          open || auth.status == "Pending" || transactionStatus == "Pending"
+        }
       >
         <CircularProgress color="inherit" />
       </Backdrop>
@@ -56,7 +177,9 @@ const PasswordVerification = ({ setMuiAlert, muiAlert }) => {
               <ArrowBackRoundedIcon
                 style={{ cursor: "pointer" }}
                 onClick={() => {
-                  navigate("/withdraw");
+                  navigate("/withdraw", {
+                    state: { amount: location.state.amount },
+                  });
                 }}
               />
             </div>
@@ -93,6 +216,7 @@ const PasswordVerification = ({ setMuiAlert, muiAlert }) => {
               size="large"
               variant="contained"
               fullWidth
+              onClick={withdrawTransactionFunc}
             >
               Verify
             </Button>

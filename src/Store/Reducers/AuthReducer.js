@@ -46,6 +46,11 @@ export const UserLogout = createAsyncThunk(
   }
 );
 
+export const RefreshToken = createAsyncThunk("RefreshToken", async (body) => {
+  const result = await postRequest(`${BASE_URL}/user/token`, body);
+  return result.data;
+});
+
 const AuthReducer = createSlice({
   name: "authReducer",
   initialState,
@@ -61,6 +66,20 @@ const AuthReducer = createSlice({
     },
   },
   extraReducers: {
+    [RefreshToken.pending]: (state, action) => {
+      state.status = "Pending";
+    },
+    [RefreshToken.rejected]: (state, action) => {
+      state.status = "Error";
+      state.error = action.type;
+    },
+    [RefreshToken.fulfilled]: (state, action) => {
+      if (action.payload) {
+        console.log(action);
+        state.status = "Ok";
+        state.error = "none";
+      }
+    },
     [UserSignupWithoutRefferalCode.pending]: (state, action) => {
       state.status = "Pending";
     },

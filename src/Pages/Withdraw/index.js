@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppLayout } from "../../Components/Layouts/AppLayout";
 import CtaBtn from "../../Components/CtaBtn";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { getUserDataFunc } from "../../App/user";
 import {
   Backdrop,
@@ -20,9 +20,11 @@ const Withdraw = ({ setMuiAlert, muiAlert }) => {
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [amount, setAmount] = useState("");
+  const location = useLocation();
+  const [amount, setAmount] = useState(location.state && location.state.amount);
   const { auth } = useSelector((state) => state);
 
+  console.log(amount, "amount");
   return (
     <>
       <Backdrop
@@ -55,22 +57,37 @@ const Withdraw = ({ setMuiAlert, muiAlert }) => {
                 value={amount}
                 currencySymbol="$"
                 minimumValue="0"
+                // maximumValue={
+                //   auth.userData && auth.userData.user
+                //     ? `${auth.userData.user.balance}`
+                //     : "1000"
+                // }
                 outputFormat="number"
                 decimalCharacter="."
                 digitGroupSeparator=","
                 onChange={(event, value) => {
-                  if (value > 10) {
-                    setAmount(value);
-                  }
+                  setAmount(value);
                 }}
               />
+              <Typography
+                align="center"
+                sx={{
+                  color: "text.primary",
+                  fontSize: 12,
+                  marginTop: "15px",
+                  fontFamily: "poppins",
+                }}
+              >
+                Your balance is : $
+                {auth.userData.user && auth.userData.user.balance}
+              </Typography>
             </div>
             <Button
               size="large"
               onClick={() => {
-                navigate("/verify-password");
+                navigate("/verify-password", { state: { amount } });
               }}
-              disabled={!amount}
+              disabled={amount < 10}
               variant="contained"
               fullWidth
             >
