@@ -1,3 +1,13 @@
+.shareRefCode {
+  margin: 30px auto 30px auto;
+  padding: 0px 10px;
+  background-color: #1976d2;
+  border-radius: 10;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 .currentBalanceContainer {
   padding: 20px 10px;
   background-color: #f9f9f9;
@@ -35,6 +45,9 @@
 }
 
 @media only screen and (max-width: 600px) {
+  .depositWithdrawBtns {
+    justify-content: center;
+  }
   .indivDepositWithdrawBtn {
     width: 95% !important;
     margin: 10px 0px 5px 0px !important;

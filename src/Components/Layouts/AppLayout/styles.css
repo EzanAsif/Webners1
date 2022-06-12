@@ -6,10 +6,17 @@
   overflow-y: scroll;
 }
 
-.App-wrapper::-webkit-scrollbar {
+::-webkit-scrollbar {
   display: none;
   -ms-overflow-style: none; /* Internet Explorer 10+ */
   scrollbar-width: none; /* Firefox */
+}
+
+.App-wrapper.hideHeaderFooter {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 @media only screen and (max-width: 600px) {
