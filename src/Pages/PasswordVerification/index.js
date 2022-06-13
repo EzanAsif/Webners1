@@ -47,6 +47,59 @@ const PasswordVerification = ({ setMuiAlert, muiAlert }) => {
     event.preventDefault();
   };
 
+  const showAlertAndLoader = (alertType, alertMsg, func = () => {}) => {
+    setMuiAlert({
+      open: true,
+      alertStatus: `${alertType}`,
+      alertMessage: `${alertMsg}`,
+    });
+    setTimeout(() => {
+      setMuiAlert({ ...muiAlert, open: false });
+      setOpen(false);
+      if (func) func();
+    }, 2000);
+  };
+
+  const newTokenFetch = (dateTime) => {
+    dispatch(
+      RefreshToken({
+        refreshToken: JSON.parse(localStorage.getItem("refreshToken")),
+      })
+    )
+      .unwrap()
+      .then((res) => {
+        let newRefreshToken = res.token;
+        newRefreshToken = JSON.stringify(newRefreshToken);
+        localStorage.setItem("token", newRefreshToken);
+        dispatch(
+          WithdrawTransaction({
+            timeStamp: dateTime,
+            amount: location.state.amount,
+            refreshToken: JSON.parse(localStorage.getItem("refreshToken")),
+            password: values.password,
+          })
+        )
+          .unwrap()
+          .then((result) => {
+            showAlertAndLoader("success", "Amount Withdrawn", () => {
+              navigate("/");
+            });
+          })
+          .catch((e) => {
+            showAlertAndLoader(
+              "error",
+              `Error performing transaction - ${e.message}`
+            );
+          });
+      })
+      .catch((e) => {
+        showAlertAndLoader(
+          "error",
+          `Error performing transaction - ${e.message}`
+        );
+      });
+  };
+
   const withdrawTransactionFunc = () => {
     let dateTime = new Date().toLocaleString();
     setOpen(true);
@@ -62,101 +115,25 @@ const PasswordVerification = ({ setMuiAlert, muiAlert }) => {
       .then((res) => {
         if (res.status == "rejected") {
           if (res.message == "Auth failed") {
-            dispatch(
-              RefreshToken({
-                refreshToken: JSON.parse(localStorage.getItem("refreshToken")),
-              })
-            )
-              .unwrap()
-              .then((res) => {
-                let newRefreshToken = res.token;
-                newRefreshToken = JSON.stringify(newRefreshToken);
-                localStorage.setItem("token", newRefreshToken);
-                dispatch(
-                  WithdrawTransaction({
-                    timeStamp: dateTime,
-                    amount: location.state.amount,
-                    refreshToken: JSON.parse(
-                      localStorage.getItem("refreshToken")
-                    ),
-                    password: values.password,
-                  })
-                )
-                  .unwrap()
-                  .then((result) => {
-                    setMuiAlert({
-                      open: true,
-                      alertStatus: "success",
-                      alertMessage: "Amount Withdrawn",
-                    });
-                    setTimeout(() => {
-                      setMuiAlert({ ...muiAlert, open: false });
-                      setOpen(false);
-                      navigate("/");
-                    }, 2000);
-                  })
-                  .catch((e) => {
-                    setMuiAlert({
-                      open: true,
-                      alertStatus: "error",
-                      alertMessage: `Error performing transaction - ${e.message}`,
-                    });
-                    setTimeout(() => {
-                      setMuiAlert({ ...muiAlert, open: false });
-                      setOpen(false);
-                      // navigate("/");
-                    }, 2000);
-                  });
-              })
-              .catch((e) => {
-                setMuiAlert({
-                  open: true,
-                  alertStatus: "error",
-                  alertMessage: `Error performing transaction - ${e.message}`,
-                });
-                setTimeout(() => {
-                  setMuiAlert({ ...muiAlert, open: false });
-                  setOpen(false);
-                  // navigate("/");
-                }, 2000);
-              });
+            newTokenFetch(dateTime);
           }
           if (res.message == "Invalid Password") {
-            setMuiAlert({
-              open: true,
-              alertStatus: "error",
-              alertMessage: "Invalid Password",
-            });
-            setTimeout(() => {
-              setMuiAlert({ ...muiAlert, open: false });
-              setOpen(false);
-              // navigate("/");
-            }, 2000);
+            showAlertAndLoader(
+              "error",
+              `Error performing transaction - Invalid Password`
+            );
           }
         } else {
-          setMuiAlert({
-            open: true,
-            alertStatus: "success",
-            alertMessage: "Amount Withdrawn",
-          });
-          setTimeout(() => {
-            setMuiAlert({ ...muiAlert, open: false });
-            setOpen(false);
+          showAlertAndLoader("success", "Amount Withdrawn", () => {
             navigate("/");
-          }, 2000);
+          });
         }
       })
       .catch((e) => {
-        setMuiAlert({
-          open: true,
-          alertStatus: "error",
-          alertMessage: `Error performing transaction - ${e.message}`,
-        });
-        setTimeout(() => {
-          setMuiAlert({ ...muiAlert, open: false });
-          setOpen(false);
-          // navigate("/");
-        }, 2000);
+        showAlertAndLoader(
+          "error",
+          `Error performing transaction - ${e.message}`
+        );
       });
   };
 
