@@ -9,12 +9,16 @@ import {
   CardActions,
   CardContent,
   CircularProgress,
+  IconButton,
+  InputAdornment,
   InputLabel,
+  OutlinedInput,
   TextField,
   Typography,
 } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { UserLogin } from "../../Store/Reducers/AuthReducer";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const Login = ({ setMuiAlert, muiAlert }) => {
   const dispatch = useDispatch();
@@ -24,7 +28,6 @@ const Login = ({ setMuiAlert, muiAlert }) => {
   const [open, setOpen] = useState(false);
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
-  // useEffect(() => {}, []);
 
   const setTokenAndUser = async (token, userData, refreshToken) => {
     try {
@@ -39,8 +42,11 @@ const Login = ({ setMuiAlert, muiAlert }) => {
       console.log(e);
     }
   };
-
-  console.log(muiAlert);
+  const [values, setValues] = React.useState({
+    amount: "",
+    password: "",
+    showPassword: false,
+  });
   const userLoginFunc = (e) => {
     e.preventDefault();
     let body = { email, password };
@@ -99,6 +105,20 @@ const Login = ({ setMuiAlert, muiAlert }) => {
       });
   };
 
+  const handleClickShowPassword = () => {
+    setValues({
+      ...values,
+      showPassword: !values.showPassword,
+    });
+  };
+  const handleChange = (prop) => (event) => {
+    setValues({ ...values, [prop]: event.target.value });
+  };
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
+
   return (
     <>
       <Backdrop
@@ -134,6 +154,30 @@ const Login = ({ setMuiAlert, muiAlert }) => {
                 <InputLabel shrink="true" margin="dense">
                   Password
                 </InputLabel>
+                {/* <OutlinedInput
+                  size="small"
+                  id="outlined-adornment-password"
+                  type={values.showPassword ? "text" : "password"}
+                  value={values.password}
+                  onChange={handleChange("password")}
+                  placeholder="Enter your password here"
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        edge="end"
+                      >
+                        {values.showPassword ? (
+                          <VisibilityOff />
+                        ) : (
+                          <Visibility />
+                        )}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                /> */}
                 <TextField
                   required
                   onChange={(e) => setPassword(e.target.value)}

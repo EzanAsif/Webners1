@@ -28,7 +28,12 @@ const HomeScreen = () => {
           <div style={{ margin: "20px 0px" }}>
             <Typography
               align="left"
-              sx={{ fontSize: 16, margin: "5px 0px", fontWeight: "500" }}
+              sx={{
+                fontSize: 16,
+                fontWeight: "500",
+                display: "flex",
+                alignItems: "center",
+              }}
               color="text.secondary"
               gutterBottom
             >
@@ -36,7 +41,7 @@ const HomeScreen = () => {
               <Typography
                 variant="h6"
                 align="left"
-                sx={{ fontSize: 18, margin: "5px 0px 5px 5px" }}
+                sx={{ fontSize: 18, marginBottom: 0, marginLeft: '5px' }}
                 color="text.primary"
                 gutterBottom
               >

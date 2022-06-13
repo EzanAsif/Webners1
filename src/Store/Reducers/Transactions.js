@@ -24,6 +24,14 @@ export const DepositTransaction = createAsyncThunk(
   }
 );
 
+export const GetTransactions = createAsyncThunk(
+  "GetTransactions",
+  async (body) => {
+    const result = await postRequest(`${BASE_URL}/transaction/history`, body);
+    return result.data;
+  }
+);
+
 const TransactionReducer = createSlice({
   name: "TransactionReducer",
   initialState,
@@ -38,7 +46,6 @@ const TransactionReducer = createSlice({
     },
     [WithdrawTransaction.fulfilled]: (state, action) => {
       if (action.payload) {
-        console.log(action);
         state.status = "Ok";
         state.error = "none";
       }
@@ -52,7 +59,20 @@ const TransactionReducer = createSlice({
     },
     [DepositTransaction.fulfilled]: (state, action) => {
       if (action.payload) {
-        console.log(action);
+        state.status = "Ok";
+        state.error = "none";
+      }
+    },
+    [GetTransactions.pending]: (state, action) => {
+      state.status = "Pending";
+    },
+    [GetTransactions.rejected]: (state, action) => {
+      state.status = "Error";
+      state.error = action.error.message;
+    },
+    [GetTransactions.fulfilled]: (state, action) => {
+      if (action.payload) {
+        state.transactions = action.payload;
         state.status = "Ok";
         state.error = "none";
       }
