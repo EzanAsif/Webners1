@@ -57,11 +57,13 @@ const Withdraw = ({ setMuiAlert, muiAlert }) => {
                 value={amount}
                 currencySymbol="$"
                 minimumValue="0"
-                // maximumValue={
-                //   auth.userData && auth.userData.user
-                //     ? `${auth.userData.user.balance}`
-                //     : "1000"
-                // }
+                maximumValue={
+                  auth.userData &&
+                  auth.userData.user &&
+                  auth.userData.user.balance > 0
+                    ? `${auth.userData.user.balance}`
+                    : "10000"
+                }
                 outputFormat="number"
                 decimalCharacter="."
                 digitGroupSeparator=","

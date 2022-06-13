@@ -32,11 +32,11 @@ const HomeScreen = () => {
               color="text.secondary"
               gutterBottom
             >
-              Hi, <br />
+              Hi,
               <Typography
                 variant="h6"
                 align="left"
-                sx={{ fontSize: 18, margin: "5px 0px" }}
+                sx={{ fontSize: 18, margin: "5px 0px 5px 5px" }}
                 color="text.primary"
                 gutterBottom
               >
@@ -60,7 +60,7 @@ const HomeScreen = () => {
             color="text.primary"
             gutterBottom
           >
-            $3,293.46
+            ${auth.userData.user.balance}
           </Typography>
           <div className="depositWithdrawBtns">
             <CtaBtn
@@ -68,6 +68,9 @@ const HomeScreen = () => {
               variant="outlined"
               className="indivDepositWithdrawBtn"
               size="large"
+              onClickFunc={() => {
+                navigate("/deposit");
+              }}
             />
             <CtaBtn
               label="Withdraw"

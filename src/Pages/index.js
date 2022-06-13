@@ -6,6 +6,7 @@ import Help from "./Help";
 import Profile from "./Profile";
 import Withdraw from "./Withdraw";
 import PasswordVerification from "./PasswordVerification";
+import Deposit from "./Deposit";
 
 export {
   Login,
@@ -16,4 +17,5 @@ export {
   Profile,
   Withdraw,
   PasswordVerification,
+  Deposit,
 };

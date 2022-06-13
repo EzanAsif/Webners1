@@ -30,7 +30,7 @@ const UserAuthenticated = () => {
 function App() {
   const theme = createTheme({
     typography: {
-      fontFamily: ["Lato", "poppins"],
+      fontFamily: ["Lato", "Poppins"],
     },
   });
 

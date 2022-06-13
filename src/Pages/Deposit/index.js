@@ -1,50 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
-import {
-  Backdrop,
-  Button,
-  CircularProgress,
-  InputAdornment,
-  Typography,
-  OutlinedInput,
-  IconButton,
-} from "@mui/material";
+import { Backdrop, Button, CircularProgress, Typography } from "@mui/material";
 import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import { WithdrawTransaction } from "../../Store/Reducers/Transactions";
+import "./styles.css";
+import CurrencyTextField from "@unicef/material-ui-currency-textfield";
+import { DepositTransaction } from "../../Store/Reducers/Transactions";
 import { RefreshToken } from "../../Store/Reducers/AuthReducer";
 
-const PasswordVerification = ({ setMuiAlert, muiAlert }) => {
+const Deposit = ({ setMuiAlert, muiAlert }) => {
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
+  const [amount, setAmount] = useState(location.state && amount);
   const {
     auth,
     transactions: { status: transactionStatus },
   } = useSelector((state) => state);
-
-  const [values, setValues] = React.useState({
-    amount: "",
-    password: "",
-    showPassword: false,
-  });
-
-  const handleClickShowPassword = () => {
-    setValues({
-      ...values,
-      showPassword: !values.showPassword,
-    });
-  };
-  const handleChange = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
-  };
-
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
 
   const showAlertAndLoader = (alertType, alertMsg, func = () => {}) => {
     setMuiAlert({
@@ -71,16 +44,15 @@ const PasswordVerification = ({ setMuiAlert, muiAlert }) => {
         newRefreshToken = JSON.stringify(newRefreshToken);
         localStorage.setItem("token", newRefreshToken);
         dispatch(
-          WithdrawTransaction({
+          DepositTransaction({
             timeStamp: dateTime,
-            amount: location.state.amount,
+            amount: amount,
             refreshToken: JSON.parse(localStorage.getItem("refreshToken")),
-            password: values.password,
           })
         )
           .unwrap()
           .then((result) => {
-            showAlertAndLoader("success", "Amount Withdrawn", () => {
+            showAlertAndLoader("success", "Amount Deposited", () => {
               navigate("/");
             });
           })
@@ -103,11 +75,10 @@ const PasswordVerification = ({ setMuiAlert, muiAlert }) => {
     let dateTime = new Date().toLocaleString();
     setOpen(true);
     dispatch(
-      WithdrawTransaction({
+      DepositTransaction({
         timeStamp: dateTime,
-        amount: location.state.amount,
+        amount: amount,
         refreshToken: JSON.parse(localStorage.getItem("refreshToken")),
-        password: values.password,
       })
     )
       .unwrap()
@@ -123,7 +94,7 @@ const PasswordVerification = ({ setMuiAlert, muiAlert }) => {
             );
           }
         } else {
-          showAlertAndLoader("success", "Amount Withdrawn", () => {
+          showAlertAndLoader("success", "Amount Deposited", () => {
             navigate("/");
           });
         }
@@ -135,7 +106,6 @@ const PasswordVerification = ({ setMuiAlert, muiAlert }) => {
         );
       });
   };
-
   return (
     <>
       <Backdrop
@@ -153,48 +123,39 @@ const PasswordVerification = ({ setMuiAlert, muiAlert }) => {
               <ArrowBackRoundedIcon
                 style={{ cursor: "pointer" }}
                 onClick={() => {
-                  navigate("/withdraw", {
-                    state: { amount: location.state.amount },
-                  });
+                  navigate("/");
                 }}
               />
             </div>
-            <div className="page-heading">Verify Password</div>
+            <div className="page-heading">Deposit</div>
           </div>
           <div className="amount-input-div">
             <Typography align="center" sx={{ color: "text.primary" }}>
-              Please Verify Your Password
+              Enter amount to Deposit
             </Typography>
             <div style={{ margin: "50px 0px" }}>
-              <OutlinedInput
-                size="small"
-                id="outlined-adornment-password"
-                type={values.showPassword ? "text" : "password"}
-                value={values.password}
-                onChange={handleChange("password")}
-                placeholder="Enter your password here"
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                      edge="end"
-                    >
-                      {values.showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                }
+              <CurrencyTextField
+                className="currency-input"
+                variant="standard"
+                value={amount}
+                currencySymbol="$"
+                minimumValue="0"
+                outputFormat="number"
+                decimalCharacter="."
+                digitGroupSeparator=","
+                onChange={(event, value) => {
+                  setAmount(value);
+                }}
               />
             </div>
             <Button
-              disabled={!values.password.length}
               size="large"
+              onClick={withdrawTransactionFunc}
+              disabled={amount < 10}
               variant="contained"
               fullWidth
-              onClick={withdrawTransactionFunc}
             >
-              Verify
+              Deposit
             </Button>
           </div>
         </div>
@@ -203,4 +164,4 @@ const PasswordVerification = ({ setMuiAlert, muiAlert }) => {
   );
 };
 
-export default PasswordVerification;
+export default Deposit;

@@ -8,7 +8,8 @@ import {
   Help,
   Withdraw,
   Profile,
-  PasswordVerification
+  PasswordVerification,
+  Deposit,
 } from "../Pages/";
 import { useSelector } from "react-redux";
 
@@ -46,8 +47,17 @@ const AppRoutes = ({ muiAlert, setMuiAlert }) => {
             element={<Withdraw muiAlert={muiAlert} setMuiAlert={setMuiAlert} />}
           />
           <Route
+            path="/deposit"
+            element={<Deposit muiAlert={muiAlert} setMuiAlert={setMuiAlert} />}
+          />
+          <Route
             path="/verify-password"
-            element={<PasswordVerification muiAlert={muiAlert} setMuiAlert={setMuiAlert} />}
+            element={
+              <PasswordVerification
+                muiAlert={muiAlert}
+                setMuiAlert={setMuiAlert}
+              />
+            }
           />
           {/* REDIRECTING */}
           <Route path="/login" element={<Navigate to="/" />} />
