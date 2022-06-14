@@ -86,7 +86,7 @@ const HomeScreen = () => {
             gutterBottom
           >
             $
-            {!transactions.updatedBalance
+            {!transactions.balanceChanged
               ? auth.userData.user.balance
               : transactions.updatedBalance}
           </Typography>

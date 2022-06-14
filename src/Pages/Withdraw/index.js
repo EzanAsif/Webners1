@@ -12,7 +12,7 @@ const Withdraw = ({ setMuiAlert, muiAlert }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [amount, setAmount] = useState(location.state && location.state.amount);
-  const { auth } = useSelector((state) => state);
+  const { auth, transactions } = useSelector((state) => state);
 
   return (
     <>
@@ -47,11 +47,11 @@ const Withdraw = ({ setMuiAlert, muiAlert }) => {
                 currencySymbol="$"
                 minimumValue="0"
                 maximumValue={
-                  auth.userData &&
-                  auth.userData.user &&
-                  auth.userData.user.balance > 0
-                    ? `${auth.userData.user.balance}`
-                    : "10000"
+                  !transactions.balanceChanged
+                    ? auth.userData && auth.userData.user
+                      ? auth.userData.user.balance
+                      : transactions.updatedBalance
+                    : transactions.updatedBalance
                 }
                 outputFormat="number"
                 decimalCharacter="."
@@ -70,7 +70,9 @@ const Withdraw = ({ setMuiAlert, muiAlert }) => {
                 }}
               >
                 Your balance is : $
-                {auth.userData.user && auth.userData.user.balance}
+                {!transactions.balanceChanged
+                  ? auth.userData.user.balance
+                  : transactions.updatedBalance}
               </Typography>
             </div>
             <Button
