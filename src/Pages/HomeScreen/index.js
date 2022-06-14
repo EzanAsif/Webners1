@@ -85,7 +85,10 @@ const HomeScreen = () => {
             color="text.primary"
             gutterBottom
           >
-            ${auth.userData.user.balance}
+            $
+            {!transactions.updatedBalance
+              ? auth.userData.user.balance
+              : transactions.updatedBalance}
           </Typography>
           <div className="depositWithdrawBtns">
             <CtaBtn

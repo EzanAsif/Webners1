@@ -3,6 +3,7 @@ import { BASE_URL } from "../../App/api.js";
 import { postRequest } from "../../App/fetch";
 
 const initialState = {
+  updatedBalance: 0,
   transactionsList: [],
   error: "",
   status: "",
@@ -52,6 +53,8 @@ const TransactionReducer = createSlice({
     },
     [WithdrawTransaction.fulfilled]: (state, action) => {
       if (action.payload) {
+        let res = action.payload;
+        state.updatedBalance = res.currentBalance;
         state.status = "Ok";
         state.error = "none";
       }
@@ -65,6 +68,8 @@ const TransactionReducer = createSlice({
     },
     [DepositTransaction.fulfilled]: (state, action) => {
       if (action.payload) {
+        let res = action.payload;
+        state.updatedBalance = res.currentBalance;
         state.status = "Ok";
         state.error = "none";
       }
