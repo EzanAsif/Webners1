@@ -35,7 +35,13 @@ export const GetTransactions = createAsyncThunk(
 const TransactionReducer = createSlice({
   name: "TransactionReducer",
   initialState,
-  reducers: {},
+  reducers: {
+    clearTransactionsList: (state, action) => {
+      state.transactionsList = [];
+      state.status = "Ok";
+      state.error = "none";
+    },
+  },
   extraReducers: {
     [WithdrawTransaction.pending]: (state, action) => {
       state.status = "Pending";
@@ -64,9 +70,11 @@ const TransactionReducer = createSlice({
       }
     },
     [GetTransactions.pending]: (state, action) => {
+      state.transactionsList = [];
       state.status = "Pending";
     },
     [GetTransactions.rejected]: (state, action) => {
+      state.transactionsList = [];
       state.status = "Error";
       state.error = action.error.message;
     },
@@ -82,3 +90,4 @@ const TransactionReducer = createSlice({
 });
 
 export default TransactionReducer.reducer;
+export const { clearTransactionsList } = TransactionReducer.actions;

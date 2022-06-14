@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppLayout } from "../../Components/Layouts/AppLayout";
 import { removeuserDataFromLocalStorage } from "../../Store/Reducers/AuthReducer";
+import { clearTransactionsList } from "../../Store/Reducers/Transactions";
 import { useNavigate } from "react-router-dom";
 import { UserLogout } from "../../Store/Reducers/AuthReducer";
 import { getUserDataFunc } from "../../App/user";
@@ -36,6 +37,7 @@ const HomeScreen = ({ setMuiAlert, muiAlert }) => {
                     dispatch(UserLogout({ refreshToken }))
                       .unwrap()
                       .then(() => {
+                        dispatch(clearTransactionsList());
                         setMuiAlert({
                           open: true,
                           alertStatus: "success",

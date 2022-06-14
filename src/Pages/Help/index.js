@@ -13,29 +13,6 @@ const HomeScreen = () => {
   return (
     <AppLayout>
       <h2>Help</h2>
-      <div style={{ display: "flex", flexDirection: "column" }}>
-        {[1, 24, 2, 45, 5, 25, , 5, 42, 34, 24, 24, 2].map((obj, index) => {
-          return (
-            <button
-              key={index}
-              style={{ margin: "20px 0px" }}
-              onClick={() => {
-                try {
-                  let refreshToken = localStorage.getItem("refreshToken");
-                  refreshToken = JSON.parse(refreshToken);
-                  dispatch(UserLogout({ refreshToken }));
-                  dispatch(removeuserDataFromLocalStorage());
-                  navigate("/");
-                } catch (e) {
-                  alert(e);
-                }
-              }}
-            >
-              Logout
-            </button>
-          );
-        })}
-      </div>
     </AppLayout>
   );
 };

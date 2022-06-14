@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { userDataFromLocalStorage } from "../../Store/Reducers/AuthReducer";
+import {
+  userDataFromLocalStorage,
+  RefreshToken,
+} from "../../Store/Reducers/AuthReducer";
+import { GetTransactions } from "../../Store/Reducers/Transactions";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserDataFunc } from "../../App/user";
 import AuthenticationLayout from "../../Components/Layouts/AuthenticationScreen";
@@ -47,6 +51,31 @@ const Login = ({ setMuiAlert, muiAlert }) => {
     password: "",
     showPassword: false,
   });
+
+  const newTokenFetchForTransaction = (dateTime) => {
+    dispatch(
+      RefreshToken({
+        refreshToken: JSON.parse(localStorage.getItem("refreshToken")),
+      })
+    )
+      .unwrap()
+      .then((res) => {
+        let newRefreshToken = res.token;
+        newRefreshToken = JSON.stringify(newRefreshToken);
+        localStorage.setItem("token", newRefreshToken);
+        dispatch(GetTransactions())
+          .unwrap()
+          .then((result) => {
+            console.log(result);
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
   const userLoginFunc = (e) => {
     e.preventDefault();
     let body = { email, password };
@@ -64,6 +93,21 @@ const Login = ({ setMuiAlert, muiAlert }) => {
             alertStatus: "success",
             alertMessage: "User Loggedin Success",
           });
+          dispatch(GetTransactions())
+            .then((result) => {
+              let { payload } = result;
+              let res = payload;
+              if (res.status == "rejected") {
+                if (res.message == "Auth failed") {
+                  newTokenFetchForTransaction();
+                }
+              } else {
+                console.log(res, "res2");
+              }
+            })
+            .catch((e) => {
+              console.log(e);
+            });
           setTokenAndUser(res.token, res.user, res.refreshToken);
           setTimeout(() => {
             setMuiAlert({ ...muiAlert, open: false });

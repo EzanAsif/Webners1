@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   userDataFromLocalStorage,
   RefreshToken,
+  clearTransactionsList,
 } from "./Store/Reducers/AuthReducer";
 import { GetTransactions } from "./Store/Reducers/Transactions";
 import { getUserDataFunc } from "./App/user";
@@ -46,7 +47,8 @@ const UserAuthenticated = () => {
     (async () => {
       await getUserDataFunc().then((res) => {
         console.log(res, "localstoragedata");
-        if (res) {
+        const { user } = res;
+        if (user) {
           try {
             dispatch(userDataFromLocalStorage(res));
             dispatch(GetTransactions())
@@ -72,7 +74,7 @@ const UserAuthenticated = () => {
     })().catch((err) => {
       console.error(err);
     });
-  }, []);
+  }, [localStorage]);
 
   return null;
 };

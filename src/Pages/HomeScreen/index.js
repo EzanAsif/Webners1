@@ -153,7 +153,8 @@ const HomeScreen = () => {
             style={{
               display: "flex",
               flexDirection: "column",
-              height: "-webkit-fill-available",
+              maxHeight: "-webkit-fill-available",
+              height: "max-content",
             }}
           >
             {data.length ? (
