@@ -3,7 +3,7 @@ import { BASE_URL } from "../../App/api.js";
 import { postRequest } from "../../App/fetch";
 
 const initialState = {
-  transactions: [],
+  transactionsList: [],
   error: "",
   status: "",
 };
@@ -72,7 +72,8 @@ const TransactionReducer = createSlice({
     },
     [GetTransactions.fulfilled]: (state, action) => {
       if (action.payload) {
-        state.transactions = action.payload;
+        console.log(action.payload, "actoin.payload");
+        state.transactionsList = action.payload.history;
         state.status = "Ok";
         state.error = "none";
       }

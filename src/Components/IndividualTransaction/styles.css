@@ -54,3 +54,9 @@
   height: 40px;
   width: 40px;
 }
+
+@media only screen and (max-width: 600px) {
+  .indivTransDetails {
+    width: 50%;
+  }
+}

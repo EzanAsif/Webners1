@@ -1,8 +1,14 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppLayout } from "../../Components/Layouts/AppLayout";
 import { Link, useNavigate } from "react-router-dom";
-import { Alert, Button, Snackbar, Typography } from "@mui/material";
+import {
+  Alert,
+  Button,
+  CircularProgress,
+  Snackbar,
+  Typography,
+} from "@mui/material";
 import "./styles.css";
 import CtaBtn from "../../Components/CtaBtn";
 import IndividualTransaction from "../../Components/IndividualTransaction";
@@ -11,7 +17,21 @@ const HomeScreen = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [open, setOpen] = React.useState(false);
-  const { auth } = useSelector((state) => state);
+  const { auth, transactions } = useSelector((state) => state);
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    if (transactions.transactionsList && transactions.transactionsList.length) {
+      let latestTransactions = transactions.transactionsList;
+      latestTransactions = latestTransactions.slice(0, 5);
+      setData(latestTransactions);
+    } else {
+      setData([]);
+    }
+  }, [transactions]);
+
+  console.log(data, "data");
+
   return (
     <>
       <Snackbar
@@ -41,7 +61,7 @@ const HomeScreen = () => {
               <Typography
                 variant="h6"
                 align="left"
-                sx={{ fontSize: 18, marginBottom: 0, marginLeft: '5px' }}
+                sx={{ fontSize: 18, marginBottom: 0, marginLeft: "5px" }}
                 color="text.primary"
                 gutterBottom
               >
@@ -129,26 +149,37 @@ const HomeScreen = () => {
             </Typography>
             <Link to="/transactions">See All</Link>
           </div>
-          {[1, 2, 3, 4, 5].map((obj, index) => {
-            if (index % 2 == 0) {
-              return (
-                <IndividualTransaction
-                  isDeposit={true}
-                  dateTime="27th March Tue, 9:00pm"
-                  transactionAmount="200$"
-                  key={index}
-                />
-              );
-            } else {
-              return (
-                <IndividualTransaction
-                  dateTime="27th March Tue, 9:00pm"
-                  transactionAmount="200$"
-                  key={index}
-                />
-              );
-            }
-          })}
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              height: "-webkit-fill-available",
+            }}
+          >
+            {data.length ? (
+              data.map((obj, index) => {
+                return (
+                  <IndividualTransaction
+                    dateTime={obj.timeStamp}
+                    transactionAmount={`${obj.amount}$`}
+                    isDeposit={obj.type == "deposit" ? true : false}
+                    key={index}
+                  />
+                );
+              })
+            ) : transactions.status == "Pending" ? (
+              <CircularProgress
+                style={{
+                  justifySelf: "center",
+                  alignSelf: "center",
+                  margin: "20px auto",
+                }}
+                color="inherit"
+              />
+            ) : (
+              "no transaction found"
+            )}
+          </div>
         </div>
       </AppLayout>
     </>

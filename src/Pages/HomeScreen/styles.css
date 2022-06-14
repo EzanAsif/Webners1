@@ -34,6 +34,10 @@
   width: 48% !important;
 }
 
+.latestTransactions {
+  margin-top: 40px;
+}
+
 .latestTransactions .header {
   display: flex;
   justify-content: space-between;
