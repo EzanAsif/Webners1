@@ -1,17 +1,7 @@
 import React, { useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { AppLayout } from "../../Components/Layouts/AppLayout";
-import CtaBtn from "../../Components/CtaBtn";
 import { useNavigate, useLocation } from "react-router-dom";
-import { getUserDataFunc } from "../../App/user";
-import {
-  Backdrop,
-  Button,
-  CircularProgress,
-  InputAdornment,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Backdrop, Button, CircularProgress, Typography } from "@mui/material";
 import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
 import "./styles.css";
 import CurrencyTextField from "@unicef/material-ui-currency-textfield";
@@ -24,7 +14,6 @@ const Withdraw = ({ setMuiAlert, muiAlert }) => {
   const [amount, setAmount] = useState(location.state && location.state.amount);
   const { auth } = useSelector((state) => state);
 
-  console.log(amount, "amount");
   return (
     <>
       <Backdrop

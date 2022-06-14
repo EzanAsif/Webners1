@@ -13,7 +13,10 @@ import {
 import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import { WithdrawTransaction } from "../../Store/Reducers/Transactions";
+import {
+  WithdrawTransaction,
+  GetTransactions,
+} from "../../Store/Reducers/Transactions";
 import { RefreshToken } from "../../Store/Reducers/AuthReducer";
 
 const PasswordVerification = ({ setMuiAlert, muiAlert }) => {
@@ -90,12 +93,48 @@ const PasswordVerification = ({ setMuiAlert, muiAlert }) => {
               `Error performing transaction - ${e.message}`
             );
           });
+        dispatch(GetTransactions())
+          .then((result) => {
+            let { payload } = result;
+            let res = payload;
+            if (res.status == "rejected") {
+            } else {
+            }
+          })
+          .catch((e) => {
+            console.log(e);
+          });
       })
       .catch((e) => {
         showAlertAndLoader(
           "error",
           `Error performing transaction - ${e.message}`
         );
+      });
+  };
+
+  const newTokenFetchForTransaction = (dateTime) => {
+    dispatch(
+      RefreshToken({
+        refreshToken: JSON.parse(localStorage.getItem("refreshToken")),
+      })
+    )
+      .unwrap()
+      .then((res) => {
+        let newRefreshToken = res.token;
+        newRefreshToken = JSON.stringify(newRefreshToken);
+        localStorage.setItem("token", newRefreshToken);
+        dispatch(GetTransactions())
+          .unwrap()
+          .then((result) => {
+            return result;
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+      })
+      .catch((e) => {
+        console.log(e);
       });
   };
 
@@ -123,6 +162,21 @@ const PasswordVerification = ({ setMuiAlert, muiAlert }) => {
             );
           }
         } else {
+          dispatch(GetTransactions())
+            .then((result) => {
+              let { payload } = result;
+              let res = payload;
+              if (res.status == "rejected") {
+                if (res.message == "Auth failed") {
+                  newTokenFetchForTransaction();
+                }
+              } else {
+                console.log(res, "res2");
+              }
+            })
+            .catch((e) => {
+              console.log(e);
+            });
           showAlertAndLoader("success", "Amount Withdrawn", () => {
             navigate("/");
           });

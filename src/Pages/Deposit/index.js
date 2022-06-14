@@ -5,7 +5,7 @@ import { Backdrop, Button, CircularProgress, Typography } from "@mui/material";
 import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
 import "./styles.css";
 import CurrencyTextField from "@unicef/material-ui-currency-textfield";
-import { DepositTransaction } from "../../Store/Reducers/Transactions";
+import { DepositTransaction, GetTransactions } from "../../Store/Reducers/Transactions";
 import { RefreshToken } from "../../Store/Reducers/AuthReducer";
 
 const Deposit = ({ setMuiAlert, muiAlert }) => {
@@ -71,7 +71,32 @@ const Deposit = ({ setMuiAlert, muiAlert }) => {
       });
   };
 
-  const withdrawTransactionFunc = () => {
+  const newTokenFetchForTransaction = (dateTime) => {
+    dispatch(
+      RefreshToken({
+        refreshToken: JSON.parse(localStorage.getItem("refreshToken")),
+      })
+    )
+      .unwrap()
+      .then((res) => {
+        let newRefreshToken = res.token;
+        newRefreshToken = JSON.stringify(newRefreshToken);
+        localStorage.setItem("token", newRefreshToken);
+        dispatch(GetTransactions())
+          .unwrap()
+          .then((result) => {
+            return result;
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
+  const DepositTransacFunc = () => {
     let dateTime = new Date().toLocaleString();
     setOpen(true);
     dispatch(
@@ -94,6 +119,21 @@ const Deposit = ({ setMuiAlert, muiAlert }) => {
             );
           }
         } else {
+          dispatch(GetTransactions())
+            .then((result) => {
+              let { payload } = result;
+              let res = payload;
+              if (res.status == "rejected") {
+                if (res.message == "Auth failed") {
+                  newTokenFetchForTransaction();
+                }
+              } else {
+                return res;
+              }
+            })
+            .catch((e) => {
+              console.log(e);
+            });
           showAlertAndLoader("success", "Amount Deposited", () => {
             navigate("/");
           });
@@ -150,7 +190,7 @@ const Deposit = ({ setMuiAlert, muiAlert }) => {
             </div>
             <Button
               size="large"
-              onClick={withdrawTransactionFunc}
+              onClick={DepositTransacFunc}
               disabled={amount < 10}
               variant="contained"
               fullWidth
