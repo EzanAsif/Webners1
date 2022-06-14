@@ -5,7 +5,10 @@ import { Backdrop, Button, CircularProgress, Typography } from "@mui/material";
 import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
 import "./styles.css";
 import CurrencyTextField from "@unicef/material-ui-currency-textfield";
-import { DepositTransaction, GetTransactions } from "../../Store/Reducers/Transactions";
+import {
+  DepositTransaction,
+  GetTransactions,
+} from "../../Store/Reducers/Transactions";
 import { RefreshToken } from "../../Store/Reducers/AuthReducer";
 
 const Deposit = ({ setMuiAlert, muiAlert }) => {
@@ -61,6 +64,17 @@ const Deposit = ({ setMuiAlert, muiAlert }) => {
               "error",
               `Error performing transaction - ${e.message}`
             );
+          });
+        dispatch(GetTransactions())
+          .then((result) => {
+            let { payload } = result;
+            let res = payload;
+            if (res.status == "rejected") {
+            } else {
+            }
+          })
+          .catch((e) => {
+            console.log(e);
           });
       })
       .catch((e) => {
