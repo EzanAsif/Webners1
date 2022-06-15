@@ -78,7 +78,7 @@ const Login = ({ setMuiAlert, muiAlert }) => {
   };
   const userLoginFunc = (e) => {
     e.preventDefault();
-    let body = { email, password };
+    let body = { email, password: values.password };
 
     setOpen(true);
 
@@ -198,9 +198,10 @@ const Login = ({ setMuiAlert, muiAlert }) => {
                 <InputLabel shrink="true" margin="dense">
                   Password
                 </InputLabel>
-                {/* <OutlinedInput
+                <OutlinedInput
                   size="small"
                   id="outlined-adornment-password"
+                  fullWidth
                   type={values.showPassword ? "text" : "password"}
                   value={values.password}
                   onChange={handleChange("password")}
@@ -221,16 +222,6 @@ const Login = ({ setMuiAlert, muiAlert }) => {
                       </IconButton>
                     </InputAdornment>
                   }
-                /> */}
-                <TextField
-                  required
-                  onChange={(e) => setPassword(e.target.value)}
-                  id="Signup"
-                  variant="outlined"
-                  placeholder="Enter your password here"
-                  margin="dense"
-                  size="small"
-                  fullWidth={true}
                 />
               </div>
             </>

@@ -8,6 +8,9 @@ import {
   Button,
   CardContent,
   CircularProgress,
+  IconButton,
+  OutlinedInput,
+  InputAdornment,
   Grid,
   InputLabel,
   TextField,
@@ -20,6 +23,7 @@ import {
   UserSignupWithoutRefferalCode,
   UserSignupWithRefferalCode,
 } from "../../Store/Reducers/AuthReducer";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const Signup = ({ muiAlert, setMuiAlert }) => {
   const dispatch = useDispatch();
@@ -32,6 +36,26 @@ const Signup = ({ muiAlert, setMuiAlert }) => {
   const [password, setPassword] = useState();
   const [refCode, setRefCode] = useState();
   const [phNum, setPhNum] = useState();
+
+  const [values, setValues] = React.useState({
+    amount: "",
+    password: "",
+    showPassword: false,
+  });
+
+  const handleClickShowPassword = () => {
+    setValues({
+      ...values,
+      showPassword: !values.showPassword,
+    });
+  };
+  const handleChange = (prop) => (event) => {
+    setValues({ ...values, [prop]: event.target.value });
+  };
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
 
   const setTokenAndUser = async (token, userData, refreshToken) => {
     try {
@@ -53,7 +77,7 @@ const Signup = ({ muiAlert, setMuiAlert }) => {
       let body = {
         name,
         email,
-        password,
+        password: values.password,
         phoneNo: phNum,
         referralCode: refCode,
       };
@@ -102,7 +126,7 @@ const Signup = ({ muiAlert, setMuiAlert }) => {
           console.log(e);
         });
     } else {
-      let body = { email, password, phoneNo: phNum, name };
+      let body = { email, password: values.password, phoneNo: phNum, name };
       console.log(body, "body");
       dispatch(UserSignupWithoutRefferalCode(body))
         .unwrap()
@@ -208,16 +232,31 @@ const Signup = ({ muiAlert, setMuiAlert }) => {
                 </Grid>
                 <Grid className="abc" item lg={6} md={6} sm={12}>
                   <InputLabel shrink="true">Password</InputLabel>
-                  <TextField
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                    InputLabelProps={"Email"}
-                    id="Signup"
-                    variant="outlined"
-                    placeholder="Enter your password here"
-                    style={{ marginBottom: "20px" }}
-                    fullWidth={true}
+                  <OutlinedInput
                     size="small"
+                    id="outlined-adornment-password"
+                    type={values.showPassword ? "text" : "password"}
+                    value={values.password}
+                    onChange={handleChange("password")}
+                    fullWidth
+                    style={{ width: "100%" }}
+                    placeholder="Enter your password here"
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={handleClickShowPassword}
+                          onMouseDown={handleMouseDownPassword}
+                          edge="end"
+                        >
+                          {values.showPassword ? (
+                            <VisibilityOff />
+                          ) : (
+                            <Visibility />
+                          )}
+                        </IconButton>
+                      </InputAdornment>
+                    }
                   />
                 </Grid>
                 <Grid className="abc" item lg={6} md={6} sm={12}>
