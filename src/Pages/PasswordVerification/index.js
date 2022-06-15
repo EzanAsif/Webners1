@@ -17,7 +17,9 @@ import {
   WithdrawTransaction,
   GetTransactions,
 } from "../../Store/Reducers/Transactions";
-import { RefreshToken } from "../../Store/Reducers/AuthReducer";
+import { RefreshToken, GetUserBalance } from "../../Store/Reducers/AuthReducer";
+import { newTokenFetch } from "../../App/Helper/newTokenFetch";
+import showAlertAndLoader from "../../App/Helper/showAlertAndLoader";
 
 const PasswordVerification = ({ setMuiAlert, muiAlert }) => {
   const [open, setOpen] = useState(false);
@@ -49,95 +51,6 @@ const PasswordVerification = ({ setMuiAlert, muiAlert }) => {
     event.preventDefault();
   };
 
-  const showAlertAndLoader = (alertType, alertMsg, func = () => {}) => {
-    setMuiAlert({
-      open: true,
-      alertStatus: `${alertType}`,
-      alertMessage: `${alertMsg}`,
-    });
-    setTimeout(() => {
-      setMuiAlert({ ...muiAlert, open: false });
-      setOpen(false);
-      if (func) func();
-    }, 2000);
-  };
-
-  const newTokenFetch = (dateTime) => {
-    dispatch(
-      RefreshToken({
-        refreshToken: JSON.parse(localStorage.getItem("refreshToken")),
-      })
-    )
-      .unwrap()
-      .then((res) => {
-        let newRefreshToken = res.token;
-        newRefreshToken = JSON.stringify(newRefreshToken);
-        localStorage.setItem("token", newRefreshToken);
-        dispatch(
-          WithdrawTransaction({
-            timeStamp: dateTime,
-            amount: location.state.amount,
-            refreshToken: JSON.parse(localStorage.getItem("refreshToken")),
-            password: values.password,
-          })
-        )
-          .unwrap()
-          .then((result) => {
-            showAlertAndLoader("success", "Amount Withdrawn", () => {
-              navigate("/");
-            });
-          })
-          .catch((e) => {
-            showAlertAndLoader(
-              "error",
-              `Error performing transaction - ${e.message}`
-            );
-          });
-        dispatch(GetTransactions())
-          .then((result) => {
-            let { payload } = result;
-            let res = payload;
-            if (res.status == "rejected") {
-            } else {
-            }
-          })
-          .catch((e) => {
-            console.log(e);
-          });
-      })
-      .catch((e) => {
-        showAlertAndLoader(
-          "error",
-          `Error performing transaction - ${e.message}`
-        );
-      });
-  };
-
-  const newTokenFetchForTransaction = (dateTime) => {
-    dispatch(
-      RefreshToken({
-        refreshToken: JSON.parse(localStorage.getItem("refreshToken")),
-      })
-    )
-      .unwrap()
-      .then((res) => {
-        let newRefreshToken = res.token;
-        newRefreshToken = JSON.stringify(newRefreshToken);
-        localStorage.setItem("token", newRefreshToken);
-        dispatch(GetTransactions())
-          .unwrap()
-          .then((result) => {
-            return result;
-          })
-          .catch((e) => {
-            console.log(e);
-          });
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  };
-
   const withdrawTransactionFunc = () => {
     let dateTime = new Date().toLocaleString();
     setOpen(true);
@@ -153,10 +66,49 @@ const PasswordVerification = ({ setMuiAlert, muiAlert }) => {
       .then((res) => {
         if (res.status == "rejected") {
           if (res.message == "Auth failed") {
-            newTokenFetch(dateTime);
+            newTokenFetch(dispatch, RefreshToken, () => {
+              dispatch(
+                WithdrawTransaction({
+                  timeStamp: dateTime,
+                  amount: location.state.amount,
+                  refreshToken: JSON.parse(
+                    localStorage.getItem("refreshToken")
+                  ),
+                  password: values.password,
+                })
+              )
+                .unwrap()
+                .then((result) => {
+                  dispatch(GetUserBalance());
+                  dispatch(GetTransactions());
+                  showAlertAndLoader(
+                    muiAlert,
+                    setMuiAlert,
+                    setOpen,
+                    "success",
+                    "Amount Withdrawn",
+                    () => {
+                      navigate("/");
+                    }
+                  );
+                })
+                .catch((e) => {
+                  showAlertAndLoader(
+                    muiAlert,
+                    setMuiAlert,
+                    setOpen,
+                    "error",
+                    `Error performing transaction - ${e.message}`
+                  );
+                });
+              // dispatch(GetTransactions());
+            });
           }
           if (res.message == "Invalid Password") {
             showAlertAndLoader(
+              muiAlert,
+              setMuiAlert,
+              setOpen,
               "error",
               `Error performing transaction - Invalid Password`
             );
@@ -168,22 +120,37 @@ const PasswordVerification = ({ setMuiAlert, muiAlert }) => {
               let res = payload;
               if (res.status == "rejected") {
                 if (res.message == "Auth failed") {
-                  newTokenFetchForTransaction();
+                  newTokenFetch(dispatch, RefreshToken, () => {
+                    dispatch(GetUserBalance());
+                    dispatch(GetTransactions());
+                  });
                 }
               } else {
+                dispatch(GetUserBalance());
+                dispatch(GetTransactions());
                 console.log(res, "res2");
+                showAlertAndLoader(
+                  muiAlert,
+                  setMuiAlert,
+                  setOpen,
+                  "success",
+                  "Amount Withdrawn",
+                  () => {
+                    navigate("/");
+                  }
+                );
               }
             })
             .catch((e) => {
               console.log(e);
             });
-          showAlertAndLoader("success", "Amount Withdrawn", () => {
-            navigate("/");
-          });
         }
       })
       .catch((e) => {
         showAlertAndLoader(
+          muiAlert,
+          setMuiAlert,
+          setOpen,
           "error",
           `Error performing transaction - ${e.message}`
         );

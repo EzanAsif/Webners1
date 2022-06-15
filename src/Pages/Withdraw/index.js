@@ -80,7 +80,7 @@ const Withdraw = ({ setMuiAlert, muiAlert }) => {
               onClick={() => {
                 navigate("/verify-password", { state: { amount } });
               }}
-              disabled={amount < 10}
+              disabled={amount < 5}
               variant="contained"
               fullWidth
             >

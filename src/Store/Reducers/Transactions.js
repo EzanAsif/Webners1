@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { BASE_URL } from "../../App/api.js";
-import { postRequest } from "../../App/fetch";
+import { getRequest, postRequest } from "../../App/fetch";
 
 const initialState = {
   balanceChanged: false,
@@ -26,13 +26,10 @@ export const DepositTransaction = createAsyncThunk(
   }
 );
 
-export const GetTransactions = createAsyncThunk(
-  "GetTransactions",
-  async (body) => {
-    const result = await postRequest(`${BASE_URL}/transaction/history`, body);
-    return result.data;
-  }
-);
+export const GetTransactions = createAsyncThunk("GetTransactions", async () => {
+  const result = await getRequest(`${BASE_URL}/transaction/history`);
+  return result.data;
+});
 
 const TransactionReducer = createSlice({
   name: "TransactionReducer",

@@ -16,13 +16,17 @@ export const postRequest = async (api, body) => {
 };
 
 export const getRequest = async (api, type) => {
-  const res = await fetch(api, {
-    method: type,
+  let token = localStorage.getItem("token");
+  token = JSON.parse(token);
+  const res = await axios.request({
+    method: "GET",
+    url: api,
     headers: {
-      //   Authorization: localStorage.getItem('token'),
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
     },
   });
-  return await res.json();
+  return res;
 };
 
 export const putRequest = async (api, body) => {

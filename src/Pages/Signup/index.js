@@ -27,13 +27,11 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const Signup = ({ muiAlert, setMuiAlert }) => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { auth } = useSelector((state) => state);
 
   const [open, setOpen] = useState(false);
   const [email, setEmail] = useState();
   const [name, setName] = useState();
-  const [password, setPassword] = useState();
   const [refCode, setRefCode] = useState();
   const [phNum, setPhNum] = useState();
 

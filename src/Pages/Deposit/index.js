@@ -9,7 +9,9 @@ import {
   DepositTransaction,
   GetTransactions,
 } from "../../Store/Reducers/Transactions";
-import { RefreshToken } from "../../Store/Reducers/AuthReducer";
+import { RefreshToken, GetUserBalance } from "../../Store/Reducers/AuthReducer";
+import { newTokenFetch } from "../../App/Helper/newTokenFetch";
+import showAlertAndLoader from "../../App/Helper/showAlertAndLoader";
 
 const Deposit = ({ setMuiAlert, muiAlert }) => {
   const [open, setOpen] = useState(false);
@@ -21,94 +23,6 @@ const Deposit = ({ setMuiAlert, muiAlert }) => {
     auth,
     transactions: { status: transactionStatus },
   } = useSelector((state) => state);
-
-  const showAlertAndLoader = (alertType, alertMsg, func = () => {}) => {
-    setMuiAlert({
-      open: true,
-      alertStatus: `${alertType}`,
-      alertMessage: `${alertMsg}`,
-    });
-    setTimeout(() => {
-      setMuiAlert({ ...muiAlert, open: false });
-      setOpen(false);
-      if (func) func();
-    }, 2000);
-  };
-
-  const newTokenFetch = (dateTime) => {
-    dispatch(
-      RefreshToken({
-        refreshToken: JSON.parse(localStorage.getItem("refreshToken")),
-      })
-    )
-      .unwrap()
-      .then((res) => {
-        let newRefreshToken = res.token;
-        newRefreshToken = JSON.stringify(newRefreshToken);
-        localStorage.setItem("token", newRefreshToken);
-        dispatch(
-          DepositTransaction({
-            timeStamp: dateTime,
-            amount: amount,
-            refreshToken: JSON.parse(localStorage.getItem("refreshToken")),
-          })
-        )
-          .unwrap()
-          .then((result) => {
-            showAlertAndLoader("success", "Amount Deposited", () => {
-              navigate("/");
-            });
-          })
-          .catch((e) => {
-            showAlertAndLoader(
-              "error",
-              `Error performing transaction - ${e.message}`
-            );
-          });
-        dispatch(GetTransactions())
-          .then((result) => {
-            let { payload } = result;
-            let res = payload;
-            if (res.status == "rejected") {
-            } else {
-            }
-          })
-          .catch((e) => {
-            console.log(e);
-          });
-      })
-      .catch((e) => {
-        showAlertAndLoader(
-          "error",
-          `Error performing transaction - ${e.message}`
-        );
-      });
-  };
-
-  const newTokenFetchForTransaction = (dateTime) => {
-    dispatch(
-      RefreshToken({
-        refreshToken: JSON.parse(localStorage.getItem("refreshToken")),
-      })
-    )
-      .unwrap()
-      .then((res) => {
-        let newRefreshToken = res.token;
-        newRefreshToken = JSON.stringify(newRefreshToken);
-        localStorage.setItem("token", newRefreshToken);
-        dispatch(GetTransactions())
-          .unwrap()
-          .then((result) => {
-            return result;
-          })
-          .catch((e) => {
-            console.log(e);
-          });
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  };
 
   const DepositTransacFunc = () => {
     let dateTime = new Date().toLocaleString();
@@ -124,10 +38,46 @@ const Deposit = ({ setMuiAlert, muiAlert }) => {
       .then((res) => {
         if (res.status == "rejected") {
           if (res.message == "Auth failed") {
-            newTokenFetch(dateTime);
+            newTokenFetch(dispatch, RefreshToken, () => {
+              dispatch(
+                DepositTransaction({
+                  timeStamp: dateTime,
+                  amount: amount,
+                  refreshToken: JSON.parse(
+                    localStorage.getItem("refreshToken")
+                  ),
+                })
+              )
+                .unwrap()
+                .then((result) => {
+                  showAlertAndLoader(
+                    muiAlert,
+                    setMuiAlert,
+                    setOpen,
+                    "success",
+                    "Amount Deposited",
+                    () => {
+                      navigate("/");
+                    }
+                  );
+                })
+                .catch((e) => {
+                  showAlertAndLoader(
+                    muiAlert,
+                    setMuiAlert,
+                    setOpen,
+                    "error",
+                    `Error performing transaction - ${e.message}`
+                  );
+                });
+              dispatch(GetTransactions());
+            });
           }
           if (res.message == "Invalid Password") {
             showAlertAndLoader(
+              muiAlert,
+              setMuiAlert,
+              setOpen,
               "error",
               `Error performing transaction - Invalid Password`
             );
@@ -139,7 +89,11 @@ const Deposit = ({ setMuiAlert, muiAlert }) => {
               let res = payload;
               if (res.status == "rejected") {
                 if (res.message == "Auth failed") {
-                  newTokenFetchForTransaction();
+                  newTokenFetch(
+                    dispatch,
+                    RefreshToken,
+                    dispatch(GetTransactions())
+                  );
                 }
               } else {
                 return res;
@@ -148,13 +102,24 @@ const Deposit = ({ setMuiAlert, muiAlert }) => {
             .catch((e) => {
               console.log(e);
             });
-          showAlertAndLoader("success", "Amount Deposited", () => {
-            navigate("/");
-          });
+          dispatch(GetUserBalance());
+          showAlertAndLoader(
+            muiAlert,
+            setMuiAlert,
+            setOpen,
+            "success",
+            "Amount Deposited",
+            () => {
+              navigate("/");
+            }
+          );
         }
       })
       .catch((e) => {
         showAlertAndLoader(
+          muiAlert,
+          setMuiAlert,
+          setOpen,
           "error",
           `Error performing transaction - ${e.message}`
         );

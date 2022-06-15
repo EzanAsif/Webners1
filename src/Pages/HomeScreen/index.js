@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppLayout } from "../../Components/Layouts/AppLayout";
 import { Link, useNavigate } from "react-router-dom";
@@ -13,12 +13,45 @@ import "./styles.css";
 import CtaBtn from "../../Components/CtaBtn";
 import IndividualTransaction from "../../Components/IndividualTransaction";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import { GetUserBalance, RefreshToken } from "../../Store/Reducers/AuthReducer";
+import { GetTransactions } from "../../Store/Reducers/Transactions";
+import { newTokenFetch } from "../../App/Helper/newTokenFetch";
+
 const HomeScreen = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [open, setOpen] = React.useState(false);
   const { auth, transactions } = useSelector((state) => state);
   const [data, setData] = useState([]);
+  const [mount, setMount] = useState(false);
+  const isMounted = useRef(false);
+
+  useEffect(() => {
+    if (isMounted.current == false && !transactions.transactionsList.length) {
+      dispatch(GetUserBalance())
+        .unwrap()
+        .then((res) => {
+          setMount(true);
+          isMounted.current = true;
+          if (res.status == "rejected") {
+            if (res.message == "Auth failed") {
+              newTokenFetch(dispatch, RefreshToken, () => {
+                dispatch(GetUserBalance());
+                if (!transactions.length) dispatch(GetTransactions());
+              });
+            }
+          } else {
+            if (!transactions.length) dispatch(GetTransactions());
+            return res;
+          }
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    } else {
+      // dispatch(GetUserBalance());
+    }
+  }, [auth.userData.user]);
 
   useEffect(() => {
     if (transactions.transactionsList && transactions.transactionsList.length) {
@@ -28,9 +61,9 @@ const HomeScreen = () => {
     } else {
       setData([]);
     }
-  }, [transactions]);
+  }, [transactions.transactionsList]);
 
-  console.log(data, "data");
+  console.log(mount, "mount");
 
   return (
     <>
@@ -85,10 +118,7 @@ const HomeScreen = () => {
             color="text.primary"
             gutterBottom
           >
-            $
-            {!transactions.balanceChanged
-              ? auth.userData.user.balance
-              : transactions.updatedBalance}
+            ${auth.userData.user.balance}
           </Typography>
           <div className="depositWithdrawBtns">
             <CtaBtn

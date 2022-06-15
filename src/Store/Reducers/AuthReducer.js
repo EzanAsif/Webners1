@@ -13,6 +13,11 @@ const initialState = {
   status: "",
 };
 
+export const GetUserBalance = createAsyncThunk("GetUserBalance", async () => {
+  const result = await getRequest(`${BASE_URL}/user/balance `);
+  return result.data;
+});
+
 // POST REQUEST
 export const UserSignupWithoutRefferalCode = createAsyncThunk(
   "UserSignupWithoutRefferalCode",
@@ -66,6 +71,28 @@ const AuthReducer = createSlice({
     },
   },
   extraReducers: {
+    [GetUserBalance.pending]: (state, action) => {
+      state.status = "Pending";
+    },
+    [GetUserBalance.rejected]: (state, action) => {
+      state.status = "Error";
+      state.error = action.type;
+      state.userData.user = state.userData.user;
+    },
+    [GetUserBalance.fulfilled]: (state, action) => {
+      if (action.payload) {
+        state.userData.user.balance = action.payload.balance;
+        let user = localStorage.getItem("user");
+        user = JSON.parse(user);
+        let body = {
+          ...user,
+          balance: action.payload.balance,
+        };
+        localStorage.setItem("user", JSON.stringify(body));
+        state.status = "Ok";
+        state.error = "none";
+      }
+    },
     [RefreshToken.pending]: (state, action) => {
       state.status = "Pending";
     },
@@ -75,7 +102,6 @@ const AuthReducer = createSlice({
     },
     [RefreshToken.fulfilled]: (state, action) => {
       if (action.payload) {
-        console.log(action);
         state.status = "Ok";
         state.error = "none";
       }
