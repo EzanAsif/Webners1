@@ -86,7 +86,6 @@ const TransactionReducer = createSlice({
     },
     [GetTransactions.fulfilled]: (state, action) => {
       if (action.payload) {
-        console.log(action.payload, "actoin.payload");
         state.transactionsList = action.payload.history;
         state.status = "Ok";
         state.error = "none";

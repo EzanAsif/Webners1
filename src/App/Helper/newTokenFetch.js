@@ -14,6 +14,6 @@ export const newTokenFetch = (dispatch, RefreshToken, continuedFunc) => {
       }
     })
     .catch((e) => {
-      console.log(e);
+      return(e);
     });
 };

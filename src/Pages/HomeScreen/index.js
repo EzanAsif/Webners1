@@ -46,7 +46,7 @@ const HomeScreen = () => {
           }
         })
         .catch((e) => {
-          console.log(e);
+          return(e);
         });
     } else {
       // dispatch(GetUserBalance());
@@ -62,8 +62,6 @@ const HomeScreen = () => {
       setData([]);
     }
   }, [transactions.transactionsList]);
-
-  console.log(mount, "mount");
 
   return (
     <>

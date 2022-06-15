@@ -37,13 +37,11 @@ const Login = ({ setMuiAlert, muiAlert }) => {
     try {
       let userToken = await setUserDataFunc(token, userData, refreshToken);
       if (userToken) {
-        console.log(userToken, "userToken");
         let parsedUserData = JSON.parse(userToken);
-        console.log(parsedUserData);
         dispatch(userDataFromLocalStorage(parsedUserData));
       }
     } catch (e) {
-      console.log(e);
+      return e;
     }
   };
   const [values, setValues] = React.useState({
@@ -63,17 +61,10 @@ const Login = ({ setMuiAlert, muiAlert }) => {
         let newRefreshToken = res.token;
         newRefreshToken = JSON.stringify(newRefreshToken);
         localStorage.setItem("token", newRefreshToken);
-        dispatch(GetTransactions())
-          .unwrap()
-          .then((result) => {
-            console.log(result);
-          })
-          .catch((e) => {
-            console.log(e);
-          });
+        dispatch(GetTransactions());
       })
       .catch((e) => {
-        console.log(e);
+        return e;
       });
   };
   const userLoginFunc = (e) => {
@@ -85,7 +76,6 @@ const Login = ({ setMuiAlert, muiAlert }) => {
     dispatch(UserLogin(body))
       .unwrap()
       .then((res) => {
-        console.log(res);
         if (res.status !== "rejected") {
           setOpen(false);
           setMuiAlert({
@@ -102,11 +92,11 @@ const Login = ({ setMuiAlert, muiAlert }) => {
                   newTokenFetchForTransaction();
                 }
               } else {
-                console.log(res, "res2");
+                return res;
               }
             })
             .catch((e) => {
-              console.log(e);
+              return e;
             });
           setTokenAndUser(res.token, res.user, res.refreshToken);
           setTimeout(() => {
@@ -128,7 +118,7 @@ const Login = ({ setMuiAlert, muiAlert }) => {
       })
       .catch((e) => {
         setOpen(false);
-        console.log(e);
+        return e;
         if (e.message == "Request failed with status code 401") {
           setMuiAlert({
             open: true,

@@ -26,11 +26,9 @@ const AppLayout = ({ children, hideHeaderFooter = false }) => {
   const location = useLocation();
   const { auth } = useSelector((state) => state);
 
-  console.log(location, location.pathname, "location");
   const [value, setValue] = React.useState(
     location && location.pathname == "/" ? "home" : location.pathname.slice(1)
   );
-  console.log(value, "value");
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -90,7 +88,7 @@ const AppLayout = ({ children, hideHeaderFooter = false }) => {
             label="Transactions"
             value="transactions"
             onClick={(e) => {
-              console.log(e);
+              return e;
             }}
             icon={<ReceiptIcon size={20} />}
           />

@@ -128,7 +128,6 @@ const PasswordVerification = ({ setMuiAlert, muiAlert }) => {
               } else {
                 dispatch(GetUserBalance());
                 dispatch(GetTransactions());
-                console.log(res, "res2");
                 showAlertAndLoader(
                   muiAlert,
                   setMuiAlert,
@@ -142,7 +141,7 @@ const PasswordVerification = ({ setMuiAlert, muiAlert }) => {
               }
             })
             .catch((e) => {
-              console.log(e);
+              return(e);
             });
         }
       })

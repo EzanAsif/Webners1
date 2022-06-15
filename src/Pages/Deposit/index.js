@@ -100,7 +100,7 @@ const Deposit = ({ setMuiAlert, muiAlert }) => {
               }
             })
             .catch((e) => {
-              console.log(e);
+              return(e);
             });
           dispatch(GetUserBalance());
           showAlertAndLoader(

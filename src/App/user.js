@@ -11,7 +11,7 @@ export const getUserDataFunc = async () => {
     refreshToken = await JSON.parse(refreshToken);
     return { token, user, refreshToken };
   } catch (e) {
-    console.log(e);
+    return(e);
   }
 };
 

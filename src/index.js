@@ -29,4 +29,6 @@ navigator.serviceWorker
       "Service Worker Installed"
     );
   })
-  .catch((e) => console.log(e));
+  .catch((e) => {
+    return e;
+  });

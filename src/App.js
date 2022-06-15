@@ -22,13 +22,12 @@ const UserAuthenticated = () => {
   React.useEffect(() => {
     (async () => {
       await getUserDataFunc().then((res) => {
-        console.log(res, "localstoragedata");
         const { user } = res;
         if (user) {
           try {
             dispatch(userDataFromLocalStorage(res));
           } catch (e) {
-            console.log(e);
+            return e
           }
         }
       });

@@ -59,13 +59,11 @@ const Signup = ({ muiAlert, setMuiAlert }) => {
     try {
       let userToken = await setUserDataFunc(token, userData, refreshToken);
       if (userToken) {
-        console.log(userToken, "userToken");
         let parsedUserData = JSON.parse(userToken);
-        console.log(parsedUserData);
         dispatch(userDataFromLocalStorage(parsedUserData));
       }
     } catch (e) {
-      console.log(e);
+      return e;
     }
   };
 
@@ -79,8 +77,6 @@ const Signup = ({ muiAlert, setMuiAlert }) => {
         phoneNo: phNum,
         referralCode: refCode,
       };
-      console.log(body, "body");
-      console.log(refCode);
       dispatch(UserSignupWithRefferalCode(body))
         .unwrap()
         .then((res) => {
@@ -93,13 +89,11 @@ const Signup = ({ muiAlert, setMuiAlert }) => {
                 alertStatus: "success",
                 alertMessage: "User SignUp Success",
               });
-              console.log(res, "res in signup");
               setTokenAndUser(res.token, res.user, res.refreshToken);
               setTimeout(() => {
                 setMuiAlert({ ...muiAlert, open: false });
                 // navigate("/");
               }, 4000);
-              console.log(res);
             }
           } else {
             setOpen(false);
@@ -121,11 +115,10 @@ const Signup = ({ muiAlert, setMuiAlert }) => {
             setMuiAlert({ ...muiAlert, open: false });
             // navigate("/");
           }, 4000);
-          console.log(e);
+          return e;
         });
     } else {
       let body = { email, password: values.password, phoneNo: phNum, name };
-      console.log(body, "body");
       dispatch(UserSignupWithoutRefferalCode(body))
         .unwrap()
         .then((res) => {
@@ -143,7 +136,6 @@ const Signup = ({ muiAlert, setMuiAlert }) => {
                 setMuiAlert({ ...muiAlert, open: false });
                 // navigate("/");
               }, 4000);
-              console.log(res);
             }
           } else {
             setOpen(false);
@@ -165,7 +157,7 @@ const Signup = ({ muiAlert, setMuiAlert }) => {
             setMuiAlert({ ...muiAlert, open: false });
             // navigate("/");
           }, 4000);
-          console.log(e);
+          return e;
         });
     }
   };
