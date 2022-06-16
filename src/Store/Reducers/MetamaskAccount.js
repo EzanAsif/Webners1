@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-    address: {},
+    account: {},
     loading: false
 }
 
@@ -9,8 +9,8 @@ const metamaskAccountSlice = createSlice({
     name: 'account',
     initialState,
     reducers: {
-        fillUpState: (state, action) => ({ ...state, address: { ...action.payload.user } }),
-        fillOutState: (state) => ({ ...state, address: {} }),
+        fillUpState: (state, action) => ({ ...state, account: { ...action.payload.user } }),
+        fillOutState: (state) => ({ ...state, account: {} }),
         enableLoading: (state) => ({ ...state, loading: true }),
         disableLoading: (state) => ({ ...state, loading: false }),
     }
