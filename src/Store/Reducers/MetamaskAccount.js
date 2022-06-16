@@ -6,7 +6,7 @@ const initialState = {
 }
 
 const metamaskAccountSlice = createSlice({
-    name: 'asda',
+    name: 'account',
     initialState,
     reducers: {
         fillUpState: (state, action) => ({ ...state, address: { ...action.payload.user } }),
