@@ -275,7 +275,7 @@ const Signup = ({ muiAlert, setMuiAlert }) => {
                   <PhoneInput
                     fullWidth={true}
                     required
-                    smartCaret={false}
+                    smartCaret={false} //for bug of phone input
                     placeholder="Enter phone number"
                     // value={value}
                     onChange={(val, a) => {
