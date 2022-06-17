@@ -145,7 +145,7 @@ const AppLayout = ({ children, hideHeaderFooter = false }) => {
                   textAlign: "center",
                 }}
               >
-                Sam's Club
+                Ezan
               </Typography>
               <CtaBtn
                 label={metamaskAccount.loading ?
