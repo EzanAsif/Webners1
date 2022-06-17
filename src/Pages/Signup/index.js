@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { userDataFromLocalStorage } from "../../Store/Reducers/AuthReducer";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserDataFunc } from "../../App/user";
@@ -180,7 +180,7 @@ const Signup = ({ muiAlert, setMuiAlert }) => {
           >
             SignUp
           </Typography>
-          <form onSubmit={userSignup}>
+          <form autoComplete="off" onSubmit={userSignup}>
             <CardContent>
               <Grid
                 fullWidth={true}
@@ -212,11 +212,13 @@ const Signup = ({ muiAlert, setMuiAlert }) => {
                       setEmail(e.target.value);
                     }}
                     InputLabelProps={"Email"}
-                    id="login"
+                    type="email"
+                    id="signup-email"
                     variant="outlined"
                     placeholder="Enter your email here"
                     style={{ marginBottom: "20px" }}
                     fullWidth={true}
+                    autocomplete="off"
                     size="small"
                   />
                 </Grid>
@@ -224,13 +226,13 @@ const Signup = ({ muiAlert, setMuiAlert }) => {
                   <InputLabel shrink="true">Password</InputLabel>
                   <OutlinedInput
                     size="small"
-                    id="outlined-adornment-password"
                     type={values.showPassword ? "text" : "password"}
                     value={values.password}
                     onChange={handleChange("password")}
                     fullWidth
                     style={{ width: "100%" }}
-                    placeholder="Enter your password here"
+                    autocomplete="off"
+                    id="signup-password"
                     endAdornment={
                       <InputAdornment position="end">
                         <IconButton
@@ -238,6 +240,7 @@ const Signup = ({ muiAlert, setMuiAlert }) => {
                           onClick={handleClickShowPassword}
                           onMouseDown={handleMouseDownPassword}
                           edge="end"
+                          style={{ padding: "0px 8px" }}
                         >
                           {values.showPassword ? (
                             <VisibilityOff />
@@ -247,6 +250,7 @@ const Signup = ({ muiAlert, setMuiAlert }) => {
                         </IconButton>
                       </InputAdornment>
                     }
+                    placeholder="Enter your password here"
                   />
                 </Grid>
                 <Grid className="abc" item lg={6} md={6} sm={12}>
@@ -271,9 +275,12 @@ const Signup = ({ muiAlert, setMuiAlert }) => {
                   <PhoneInput
                     fullWidth={true}
                     required
+                    type="tel"
                     placeholder="Enter phone number"
                     // value={value}
-                    onChange={(val) => {
+                    onChange={(val, a) => {
+                      // this.cursor = e.target.selectionStart;
+                      console.log(val, a);
                       setPhNum(val);
                     }}
                   />
