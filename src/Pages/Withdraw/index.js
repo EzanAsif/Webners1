@@ -1,19 +1,28 @@
 import React, { useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Backdrop, Button, CircularProgress, Typography } from "@mui/material";
+import {
+  Backdrop,
+  Button,
+  CircularProgress,
+  Input,
+  InputAdornment,
+  Typography,
+} from "@mui/material";
 import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
 import "./styles.css";
-import CurrencyTextField from "@unicef/material-ui-currency-textfield";
 
 const Withdraw = ({ setMuiAlert, muiAlert }) => {
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const [amount, setAmount] = useState(location.state && location.state.amount);
+  const [amount, setAmount] = useState(
+    location.state ? location.state.amount : null
+  );
   const { auth, transactions } = useSelector((state) => state);
 
+  console.log(amount);
   return (
     <>
       <Backdrop
@@ -39,25 +48,36 @@ const Withdraw = ({ setMuiAlert, muiAlert }) => {
             <Typography align="center" sx={{ color: "text.primary" }}>
               Enter amount to withdraw
             </Typography>
-            <div style={{ margin: "50px 0px" }}>
-              <CurrencyTextField
+            <div style={{ margin: "50px 0px", width : '100%' }}>
+              <Input
                 className="currency-input"
-                variant="standard"
-                value={amount}
-                currencySymbol="$"
-                minimumValue="0"
-                maximumValue={
-                  !transactions.balanceChanged
-                    ? auth.userData && auth.userData.user
-                      ? `${auth.userData.user.balance}`
-                      : `${transactions.updatedBalance}`
-                    : `${transactions.updatedBalance}`
+                fullWidth
+                type="number"
+                startAdornment={
+                  <InputAdornment position="start">$</InputAdornment>
                 }
-                outputFormat="number"
-                decimalCharacter="."
-                digitGroupSeparator=","
-                onChange={(event, value) => {
-                  setAmount(value);
+                onChange={(e) => {
+                  console.log(e.target);
+                  console.log(e.target.value);
+                  let val = e.target.value;
+                  val = eval(val);
+                  setAmount(val);
+                  if (val > auth.userData.user.balance) {
+                    setAmount(auth.userData.user.balance);
+                  }
+                }}
+                disabled={
+                  !auth.userData.user.balance || auth.userData.user.balance < 0
+                }
+                value={amount}
+                inputProps={{
+                  pattern: "^0[0-9].*$",
+                  type: "number",
+                  min: 10,
+                  max:
+                    auth.userData &&
+                    auth.userData.user &&
+                    auth.userData.user.balance,
                 }}
               />
               <Typography
@@ -80,7 +100,7 @@ const Withdraw = ({ setMuiAlert, muiAlert }) => {
               onClick={() => {
                 navigate("/verify-password", { state: { amount } });
               }}
-              disabled={amount < 5}
+              disabled={amount < 5 || amount > auth.userData.user.balance}
               variant="contained"
               fullWidth
             >

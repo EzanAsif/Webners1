@@ -1,6 +1,12 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { AppBar, Container, Toolbar, Typography, CircularProgress } from "@mui/material";
+import {
+  AppBar,
+  Container,
+  Toolbar,
+  Typography,
+  CircularProgress,
+} from "@mui/material";
 import AppLogo from "../../../Assets/logo-sams-club.jpeg";
 import BottomNavigation from "@mui/material/BottomNavigation";
 import BottomNavigationAction from "@mui/material/BottomNavigationAction";
@@ -12,7 +18,12 @@ import { useNavigate, useLocation } from "react-router-dom";
 import Web3 from "web3";
 import "./styles.css";
 import CtaBtn from "../../CtaBtn";
-import { disableLoading, enableLoading, fillOutState, fillUpState } from "../../../Store/Reducers/MetamaskAccount";
+import {
+  disableLoading,
+  enableLoading,
+  fillOutState,
+  fillUpState,
+} from "../../../Store/Reducers/MetamaskAccount";
 
 const AppWrapper = ({ children, hideHeaderFooter = false }) => {
   return (
@@ -130,45 +141,45 @@ const AppLayout = ({ children, hideHeaderFooter = false }) => {
       {!hideHeaderFooter && (
         <AppBar style={{ backgroundColor: "#f6f6f6" }} position="sticky">
           <Container maxWidth="xl">
-            <Toolbar disableGutters>
+            <Toolbar
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+              }}
+              disableGutters
+            >
               <img src={AppLogo} width={50} height={50} />
-              <Typography
-                variant="h6"
-                sx={{
-                  mr: 6,
-                  width: "-webkit-fill-available",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  color: "#141414",
-                  textDecoration: "none",
-                  textAlign: "center",
-                }}
-              >
-                Ezan
+              <Typography className="name-app-header" variant="h6">
+                Sam's Club
               </Typography>
               <CtaBtn
-                label={metamaskAccount.loading ?
-                  <CircularProgress
-                    style={{
-                      justifySelf: "center",
-                      alignSelf: "center",
-                    }}
-                    size="26px"
-                    color="inherit"
-                  />
-                  // "Wait..."
-              :
-              metamaskAccount.account.address ?
-              metamaskAccount.account.address.substring(0, 6) +
-              "..." +
-              metamaskAccount.account.address.substring(37, 42)
-              :
-                    "Connect Wallet"}
-              className="indivDepositWithdrawBtn"
-              variant="contained"
-              size="large"
-              onClickFunc={() => metamaskAccount.account.address ? alert("Already connected") : loadWeb3ViaMetaMask()}
+                isFullWidth={false}
+                label={
+                  metamaskAccount.loading ? (
+                    <CircularProgress
+                      style={{
+                        justifySelf: "center",
+                        alignSelf: "center",
+                      }}
+                      size="26px"
+                      color="inherit"
+                    />
+                  ) : // "Wait..."
+                  metamaskAccount.account.address ? (
+                    metamaskAccount.account.address.substring(0, 6) +
+                    "..." +
+                    metamaskAccount.account.address.substring(37, 42)
+                  ) : (
+                    "Connect Wallet"
+                  )
+                }
+                variant="contained"
+                size="large"
+                onClickFunc={() =>
+                  metamaskAccount.account.address
+                    ? alert("Already connected")
+                    : loadWeb3ViaMetaMask()
+                }
               />
             </Toolbar>
           </Container>

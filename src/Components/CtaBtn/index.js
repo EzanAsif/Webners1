@@ -8,12 +8,13 @@ const index = ({
   onClickFunc,
   style,
   size = "large",
+  isFullWidth = true,
 }) => {
   return (
     <Button
       className={className}
       size={size}
-      fullWidth={true}
+      fullWidth={isFullWidth}
       variant={variant}
       onClick={onClickFunc}
       sx={style}

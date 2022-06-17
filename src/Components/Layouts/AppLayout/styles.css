@@ -1,7 +1,7 @@
 .App-wrapper {
   width: 600px;
   margin: 0 auto;
-  height: 80vh;
+  height: 85vh;
   overflow-x: hidden;
   overflow-y: scroll;
 }
@@ -19,8 +19,18 @@
   align-items: center;
 }
 
+.name-app-header {
+  width: max-content !important;
+  color: #141414 !important;
+  text-decoration: none !important;
+  text-align: center !important;
+}
+
 @media only screen and (max-width: 600px) {
   .App-wrapper {
     width: 95% !important;
+  }
+  .name-app-header {
+    display: none !important;
   }
 }

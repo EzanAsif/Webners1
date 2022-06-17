@@ -121,8 +121,31 @@ const PasswordVerification = ({ setMuiAlert, muiAlert }) => {
               if (res.status == "rejected") {
                 if (res.message == "Auth failed") {
                   newTokenFetch(dispatch, RefreshToken, () => {
-                    dispatch(GetUserBalance());
-                    dispatch(GetTransactions());
+                    try {
+                      dispatch(GetUserBalance());
+                      dispatch(GetTransactions());
+                      showAlertAndLoader(
+                        muiAlert,
+                        setMuiAlert,
+                        setOpen,
+                        "success",
+                        "Amount Withdrawn",
+                        () => {
+                          navigate("/");
+                        }
+                      );
+                    } catch (e) {
+                      showAlertAndLoader(
+                        muiAlert,
+                        setMuiAlert,
+                        setOpen,
+                        "error",
+                        `Error Performing Transaction - ${e} `,
+                        () => {
+                          navigate("/");
+                        }
+                      );
+                    }
                   });
                 }
               } else {

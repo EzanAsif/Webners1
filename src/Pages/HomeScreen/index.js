@@ -81,14 +81,12 @@ const HomeScreen = () => {
     <>
       <Backdrop
         sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={
-          open || auth.status == "Pending" || transactions.status == "Pending"
-        }
+        open={auth.status == "Pending" || transactions.status == "Pending"}
       >
         <CircularProgress color="inherit" />
       </Backdrop>
       <Snackbar
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        anchorOrigin={{ vertical: "middle", horizontal: "center" }}
         open={open}
         autoHideDuration={3000}
       >
@@ -138,7 +136,7 @@ const HomeScreen = () => {
             color="text.primary"
             gutterBottom
           >
-            ${auth.userData.user.balance}
+            ${transactions.status == "Ok" && auth.userData.user.balance}
           </Typography>
           <div className="depositWithdrawBtns">
             <CtaBtn

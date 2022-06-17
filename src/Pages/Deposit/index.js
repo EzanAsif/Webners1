@@ -1,7 +1,14 @@
 import React, { useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Backdrop, Button, CircularProgress, Typography } from "@mui/material";
+import {
+  Backdrop,
+  Button,
+  CircularProgress,
+  Input,
+  InputAdornment,
+  Typography,
+} from "@mui/material";
 import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
 import "./styles.css";
 import CurrencyTextField from "@unicef/material-ui-currency-textfield";
@@ -71,6 +78,7 @@ const Deposit = ({ setMuiAlert, muiAlert }) => {
                   );
                 });
               dispatch(GetTransactions());
+              dispatch(GetUserBalance());
             });
           }
           if (res.message == "Invalid Password") {
@@ -90,11 +98,10 @@ const Deposit = ({ setMuiAlert, muiAlert }) => {
               let res = payload;
               if (res.status == "rejected") {
                 if (res.message == "Auth failed") {
-                  newTokenFetch(
-                    dispatch,
-                    RefreshToken,
-                    dispatch(GetTransactions())
-                  );
+                  newTokenFetch(dispatch, RefreshToken, () => {
+                    dispatch(GetUserBalance());
+                    dispatch(GetTransactions());
+                  });
                 }
               } else {
                 return res;
@@ -152,19 +159,26 @@ const Deposit = ({ setMuiAlert, muiAlert }) => {
             <Typography align="center" sx={{ color: "text.primary" }}>
               Enter amount to Deposit
             </Typography>
-            <div style={{ margin: "50px 0px" }}>
-              <CurrencyTextField
+            <div style={{ margin: "50px 0px", width: "100%" }}>
+              <Input
                 className="currency-input"
                 variant="standard"
-                value={amount}
-                currencySymbol="$"
-                minimumValue="0"
-                outputFormat="number"
-                decimalCharacter="."
-                digitGroupSeparator=","
-                onChange={(event, value) => {
-                  setAmount(value);
+                type="number"
+                fullWidth
+                id="input-with-icon-adornment"
+                onChange={(e) => {
+                  let val = e.target.value;
+                  val = eval(val);
+                  setAmount(val);
                 }}
+                inputProps={{
+                  type: "number",
+                  min: 10,
+                  max: 10000,
+                }}
+                startAdornment={
+                  <InputAdornment position="start">$</InputAdornment>
+                }
               />
             </div>
             <Button
