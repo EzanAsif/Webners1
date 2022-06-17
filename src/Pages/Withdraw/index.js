@@ -49,9 +49,9 @@ const Withdraw = ({ setMuiAlert, muiAlert }) => {
                 maximumValue={
                   !transactions.balanceChanged
                     ? auth.userData && auth.userData.user
-                      ? auth.userData.user.balance
-                      : transactions.updatedBalance
-                    : transactions.updatedBalance
+                      ? `${auth.userData.user.balance}`
+                      : `${transactions.updatedBalance}`
+                    : `${transactions.updatedBalance}`
                 }
                 outputFormat="number"
                 decimalCharacter="."

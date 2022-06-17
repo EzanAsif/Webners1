@@ -4,6 +4,7 @@ import { AppLayout } from "../../Components/Layouts/AppLayout";
 import { Link, useNavigate } from "react-router-dom";
 import {
   Alert,
+  Backdrop,
   Button,
   CircularProgress,
   Snackbar,
@@ -14,7 +15,10 @@ import CtaBtn from "../../Components/CtaBtn";
 import IndividualTransaction from "../../Components/IndividualTransaction";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { GetUserBalance, RefreshToken } from "../../Store/Reducers/AuthReducer";
-import { GetTransactions } from "../../Store/Reducers/Transactions";
+import {
+  GetTransactions,
+  firstFetchFunc,
+} from "../../Store/Reducers/Transactions";
 import { newTokenFetch } from "../../App/Helper/newTokenFetch";
 
 const HomeScreen = () => {
@@ -27,7 +31,11 @@ const HomeScreen = () => {
   const isMounted = useRef(false);
 
   useEffect(() => {
-    if (isMounted.current == false && !transactions.transactionsList.length) {
+    if (
+      isMounted.current == false &&
+      !transactions.transactionsList.length &&
+      transactions.firstFetch == false
+    ) {
       dispatch(GetUserBalance())
         .unwrap()
         .then((res) => {
@@ -37,16 +45,22 @@ const HomeScreen = () => {
             if (res.message == "Auth failed") {
               newTokenFetch(dispatch, RefreshToken, () => {
                 dispatch(GetUserBalance());
-                if (!transactions.length) dispatch(GetTransactions());
+                if (!transactions.length) {
+                  dispatch(GetTransactions());
+                  dispatch(firstFetchFunc());
+                }
               });
             }
           } else {
-            if (!transactions.length) dispatch(GetTransactions());
+            if (!transactions.length) {
+              dispatch(GetTransactions());
+              dispatch(firstFetchFunc());
+            }
             return res;
           }
         })
         .catch((e) => {
-          return(e);
+          return e;
         });
     } else {
       // dispatch(GetUserBalance());
@@ -65,6 +79,14 @@ const HomeScreen = () => {
 
   return (
     <>
+      <Backdrop
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={
+          open || auth.status == "Pending" || transactions.status == "Pending"
+        }
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <Snackbar
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
         open={open}

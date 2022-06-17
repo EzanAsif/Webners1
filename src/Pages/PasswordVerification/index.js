@@ -141,7 +141,7 @@ const PasswordVerification = ({ setMuiAlert, muiAlert }) => {
               }
             })
             .catch((e) => {
-              return(e);
+              return e;
             });
         }
       })
@@ -181,7 +181,13 @@ const PasswordVerification = ({ setMuiAlert, muiAlert }) => {
             </div>
             <div className="page-heading">Verify Password</div>
           </div>
-          <div className="amount-input-div">
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              withdrawTransactionFunc();
+            }}
+            className="amount-input-div"
+          >
             <Typography align="center" sx={{ color: "text.primary" }}>
               Please Verify Your Password
             </Typography>
@@ -216,7 +222,7 @@ const PasswordVerification = ({ setMuiAlert, muiAlert }) => {
             >
               Verify
             </Button>
-          </div>
+          </form>
         </div>
       </div>
     </>

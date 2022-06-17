@@ -83,6 +83,7 @@ const Deposit = ({ setMuiAlert, muiAlert }) => {
             );
           }
         } else {
+          dispatch(GetUserBalance());
           dispatch(GetTransactions())
             .then((result) => {
               let { payload } = result;
@@ -100,9 +101,8 @@ const Deposit = ({ setMuiAlert, muiAlert }) => {
               }
             })
             .catch((e) => {
-              return(e);
+              return e;
             });
-          dispatch(GetUserBalance());
           showAlertAndLoader(
             muiAlert,
             setMuiAlert,

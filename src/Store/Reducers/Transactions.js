@@ -3,11 +3,10 @@ import { BASE_URL } from "../../App/api.js";
 import { getRequest, postRequest } from "../../App/fetch";
 
 const initialState = {
-  balanceChanged: false,
-  updatedBalance: 0,
   transactionsList: [],
   error: "",
   status: "",
+  firstFetch: false,
 };
 
 export const WithdrawTransaction = createAsyncThunk(
@@ -35,11 +34,15 @@ const TransactionReducer = createSlice({
   name: "TransactionReducer",
   initialState,
   reducers: {
+    firstFetchFunc: (state, action) => {
+      state.firstFetch = true;
+    },
     clearTransactionsList: (state, action) => {
       state.transactionsList = [];
       state.status = "Ok";
       state.error = "none";
       state.updatedBalance = 0;
+      state.firstFetch = false;
     },
   },
   extraReducers: {
@@ -95,4 +98,4 @@ const TransactionReducer = createSlice({
 });
 
 export default TransactionReducer.reducer;
-export const { clearTransactionsList } = TransactionReducer.actions;
+export const { clearTransactionsList, firstFetchFunc } = TransactionReducer.actions;
