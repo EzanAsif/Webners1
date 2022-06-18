@@ -1,6 +1,6 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   Backdrop,
   Button,
@@ -11,7 +11,6 @@ import {
 } from "@mui/material";
 import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
 import "./styles.css";
-import CurrencyTextField from "@unicef/material-ui-currency-textfield";
 import {
   DepositTransaction,
   GetTransactions,
@@ -24,8 +23,7 @@ const Deposit = ({ setMuiAlert, muiAlert }) => {
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const location = useLocation();
-  const [amount, setAmount] = useState(location.state && amount);
+  const [amount, setAmount] = useState();
   const {
     auth,
     transactions: { status: transactionStatus },
@@ -43,8 +41,8 @@ const Deposit = ({ setMuiAlert, muiAlert }) => {
     )
       .unwrap()
       .then((res) => {
-        if (res.status == "rejected") {
-          if (res.message == "Auth failed") {
+        if (res.status === "rejected") {
+          if (res.message === "Auth failed") {
             newTokenFetch(dispatch, RefreshToken, () => {
               dispatch(
                 DepositTransaction({
@@ -81,7 +79,7 @@ const Deposit = ({ setMuiAlert, muiAlert }) => {
               dispatch(GetUserBalance());
             });
           }
-          if (res.message == "Invalid Password") {
+          if (res.message === "Invalid Password") {
             showAlertAndLoader(
               muiAlert,
               setMuiAlert,
@@ -96,8 +94,8 @@ const Deposit = ({ setMuiAlert, muiAlert }) => {
             .then((result) => {
               let { payload } = result;
               let res = payload;
-              if (res.status == "rejected") {
-                if (res.message == "Auth failed") {
+              if (res.status === "rejected") {
+                if (res.message === "Auth failed") {
                   newTokenFetch(dispatch, RefreshToken, () => {
                     dispatch(GetUserBalance());
                     dispatch(GetTransactions());
@@ -137,7 +135,7 @@ const Deposit = ({ setMuiAlert, muiAlert }) => {
       <Backdrop
         sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={
-          open || auth.status == "Pending" || transactionStatus == "Pending"
+          open || auth.status === "Pending" || transactionStatus === "Pending"
         }
       >
         <CircularProgress color="inherit" />
@@ -168,7 +166,7 @@ const Deposit = ({ setMuiAlert, muiAlert }) => {
                 id="input-with-icon-adornment"
                 onChange={(e) => {
                   let val = e.target.value;
-                  val = eval(val);
+                  val = parseInt(val);
                   setAmount(val);
                 }}
                 inputProps={{

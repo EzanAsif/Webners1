@@ -27,22 +27,20 @@ const HomeScreen = () => {
   const [open, setOpen] = React.useState(false);
   const { auth, transactions } = useSelector((state) => state);
   const [data, setData] = useState([]);
-  const [mount, setMount] = useState(false);
   const isMounted = useRef(false);
 
   useEffect(() => {
     if (
-      isMounted.current == false &&
+      isMounted.current === false &&
       !transactions.transactionsList.length &&
-      transactions.firstFetch == false
+      transactions.firstFetch === false
     ) {
       dispatch(GetUserBalance())
         .unwrap()
         .then((res) => {
-          setMount(true);
           isMounted.current = true;
-          if (res.status == "rejected") {
-            if (res.message == "Auth failed") {
+          if (res.status === "rejected") {
+            if (res.message === "Auth failed") {
               newTokenFetch(dispatch, RefreshToken, () => {
                 dispatch(GetUserBalance());
                 if (!transactions.length) {
@@ -81,7 +79,7 @@ const HomeScreen = () => {
     <>
       <Backdrop
         sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={auth.status == "Pending" || transactions.status == "Pending"}
+        open={auth.status === "Pending" || transactions.status === "Pending"}
       >
         <CircularProgress color="inherit" />
       </Backdrop>
@@ -136,7 +134,7 @@ const HomeScreen = () => {
             color="text.primary"
             gutterBottom
           >
-            ${transactions.status == "Ok" && auth.userData.user.balance}
+            ${transactions.status === "Ok" && auth.userData.user.balance}
           </Typography>
           <div className="depositWithdrawBtns">
             <CtaBtn
@@ -214,12 +212,12 @@ const HomeScreen = () => {
                   <IndividualTransaction
                     dateTime={obj.timeStamp}
                     transactionAmount={`${obj.amount}$`}
-                    isDeposit={obj.type == "deposit" ? true : false}
+                    isDeposit={obj.type === "deposit" ? true : false}
                     key={index}
                   />
                 );
               })
-            ) : transactions.status == "Pending" ? (
+            ) : transactions.status === "Pending" ? (
               <CircularProgress
                 style={{
                   justifySelf: "center",

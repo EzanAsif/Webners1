@@ -43,7 +43,7 @@ const AppLayout = ({ children, hideHeaderFooter = false }) => {
   console.log(metamaskAccount);
 
   const [value, setValue] = React.useState(
-    location && location.pathname == "/" ? "home" : location.pathname.slice(1)
+    location && location.pathname === "/" ? "home" : location.pathname.slice(1)
   );
 
   const handleChange = (event, newValue) => {
@@ -59,7 +59,7 @@ const AppLayout = ({ children, hideHeaderFooter = false }) => {
     try {
       let chainId = await web3.eth.getChainId();
       console.log(chainId);
-      if (chainId == 4 || chainId == 80001) {
+      if (chainId === 4 || chainId === 80001) {
         // AFTER GETTING CHAINID WE CAN CONDITION IF ELSE
         let account = await web3.eth.getAccounts();
 

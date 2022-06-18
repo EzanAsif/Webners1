@@ -64,8 +64,8 @@ const PasswordVerification = ({ setMuiAlert, muiAlert }) => {
     )
       .unwrap()
       .then((res) => {
-        if (res.status == "rejected") {
-          if (res.message == "Auth failed") {
+        if (res.status === "rejected") {
+          if (res.message === "Auth failed") {
             newTokenFetch(dispatch, RefreshToken, () => {
               dispatch(
                 WithdrawTransaction({
@@ -104,7 +104,7 @@ const PasswordVerification = ({ setMuiAlert, muiAlert }) => {
               // dispatch(GetTransactions());
             });
           }
-          if (res.message == "Invalid Password") {
+          if (res.message === "Invalid Password") {
             showAlertAndLoader(
               muiAlert,
               setMuiAlert,
@@ -118,8 +118,8 @@ const PasswordVerification = ({ setMuiAlert, muiAlert }) => {
             .then((result) => {
               let { payload } = result;
               let res = payload;
-              if (res.status == "rejected") {
-                if (res.message == "Auth failed") {
+              if (res.status === "rejected") {
+                if (res.message === "Auth failed") {
                   newTokenFetch(dispatch, RefreshToken, () => {
                     try {
                       dispatch(GetUserBalance());
@@ -184,7 +184,7 @@ const PasswordVerification = ({ setMuiAlert, muiAlert }) => {
       <Backdrop
         sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={
-          open || auth.status == "Pending" || transactionStatus == "Pending"
+          open || auth.status === "Pending" || transactionStatus === "Pending"
         }
       >
         <CircularProgress color="inherit" />

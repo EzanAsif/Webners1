@@ -1,12 +1,9 @@
 import React, { useState } from "react";
 import "./App.css";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
   userDataFromLocalStorage,
-  RefreshToken,
-  clearTransactionsList,
 } from "./Store/Reducers/AuthReducer";
-import { GetTransactions } from "./Store/Reducers/Transactions";
 import { getUserDataFunc } from "./App/user";
 import AppRoutes from "./Navigation";
 import { createTheme, Snackbar } from "@mui/material";
@@ -17,7 +14,6 @@ import Slide from "@mui/material/Slide";
 
 const UserAuthenticated = () => {
   const dispatch = useDispatch();
-  const { auth } = useSelector((state) => state);
 
   React.useEffect(() => {
     (async () => {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   userDataFromLocalStorage,
   RefreshToken,
@@ -20,19 +20,16 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { UserLogin } from "../../Store/Reducers/AuthReducer";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const Login = ({ setMuiAlert, muiAlert }) => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { auth } = useSelector((state) => state);
 
   const [open, setOpen] = useState(false);
   const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
-
   const setTokenAndUser = async (token, userData, refreshToken) => {
     try {
       let userToken = await setUserDataFunc(token, userData, refreshToken);
@@ -87,8 +84,8 @@ const Login = ({ setMuiAlert, muiAlert }) => {
             .then((result) => {
               let { payload } = result;
               let res = payload;
-              if (res.status == "rejected") {
-                if (res.message == "Auth failed") {
+              if (res.status === "rejected") {
+                if (res.message === "Auth failed") {
                   newTokenFetchForTransaction();
                 }
               } else {
@@ -118,8 +115,7 @@ const Login = ({ setMuiAlert, muiAlert }) => {
       })
       .catch((e) => {
         setOpen(false);
-        return e;
-        if (e.message == "Request failed with status code 401") {
+        if (e.message === "Request failed with status code 401") {
           setMuiAlert({
             open: true,
             alertStatus: "error",
@@ -157,7 +153,7 @@ const Login = ({ setMuiAlert, muiAlert }) => {
     <>
       <Backdrop
         sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={open && auth.status == "Pending"}
+        open={open && auth.status === "Pending"}
       >
         <CircularProgress color="inherit" />
       </Backdrop>
@@ -226,7 +222,7 @@ const Login = ({ setMuiAlert, muiAlert }) => {
                 }}
               >
                 <Button
-                  disabled={auth.status == "Pending"}
+                  disabled={auth.status === "Pending"}
                   size="large"
                   fullWidth={true}
                   variant="contained"

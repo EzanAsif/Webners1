@@ -1,17 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { AppLayout } from "../../Components/Layouts/AppLayout";
-import { removeuserDataFromLocalStorage } from "../../Store/Reducers/AuthReducer";
-import { useNavigate } from "react-router-dom";
 import IndividualTransaction from "../../Components/IndividualTransaction";
 import "./styles.css";
-import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
-import AddCardIcon from "@mui/icons-material/AddCard";
 import { CircularProgress } from "@mui/material";
 
 const HomeScreen = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { transactions } = useSelector((state) => state);
   const [data, setData] = useState([]);
 
@@ -40,12 +34,12 @@ const HomeScreen = () => {
               <IndividualTransaction
                 dateTime={obj.timeStamp}
                 transactionAmount={`${obj.amount}$`}
-                isDeposit={obj.type == "deposit" ? true : false}
+                isDeposit={obj.type === "deposit" ? true : false}
                 key={index}
               />
             );
           })
-        ) : transactions.status == "Pending" ? (
+        ) : transactions.status === "Pending" ? (
           <CircularProgress
             style={{
               justifySelf: "center",

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { userDataFromLocalStorage } from "../../Store/Reducers/AuthReducer";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserDataFunc } from "../../App/user";
@@ -16,7 +16,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
 import {
@@ -166,7 +166,7 @@ const Signup = ({ muiAlert, setMuiAlert }) => {
     <>
       <Backdrop
         sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={open || auth.status == "Pending"}
+        open={open || auth.status === "Pending"}
       >
         <CircularProgress color="inherit" />
       </Backdrop>
@@ -296,7 +296,7 @@ const Signup = ({ muiAlert, setMuiAlert }) => {
                 }}
               >
                 <Button
-                  disabled={auth.status == "Pending"}
+                  disabled={auth.status === "Pending"}
                   size="large"
                   fullWidth={true}
                   variant="contained"

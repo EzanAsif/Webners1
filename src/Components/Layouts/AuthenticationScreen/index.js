@@ -9,7 +9,7 @@ const AuthenticationLayout = ({ children }) => {
       <AppBar style={{ backgroundColor: "#f6f6f6" }} position="sticky">
         <Container maxWidth="xl">
           <Toolbar disableGutters>
-            <img src={AppLogo} width={50} height={50} />
+            <img src={AppLogo} width={50} height={50} alt = "sams club"/>
             <Typography
               variant="h6"
               sx={{
@@ -38,6 +38,7 @@ const AuthenticationLayout = ({ children }) => {
           width={15}
           src="https://img.icons8.com/material-outlined/2x/creative-commons.png"
           style={{ borderRadius: 100 }}
+          alt = "copyright icon"
         />
         CopyRight XYZ
       </footer>

@@ -4,7 +4,6 @@ import {
   getDataByBody,
   getRequest,
   postRequest,
-  putRequest,
 } from "../../App/fetch";
 
 const initialState = {

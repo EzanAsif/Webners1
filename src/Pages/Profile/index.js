@@ -5,7 +5,6 @@ import { removeuserDataFromLocalStorage } from "../../Store/Reducers/AuthReducer
 import { clearTransactionsList } from "../../Store/Reducers/Transactions";
 import { useNavigate } from "react-router-dom";
 import { UserLogout } from "../../Store/Reducers/AuthReducer";
-import { getUserDataFunc } from "../../App/user";
 import { Backdrop, CircularProgress } from "@mui/material";
 
 const HomeScreen = ({ setMuiAlert, muiAlert }) => {
@@ -17,14 +16,14 @@ const HomeScreen = ({ setMuiAlert, muiAlert }) => {
     <>
       <Backdrop
         sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={open && auth.status == "Pending"}
+        open={open && auth.status === "Pending"}
       >
         <CircularProgress color="inherit" />
       </Backdrop>
       <AppLayout>
         <h2>Profile</h2>
         <div style={{ display: "flex", flexDirection: "column" }}>
-          {[1, 24, 2, 45, 5, 25, , 5, 42, 34, 24, 24, 2].map((obj, index) => {
+          {[1, 24, 2, 45, 5, 25, 5, 42, 34, 24, 24, 2].map((obj, index) => {
             return (
               <button
                 key={index}

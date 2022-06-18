@@ -1,5 +1,5 @@
-import React, { useState, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState } from "react";
+import {  useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
   Backdrop,
@@ -12,9 +12,8 @@ import {
 import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
 import "./styles.css";
 
-const Withdraw = ({ setMuiAlert, muiAlert }) => {
-  const [open, setOpen] = useState(false);
-  const dispatch = useDispatch();
+const Withdraw = () => {
+  const [open] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const [amount, setAmount] = useState(
@@ -22,12 +21,11 @@ const Withdraw = ({ setMuiAlert, muiAlert }) => {
   );
   const { auth, transactions } = useSelector((state) => state);
 
-  console.log(amount);
   return (
     <>
       <Backdrop
         sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={open && auth.status == "Pending"}
+        open={open && auth.status === "Pending"}
       >
         <CircularProgress color="inherit" />
       </Backdrop>
@@ -60,7 +58,7 @@ const Withdraw = ({ setMuiAlert, muiAlert }) => {
                   console.log(e.target);
                   console.log(e.target.value);
                   let val = e.target.value;
-                  val = eval(val);
+                  val = parseInt(val);
                   setAmount(val);
                   if (val > auth.userData.user.balance) {
                     setAmount(auth.userData.user.balance);
