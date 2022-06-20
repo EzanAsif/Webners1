@@ -1,0 +1,15 @@
+.placeholder-profile-pic {
+  width: 120px;
+  height: 120px;
+  border-radius: 100%;
+  margin: 50px auto;
+}
+
+.profile-description {
+  margin: 20px auto;
+}
+
+.indiv-profile-desc {
+  display: flex;
+  margin: 10px 0px;
+}

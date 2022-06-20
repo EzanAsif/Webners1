@@ -8,8 +8,8 @@ import {
 
 const initialState = {
   userData: {},
-  error: "",
-  status: "",
+  error: "none",
+  status: "Ok",
 };
 
 export const GetUserBalance = createAsyncThunk("GetUserBalance", async () => {

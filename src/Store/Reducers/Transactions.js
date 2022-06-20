@@ -4,8 +4,8 @@ import { getRequest, postRequest } from "../../App/fetch";
 
 const initialState = {
   transactionsList: [],
-  error: "",
-  status: "",
+  error: "none",
+  status: "Ok",
   firstFetch: false,
 };
 
@@ -98,4 +98,7 @@ const TransactionReducer = createSlice({
 });
 
 export default TransactionReducer.reducer;
-export const { clearTransactionsList, firstFetchFunc } = TransactionReducer.actions;
+export const {
+  clearTransactionsList,
+  firstFetchFunc,
+} = TransactionReducer.actions;
