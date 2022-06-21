@@ -12,6 +12,7 @@ import BottomNavigation from "@mui/material/BottomNavigation";
 import BottomNavigationAction from "@mui/material/BottomNavigationAction";
 import HomeIcon from "@mui/icons-material/Home";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import PendingActionsIcon from "@mui/icons-material/PendingActions";
 import HelpIcon from "@mui/icons-material/Help";
 import ReceiptIcon from "@mui/icons-material/Receipt";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -210,6 +211,18 @@ const AppLayout = ({ children, hideHeaderFooter = false }) => {
             label="Help"
             value="help"
             icon={<HelpIcon size={35} />}
+          />
+          {auth.userData.user.type == "admin" ? (
+            <BottomNavigationAction
+              label="Pending Transactions"
+              value="pending-transactions"
+              icon={<PendingActionsIcon size={25} />}
+            />
+          ) : null}
+          <BottomNavigationAction
+            label="Pending"
+            value="admin/pending-transactions"
+            icon={<PendingActionsIcon size={25} />}
           />
           <BottomNavigationAction
             label="Profile"

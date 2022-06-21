@@ -1,0 +1,40 @@
+.transactionStats {
+  display: flex;
+  border-radius: 15px;
+  margin: 30px 0px;
+}
+
+.transactionStats .stats {
+  width: 50%;
+  display: flex;
+  justify-content: space-around;
+}
+
+.transactionStats .stats.withdraw {
+  color: #fafafa;
+  background-color: #f80022;
+}
+
+.transactionStats .stats.deposit {
+  color: #fafafa;
+  background-color: #276800;
+}
+
+.statsIcon {
+  width: 45px;
+  height: 45px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+}
+
+.statsIcon.withdraw {
+  color: #fafafa;
+  background-color: #f80022;
+}
+
+.statsIcon.deposit {
+  color: #fafafa;
+  background-color: #276800;
+}

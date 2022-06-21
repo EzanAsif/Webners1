@@ -7,6 +7,7 @@ import Profile from "./Profile";
 import Withdraw from "./Withdraw";
 import PasswordVerification from "./PasswordVerification";
 import Deposit from "./Deposit";
+import PendingTransactions from "./PendingTransactions";
 
 export {
   Login,
@@ -18,4 +19,5 @@ export {
   Withdraw,
   PasswordVerification,
   Deposit,
+  PendingTransactions,
 };

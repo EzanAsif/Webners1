@@ -9,9 +9,11 @@ const index = ({
   style,
   size = "large",
   isFullWidth = true,
+  color = "primary",
 }) => {
   return (
     <Button
+      color={color}
       className={className}
       size={size}
       fullWidth={isFullWidth}

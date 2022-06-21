@@ -10,6 +10,7 @@ import {
   Profile,
   PasswordVerification,
   Deposit,
+  PendingTransactions,
 } from "../Pages/";
 import { useSelector } from "react-redux";
 
@@ -59,6 +60,12 @@ const AppRoutes = ({ muiAlert, setMuiAlert }) => {
               />
             }
           />
+          {auth.userData.user && (
+            <Route
+              path="/admin/pending-transactions"
+              element={<PendingTransactions muiAlert={muiAlert} setMuiAlert={setMuiAlert}  />}
+            />
+          )}
           {/* REDIRECTING */}
           <Route path="/login" element={<Navigate to="/" />} />
           <Route path="/signup" element={<Navigate to="/" />} />
