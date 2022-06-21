@@ -30,10 +30,10 @@ const Signup = ({ muiAlert, setMuiAlert }) => {
   const { auth } = useSelector((state) => state);
 
   const [open, setOpen] = useState(false);
-  const [email, setEmail] = useState();
-  const [name, setName] = useState();
-  const [refCode, setRefCode] = useState();
-  const [phNum, setPhNum] = useState();
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [refCode, setRefCode] = useState("");
+  const [phNum, setPhNum] = useState("");
 
   const [values, setValues] = React.useState({
     amount: "",
@@ -41,6 +41,12 @@ const Signup = ({ muiAlert, setMuiAlert }) => {
     showPassword: false,
   });
 
+  let validation =
+    name.length &&
+    email.length &&
+    phNum &&
+    phNum.length &&
+    values.password.length;
   const handleClickShowPassword = () => {
     setValues({
       ...values,
@@ -67,57 +73,65 @@ const Signup = ({ muiAlert, setMuiAlert }) => {
     }
   };
 
+  console.log(validation, "validation");
+
   const userSignup = (e) => {
     e.preventDefault();
     if (refCode) {
-      let body = {
-        name,
-        email,
-        password: values.password,
-        phoneNo: phNum,
-        referralCode: refCode,
-      };
-      dispatch(UserSignupWithRefferalCode(body))
-        .unwrap()
-        .then((res) => {
-          if (res.status !== "rejected") {
-            setOpen(true);
-            if (res.token) {
+      if (refCode.length == 24) {
+        validation = true;
+        let body = {
+          name,
+          email,
+          password: values.password,
+          phoneNo: phNum,
+          referralCode: refCode,
+        };
+        dispatch(UserSignupWithRefferalCode(body))
+          .unwrap()
+          .then((res) => {
+            if (res.status !== "rejected") {
+              setOpen(true);
+              if (res.token) {
+                setOpen(false);
+                setMuiAlert({
+                  open: true,
+                  alertStatus: "success",
+                  alertMessage: "User SignUp Success",
+                });
+                setTokenAndUser(res.token, res.user, res.refreshToken);
+                setTimeout(() => {
+                  setMuiAlert({ ...muiAlert, open: false });
+                  // navigate("/");
+                }, 4000);
+              }
+            } else {
               setOpen(false);
               setMuiAlert({
                 open: true,
-                alertStatus: "success",
-                alertMessage: "User SignUp Success",
+                alertStatus: "error",
+                alertMessage: `User Signup error - ${res.message}`,
               });
-              setTokenAndUser(res.token, res.user, res.refreshToken);
-              setTimeout(() => {
-                setMuiAlert({ ...muiAlert, open: false });
-                // navigate("/");
-              }, 4000);
             }
-          } else {
+          })
+          .catch((e) => {
             setOpen(false);
             setMuiAlert({
               open: true,
               alertStatus: "error",
-              alertMessage: `User Signup error - ${res.message}`,
+              alertMessage: `User SignUp error - ${e.message}`,
             });
-          }
-        })
-        .catch((e) => {
-          setOpen(false);
-          setMuiAlert({
-            open: true,
-            alertStatus: "error",
-            alertMessage: `User SignUp error - ${e.message}`,
+            setTimeout(() => {
+              setMuiAlert({ ...muiAlert, open: false });
+              // navigate("/");
+            }, 4000);
+            return e;
           });
-          setTimeout(() => {
-            setMuiAlert({ ...muiAlert, open: false });
-            // navigate("/");
-          }, 4000);
-          return e;
-        });
+      } else {
+        validation = false;
+      }
     } else {
+      validation = true;
       let body = { email, password: values.password, phoneNo: phNum, name };
       dispatch(UserSignupWithoutRefferalCode(body))
         .unwrap()
@@ -188,7 +202,13 @@ const Signup = ({ muiAlert, setMuiAlert }) => {
                 spacing={2}
                 container
               >
-                <Grid className="abc" item lg={6} md={6} sm={12}>
+                <Grid
+                  className="individual-signup-input"
+                  item
+                  lg={6}
+                  md={6}
+                  sm={12}
+                >
                   <InputLabel shrink="true">Name</InputLabel>
                   <TextField
                     required
@@ -204,7 +224,13 @@ const Signup = ({ muiAlert, setMuiAlert }) => {
                     size="small"
                   />
                 </Grid>
-                <Grid className="abc" item lg={6} md={6} sm={12}>
+                <Grid
+                  className="individual-signup-input"
+                  item
+                  lg={6}
+                  md={6}
+                  sm={12}
+                >
                   <InputLabel shrink="true">Email</InputLabel>
                   <TextField
                     required
@@ -222,7 +248,13 @@ const Signup = ({ muiAlert, setMuiAlert }) => {
                     size="small"
                   />
                 </Grid>
-                <Grid className="abc" item lg={6} md={6} sm={12}>
+                <Grid
+                  className="individual-signup-input"
+                  item
+                  lg={6}
+                  md={6}
+                  sm={12}
+                >
                   <InputLabel shrink="true">Password</InputLabel>
                   <OutlinedInput
                     size="small"
@@ -230,7 +262,7 @@ const Signup = ({ muiAlert, setMuiAlert }) => {
                     value={values.password}
                     onChange={handleChange("password")}
                     fullWidth
-                    style={{ width: "100%" }}
+                    style={{ width: "100%", marginBottom: "20px" }}
                     autocomplete="off"
                     id="signup-password"
                     endAdornment={
@@ -253,7 +285,13 @@ const Signup = ({ muiAlert, setMuiAlert }) => {
                     placeholder="Enter your password here"
                   />
                 </Grid>
-                <Grid className="abc" item lg={6} md={6} sm={12}>
+                <Grid
+                  className="individual-signup-input"
+                  item
+                  lg={6}
+                  md={6}
+                  sm={12}
+                >
                   <InputLabel shrink="true">
                     Referral Code
                     <span style={{ fontSize: 12, marginLeft: 5 }}>
@@ -261,6 +299,17 @@ const Signup = ({ muiAlert, setMuiAlert }) => {
                     </span>
                   </InputLabel>
                   <TextField
+                    error={
+                      refCode ? (refCode.length == 24 ? false : true) : false
+                    }
+                    inputProps={{ maxLength: 24 }}
+                    helperText={
+                      refCode
+                        ? refCode.length == 24
+                          ? null
+                          : "Enter a refer code of 24 charecters"
+                        : null
+                    }
                     onChange={(e) => setRefCode(e.target.value)}
                     id="login"
                     variant="outlined"
@@ -270,7 +319,13 @@ const Signup = ({ muiAlert, setMuiAlert }) => {
                     size="small"
                   />
                 </Grid>
-                <Grid className="abc" item lg={6} md={12} sm={12}>
+                <Grid
+                  className="individual-signup-input"
+                  item
+                  lg={6}
+                  md={12}
+                  sm={12}
+                >
                   <InputLabel shrink={true}>Phone Number</InputLabel>
                   <PhoneInput
                     fullWidth={true}
@@ -296,7 +351,11 @@ const Signup = ({ muiAlert, setMuiAlert }) => {
                 }}
               >
                 <Button
-                  disabled={auth.status === "Pending"}
+                  disabled={
+                    auth.status === "Pending" ||
+                    !validation ||
+                    (refCode && refCode.length != 24)
+                  }
                   size="large"
                   fullWidth={true}
                   variant="contained"

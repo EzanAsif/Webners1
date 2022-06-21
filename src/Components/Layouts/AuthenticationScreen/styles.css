@@ -75,7 +75,7 @@
 }
 
 @media only screen and (max-width: 600px) {
-  .abc {
+  .individual-signup-input {
     width: 100%;
   }
   .authentication-form-container {
