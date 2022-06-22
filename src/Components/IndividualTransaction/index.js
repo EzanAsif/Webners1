@@ -3,20 +3,28 @@ import "./styles.css";
 import CtaBtn from "../CtaBtn";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import AddCardIcon from "@mui/icons-material/AddCard";
+import CardGiftcardIcon from "@mui/icons-material/CardGiftcard";
 
 const IndividualTransaction = ({
   isDeposit = false,
+  isBonus = false,
   dateTime,
   transactionAmount,
   transactionStatus = "pending",
   isPendingCard,
 }) => {
   return (
-    <div className={`indivTransCard ${isDeposit ? "deposit" : "withdraw"}`}>
+    <div
+      className={`indivTransCard ${
+        isDeposit ? "deposit" : isBonus ? "bonus" : "withdraw"
+      }`}
+    >
       <div className="indivTransactionUpperContainer">
         <div className={`indivTransIcon ${isDeposit ? "deposit" : "withdraw"}`}>
           {isDeposit ? (
             <AddCardIcon />
+          ) : isBonus ? (
+            <CardGiftcardIcon />
           ) : (
             <ArrowUpwardIcon style={{ transform: "rotate(225deg)" }} />
           )}

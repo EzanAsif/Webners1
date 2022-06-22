@@ -4,6 +4,7 @@ import { getRequest, postRequest } from "../../App/fetch";
 
 const initialState = {
   transactionsList: [],
+  pendingTransactionsList: [],
   error: "none",
   status: "Ok",
   firstFetch: false,
@@ -45,6 +46,14 @@ export const GetTransactions = createAsyncThunk("GetTransactions", async () => {
   const result = await getRequest(`${BASE_URL}/transaction/history`);
   return result.data;
 });
+
+export const GetPendingTransactions = createAsyncThunk(
+  "GetPendingTransactions",
+  async () => {
+    const result = await getRequest(`${BASE_URL}/transaction/history`);
+    return result.data;
+  }
+);
 
 const TransactionReducer = createSlice({
   name: "TransactionReducer",
@@ -132,6 +141,22 @@ const TransactionReducer = createSlice({
     [GetTransactions.fulfilled]: (state, action) => {
       if (action.payload) {
         state.transactionsList = action.payload.history;
+        state.status = "Ok";
+        state.error = "none";
+      }
+    },
+    [GetPendingTransactions.pending]: (state, action) => {
+      state.transactionsList = [];
+      state.status = "Pending";
+    },
+    [GetPendingTransactions.rejected]: (state, action) => {
+      state.transactionsList = [];
+      state.status = "Error";
+      state.error = action.error.message;
+    },
+    [GetPendingTransactions.fulfilled]: (state, action) => {
+      if (action.payload) {
+        state.pendingTransactionsList = action.payload.history;
         state.status = "Ok";
         state.error = "none";
       }

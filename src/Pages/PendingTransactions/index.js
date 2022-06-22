@@ -97,7 +97,7 @@ const PendingTransactions = ({ muiAlert, setMuiAlert }) => {
               <IndividualTransaction
                 dateTime={"6/20/2022, 5:44:49 AM"}
                 transactionAmount={`+15$`}
-                isDeposit={true}
+                isBonus={true}
                 transactionStatus="pending"
               />
               <IndividualTransaction

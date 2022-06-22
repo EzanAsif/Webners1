@@ -96,13 +96,13 @@ const AppRoutes = ({ muiAlert, setMuiAlert }) => {
       {auth.userData && auth.userData.token ? (
         // right now the logic is inversed because not getting proper response from API
         auth.userData.user.isAdmin ? (
-          <AuthenticatedRoutes muiAlert={muiAlert} setMuiAlert={setMuiAlert} />
-        ) : (
           <OnlyAdminRoutes muiAlert={muiAlert} setMuiAlert={setMuiAlert} />
+        ) : (
+          <AuthenticatedRoutes muiAlert={muiAlert} setMuiAlert={setMuiAlert} />
         )
       ) : (
-        <OnlyAdminRoutes muiAlert={muiAlert}  setMuiAlert={setMuiAlert} />
-        // <NonAuthenticatedRoutes />
+        // <OnlyAdminRoutes muiAlert={muiAlert}  setMuiAlert={setMuiAlert} />
+        <NonAuthenticatedRoutes />
       )}
     </>
   );

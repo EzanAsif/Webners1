@@ -16,6 +16,9 @@
 .indivTransCard.deposit {
   background-color: #e4f7e18a;
 }
+.indivTransCard.bonus {
+  background-color: #fffed4;
+}
 
 .indivTransIcon {
   width: 45px;
@@ -31,9 +34,15 @@
   background-color: #f7e1e2;
 }
 
+
 .indivTransIcon.deposit {
   color: #276800;
   background-color: #e4f7e1;
+}
+
+.indivTransIcon.bonus{
+  background-color: #fffed4;
+  color: gold;
 }
 
 .indivTransDetails {
