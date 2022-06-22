@@ -165,7 +165,7 @@ const Signup = ({ muiAlert, setMuiAlert }) => {
           setMuiAlert({
             open: true,
             alertStatus: "error",
-            alertMessage: `User SignUp error - ${e.message}`,
+            alertMessage: `User SignUp error ezan - ${e.message}`,
           });
           setTimeout(() => {
             setMuiAlert({ ...muiAlert, open: false });

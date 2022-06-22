@@ -102,7 +102,7 @@ const AppRoutes = ({ muiAlert, setMuiAlert }) => {
         )
       ) : (
         // <OnlyAdminRoutes muiAlert={muiAlert}  setMuiAlert={setMuiAlert} />
-        <NonAuthenticatedRoutes />
+        <NonAuthenticatedRoutes muiAlert={muiAlert} setMuiAlert={setMuiAlert} />
       )}
     </>
   );

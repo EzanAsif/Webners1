@@ -1,18 +1,38 @@
 import axios from "axios";
 
 export const postRequest = async (api, body) => {
-  let token = localStorage.getItem("token");
-  token = JSON.parse(token);
-  const res = await axios.request({
-    method: "POST",
-    url: api,
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    data: body,
-  });
-  return res;
+  try {
+    let token = localStorage.getItem("token");
+    token = JSON.parse(token);
+    const res = await axios.request({
+      method: "POST",
+      url: api,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      data: body,
+    });
+    return res.data;
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+export const authPostRequest = async (api, body) => {
+  try {
+    const res = await axios.request({
+      method: "POST",
+      url: api,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: body,
+    });
+    return res.data;
+  } catch (e) {
+    console.log(e);
+  }
 };
 
 export const getRequest = async (api, type) => {

@@ -91,18 +91,6 @@ const AppLayout = ({ children, hideHeaderFooter = false }) => {
           value="help"
           icon={<HelpIcon size={35} />}
         />
-        {auth.userData.user.type == "admin" ? (
-          <BottomNavigationAction
-            label="Pending Transactions"
-            value="pending-transactions"
-            icon={<PendingActionsIcon size={25} />}
-          />
-        ) : null}
-        <BottomNavigationAction
-          label="Pending"
-          value="admin/pending-transactions"
-          icon={<PendingActionsIcon size={25} />}
-        />
         <BottomNavigationAction
           label="Profile"
           value="profile"

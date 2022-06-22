@@ -4,6 +4,7 @@ import {
   getDataByBody,
   getRequest,
   postRequest,
+  authPostRequest,
 } from "../../App/fetch";
 
 const initialState = {
@@ -21,24 +22,24 @@ export const GetUserBalance = createAsyncThunk("GetUserBalance", async () => {
 export const UserSignupWithoutRefferalCode = createAsyncThunk(
   "UserSignupWithoutRefferalCode",
   async (body) => {
-    const result = await postRequest(`${BASE_URL}/user/signup`, body);
-    return result.data;
+    const result = await authPostRequest(`${BASE_URL}/user/signup`, body);
+    return result;
   }
 );
 
 export const UserSignupWithRefferalCode = createAsyncThunk(
   "UserSignupWithRefferalCode",
   async (body) => {
-    const result = await postRequest(
+    const result = await authPostRequest(
       `${BASE_URL}/user/signupWithReferralCode`,
       body
     );
-    return result.data;
+    return result;
   }
 );
 
 export const UserLogin = createAsyncThunk("UserLogin", async (body) => {
-  const result = await getDataByBody(`${BASE_URL}/user/signin`, body);
+  const result = await authPostRequest(`${BASE_URL}/user/signin`, body);
   return result;
 });
 

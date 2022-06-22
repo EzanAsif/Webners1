@@ -74,32 +74,34 @@ const Login = ({ setMuiAlert, muiAlert }) => {
       .unwrap()
       .then((res) => {
         if (res.status !== "rejected") {
-          setOpen(false);
-          setMuiAlert({
-            open: true,
-            alertStatus: "success",
-            alertMessage: "User Loggedin Success",
-          });
-          dispatch(GetTransactions())
-            .then((result) => {
-              let { payload } = result;
-              let res = payload;
-              if (res.status === "rejected") {
-                if (res.message === "Auth failed") {
-                  newTokenFetchForTransaction();
-                }
-              } else {
-                return res;
-              }
-            })
-            .catch((e) => {
-              return e;
+          (async () => {
+            setOpen(false);
+            setMuiAlert({
+              open: true,
+              alertStatus: "success",
+              alertMessage: "User Loggedin Success",
             });
-          setTokenAndUser(res.token, res.user, res.refreshToken);
-          setTimeout(() => {
-            setMuiAlert({ ...muiAlert, open: false });
-            // navigate("/");
-          }, 4000);
+            await setTokenAndUser(res.token, res.user, res.refreshToken);
+            dispatch(GetTransactions())
+              .then((result) => {
+                let { payload } = result;
+                let res = payload;
+                if (res.status === "rejected") {
+                  if (res.message === "Auth failed") {
+                    newTokenFetchForTransaction();
+                  }
+                } else {
+                  return res;
+                }
+              })
+              .catch((e) => {
+                return e;
+              });
+            setTimeout(() => {
+              setMuiAlert({ ...muiAlert, open: false });
+              // navigate("/");
+            }, 4000);
+          })();
         } else {
           setOpen(false);
           setMuiAlert({
