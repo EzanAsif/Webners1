@@ -25,6 +25,22 @@ export const DepositTransaction = createAsyncThunk(
   }
 );
 
+export const RejectTransaction = createAsyncThunk(
+  "RejectTransaction",
+  async (body) => {
+    const result = await postRequest(`${BASE_URL}/transaction/withdraw`, body);
+    return result.data;
+  }
+);
+
+export const ApproveTransaction = createAsyncThunk(
+  "ApproveTransaction",
+  async (body) => {
+    const result = await postRequest(`${BASE_URL}/transaction/withdraw`, body);
+    return result.data;
+  }
+);
+
 export const GetTransactions = createAsyncThunk("GetTransactions", async () => {
   const result = await getRequest(`${BASE_URL}/transaction/history`);
   return result.data;
@@ -46,6 +62,32 @@ const TransactionReducer = createSlice({
     },
   },
   extraReducers: {
+    [ApproveTransaction.pending]: (state, action) => {
+      state.status = "Pending";
+    },
+    [ApproveTransaction.rejected]: (state, action) => {
+      state.status = "Error";
+      state.error = action.error.message;
+    },
+    [ApproveTransaction.fulfilled]: (state, action) => {
+      if (action.payload) {
+        state.status = "Ok";
+        state.error = "none";
+      }
+    },
+    [RejectTransaction.pending]: (state, action) => {
+      state.status = "Pending";
+    },
+    [RejectTransaction.rejected]: (state, action) => {
+      state.status = "Error";
+      state.error = action.error.message;
+    },
+    [RejectTransaction.fulfilled]: (state, action) => {
+      if (action.payload) {
+        state.status = "Ok";
+        state.error = "none";
+      }
+    },
     [WithdrawTransaction.pending]: (state, action) => {
       state.status = "Pending";
     },
