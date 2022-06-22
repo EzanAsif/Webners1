@@ -7,6 +7,7 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Button,
   CircularProgress,
   Typography,
 } from "@mui/material";
@@ -31,6 +32,12 @@ const PendingTransactions = ({ muiAlert, setMuiAlert }) => {
     }
   }, [transactions]);
 
+  const [transactionType, setTransactionType] = useState("pending");
+
+  const handleClick = (e) => {
+    setTransactionType(e.target.name);
+  };
+
   return (
     <>
       <AppHeader />
@@ -44,49 +51,43 @@ const PendingTransactions = ({ muiAlert, setMuiAlert }) => {
             height: "max-content",
           }}
         >
-          <Accordion
-            sx={{ border: "1.5px solid #c6c6c6", margin: "20px 0px" }}
-            expanded={expanded === "panel1"}
-            onChange={handleChange("panel1")}
-          >
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              sx={{ background: "#f3f3f3" }}
-              aria-controls="panel1d-content"
-              id="panel1d-header"
+          <div style={{ display: "flex", justifyContent: "start" }}>
+            <Button
+              onClick={handleClick}
+              name="all"
+              type="all"
+              label="All Transactions"
+              size="small"
+              variant={transactionType == "all" ? "contained" : "outlined"}
             >
-              <Typography>Pending Transactions</Typography>
-            </AccordionSummary>
-            <AccordionDetails sx={{ background: "#fafafa" }}>
-              {[1, 2, 3, 4, 5].map((obj, index) => {
-                return (
-                  <IndividualTransaction
-                    key={index}
-                    dateTime={"6/20/2022, 5:44:49 AM"}
-                    transactionAmount={`+15$`}
-                    isDeposit={index == 1 || index == 4 ? false : true}
-                    isPendingCard={true}
-                    transactionStatus="pending"
-                  />
-                );
-              })}
-            </AccordionDetails>
-          </Accordion>
-          <Accordion
-            sx={{ border: "1.5px solid #c6c6c6" }}
-            expanded={expanded === "panel2"}
-            onChange={handleChange("panel2")}
-            TransitionProps={{ unmountOnExit: true }}
-          >
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              sx={{ background: "#f3f3f3" }}
-              aria-controls="panel2d-content"
-              id="panel2d-header"
+              All Transactions
+            </Button>
+            <Button
+              sx={{ marginLeft: "10px" }}
+              onClick={handleClick}
+              name="pending"
+              type="pending"
+              size="small"
+              variant={transactionType == "pending" ? "contained" : "outlined"}
             >
-              <Typography>All Transactions</Typography>
-            </AccordionSummary>
-            <AccordionDetails sx={{ background: "#fafafa" }}>
+              Pending
+            </Button>
+          </div>
+          {transactionType == "pending" ? (
+            [1, 2, 3, 4, 5].map((obj, index) => {
+              return (
+                <IndividualTransaction
+                  key={index}
+                  dateTime={"6/20/2022, 5:44:49 AM"}
+                  transactionAmount={`+15$`}
+                  isDeposit={index == 1 || index == 4 ? false : true}
+                  isPendingCard={true}
+                  transactionStatus="pending"
+                />
+              );
+            })
+          ) : (
+            <>
               <IndividualTransaction
                 dateTime={"6/20/2022, 5:44:49 AM"}
                 transactionAmount={`-5$`}
@@ -117,8 +118,8 @@ const PendingTransactions = ({ muiAlert, setMuiAlert }) => {
                 isDeposit={false}
                 transactionStatus="success"
               />
-            </AccordionDetails>
-          </Accordion>
+            </>
+          )}
           {/* {data.length ? (
           data.map((obj, index) => {
             return (
