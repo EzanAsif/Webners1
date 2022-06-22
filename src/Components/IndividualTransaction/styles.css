@@ -1,6 +1,6 @@
 .indivTransCard {
   margin: 20px 0px;
-  padding: 15px 25px;
+  padding: 15px;
   background-color: #fcfcfc;
   display: flex;
   flex-direction: column;
@@ -42,13 +42,17 @@
 
 .indivTransDetails .indivTransType {
   display: flex;
-  margin: 20px 0px;
+  margin-bottom: 5px;
 }
 
 .indivTransDetails .indivTransType,
 .indivTransAmount {
   font-weight: 600;
   color: #323232;
+}
+
+.indivTransAmount {
+  font-size: 20px;
 }
 
 .indivTransDetails .indivTransDateTime {
@@ -97,7 +101,7 @@
   display: flex;
   width: 100%;
   justify-content: space-between;
-  margin: 30px 0px 20px 0px;
+  margin: 30px 0px 10px 0px;
 }
 
 @media only screen and (max-width: 600px) {

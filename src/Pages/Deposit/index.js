@@ -15,7 +15,7 @@ import {
   DepositTransaction,
   GetTransactions,
 } from "../../Store/Reducers/Transactions";
-import { RefreshToken, GetUserBalance } from "../../Store/Reducers/AuthReducer";
+import { RefreshToken } from "../../Store/Reducers/AuthReducer";
 import { newTokenFetch } from "../../App/Helper/newTokenFetch";
 import showAlertAndLoader from "../../App/Helper/showAlertAndLoader";
 
@@ -76,7 +76,7 @@ const Deposit = ({ setMuiAlert, muiAlert }) => {
                   );
                 });
               dispatch(GetTransactions());
-              dispatch(GetUserBalance());
+              // dispatch(GetUserBalance());
             });
           }
           if (res.message === "Invalid Password") {
@@ -89,7 +89,7 @@ const Deposit = ({ setMuiAlert, muiAlert }) => {
             );
           }
         } else {
-          dispatch(GetUserBalance());
+          // dispatch(GetUserBalance());
           dispatch(GetTransactions())
             .then((result) => {
               let { payload } = result;
@@ -97,7 +97,7 @@ const Deposit = ({ setMuiAlert, muiAlert }) => {
               if (res.status === "rejected") {
                 if (res.message === "Auth failed") {
                   newTokenFetch(dispatch, RefreshToken, () => {
-                    dispatch(GetUserBalance());
+                    // dispatch(GetUserBalance());
                     dispatch(GetTransactions());
                   });
                 }

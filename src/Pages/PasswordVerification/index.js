@@ -17,7 +17,7 @@ import {
   WithdrawTransaction,
   GetTransactions,
 } from "../../Store/Reducers/Transactions";
-import { RefreshToken, GetUserBalance } from "../../Store/Reducers/AuthReducer";
+import { RefreshToken } from "../../Store/Reducers/AuthReducer";
 import { newTokenFetch } from "../../App/Helper/newTokenFetch";
 import showAlertAndLoader from "../../App/Helper/showAlertAndLoader";
 
@@ -79,7 +79,7 @@ const PasswordVerification = ({ setMuiAlert, muiAlert }) => {
               )
                 .unwrap()
                 .then((result) => {
-                  dispatch(GetUserBalance());
+                  // dispatch(GetUserBalance());
                   dispatch(GetTransactions());
                   showAlertAndLoader(
                     muiAlert,
@@ -122,7 +122,7 @@ const PasswordVerification = ({ setMuiAlert, muiAlert }) => {
                 if (res.message === "Auth failed") {
                   newTokenFetch(dispatch, RefreshToken, () => {
                     try {
-                      dispatch(GetUserBalance());
+                      // dispatch(GetUserBalance());
                       dispatch(GetTransactions());
                       showAlertAndLoader(
                         muiAlert,
@@ -149,7 +149,7 @@ const PasswordVerification = ({ setMuiAlert, muiAlert }) => {
                   });
                 }
               } else {
-                dispatch(GetUserBalance());
+                // dispatch(GetUserBalance());
                 dispatch(GetTransactions());
                 showAlertAndLoader(
                   muiAlert,

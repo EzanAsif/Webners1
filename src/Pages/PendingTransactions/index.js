@@ -3,11 +3,24 @@ import { useSelector } from "react-redux";
 import { AppLayout } from "../../Components/Layouts/AppLayout";
 import IndividualTransaction from "../../Components/IndividualTransaction";
 import "./styles.css";
-import { CircularProgress } from "@mui/material";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  CircularProgress,
+  Typography,
+} from "@mui/material";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 const PendingTransactions = ({ muiAlert, setMuiAlert }) => {
   const { transactions } = useSelector((state) => state);
   const [data, setData] = useState([]);
+
+  const [expanded, setExpanded] = React.useState("panel1");
+
+  const handleChange = (panel) => (event, newExpanded) => {
+    setExpanded(newExpanded ? panel : false);
+  };
 
   useEffect(() => {
     if (transactions.transactionsList && transactions.transactionsList.length) {
@@ -28,37 +41,81 @@ const PendingTransactions = ({ muiAlert, setMuiAlert }) => {
           height: "max-content",
         }}
       >
-        <IndividualTransaction
-          dateTime={"6/20/2022, 5:44:49 AM"}
-          transactionAmount={`+15$`}
-          isDeposit={true}
-          isPendingCard={true}
-          transactionStatus="pending"
-        />
-        <IndividualTransaction
-          dateTime={"6/20/2022, 5:44:49 AM"}
-          transactionAmount={`-5$`}
-          isDeposit={false}
-          transactionStatus="rejected"
-        />
-        <IndividualTransaction
-          dateTime={"6/20/2022, 5:44:49 AM"}
-          transactionAmount={`+15$`}
-          isDeposit={true}
-          transactionStatus="success"
-        />
-        <IndividualTransaction
-          dateTime={"6/20/2022, 5:44:49 AM"}
-          transactionAmount={`-5$`}
-          isDeposit={false}
-          transactionStatus="success"
-        />
-        <IndividualTransaction
-          dateTime={"6/20/2022, 5:44:49 AM"}
-          transactionAmount={`-5$`}
-          isDeposit={false}
-          transactionStatus="success"
-        />
+        <Accordion
+          sx={{ border: "1.5px solid #c6c6c6", margin: "20px 0px" }}
+          expanded={expanded === "panel1"}
+          onChange={handleChange("panel1")}
+        >
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            sx={{ background: "#f3f3f3" }}
+            aria-controls="panel1d-content"
+            id="panel1d-header"
+          >
+            <Typography>Pending Transactions</Typography>
+          </AccordionSummary>
+          <AccordionDetails sx={{ background: "#fafafa" }}>
+            {[1, 2, 3, 4, 5].map((obj, index) => {
+              return (
+                <IndividualTransaction
+                  key={index}
+                  dateTime={"6/20/2022, 5:44:49 AM"}
+                  transactionAmount={`+15$`}
+                  isDeposit={index == 1 || index == 4 ? false : true}
+                  isPendingCard={true}
+                  transactionStatus="pending"
+                />
+              );
+            })}
+          </AccordionDetails>
+        </Accordion>
+        <Accordion
+          sx={{ border: "1.5px solid #c6c6c6" }}
+          expanded={expanded === "panel2"}
+          onChange={handleChange("panel2")}
+          TransitionProps={{ unmountOnExit: true }}
+        >
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            sx={{ background: "#f3f3f3" }}
+            aria-controls="panel2d-content"
+            id="panel2d-header"
+          >
+            <Typography>All Transactions</Typography>
+          </AccordionSummary>
+          <AccordionDetails sx={{ background: "#fafafa" }}>
+            <IndividualTransaction
+              dateTime={"6/20/2022, 5:44:49 AM"}
+              transactionAmount={`-5$`}
+              isDeposit={false}
+              transactionStatus="rejected"
+            />
+            <IndividualTransaction
+              dateTime={"6/20/2022, 5:44:49 AM"}
+              transactionAmount={`+15$`}
+              isDeposit={true}
+              transactionStatus="pending"
+            />
+            <IndividualTransaction
+              dateTime={"6/20/2022, 5:44:49 AM"}
+              transactionAmount={`+15$`}
+              isDeposit={true}
+              transactionStatus="success"
+            />
+            <IndividualTransaction
+              dateTime={"6/20/2022, 5:44:49 AM"}
+              transactionAmount={`-5$`}
+              isDeposit={false}
+              transactionStatus="success"
+            />
+            <IndividualTransaction
+              dateTime={"6/20/2022, 5:44:49 AM"}
+              transactionAmount={`-5$`}
+              isDeposit={false}
+              transactionStatus="success"
+            />
+          </AccordionDetails>
+        </Accordion>
         {/* {data.length ? (
           data.map((obj, index) => {
             return (
