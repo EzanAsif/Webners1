@@ -33,24 +33,31 @@ const PendingTransactions = ({ muiAlert, setMuiAlert }) => {
           transactionAmount={`+15$`}
           isDeposit={true}
           isPendingCard={true}
+          transactionStatus="pending"
         />
         <IndividualTransaction
           dateTime={"6/20/2022, 5:44:49 AM"}
           transactionAmount={`-5$`}
           isDeposit={false}
-          isPendingCard={true}
+          transactionStatus="rejected"
         />
         <IndividualTransaction
           dateTime={"6/20/2022, 5:44:49 AM"}
           transactionAmount={`+15$`}
           isDeposit={true}
-          isPendingCard={true}
+          transactionStatus="success"
         />
         <IndividualTransaction
           dateTime={"6/20/2022, 5:44:49 AM"}
           transactionAmount={`-5$`}
           isDeposit={false}
-          isPendingCard={true}
+          transactionStatus="success"
+        />
+        <IndividualTransaction
+          dateTime={"6/20/2022, 5:44:49 AM"}
+          transactionAmount={`-5$`}
+          isDeposit={false}
+          transactionStatus="success"
         />
         {/* {data.length ? (
           data.map((obj, index) => {

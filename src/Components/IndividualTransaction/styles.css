@@ -37,7 +37,12 @@
 }
 
 .indivTransDetails {
-  width: 70%;
+  width: 75%;
+}
+
+.indivTransDetails .indivTransType {
+  display: flex;
+  margin: 20px 0px;
 }
 
 .indivTransDetails .indivTransType,
@@ -63,15 +68,40 @@
   width: 100%;
 }
 
+.transactionStatus {
+  margin-left: 25px;
+  background: black;
+  padding: 2px 10px;
+  border-radius: 30px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #2e2e2e;
+  text-transform: capitalize;
+}
+
+.transactionStatus.pending {
+  background-color: #fff700;
+}
+
+.transactionStatus.rejected {
+  background-color: #c30000;
+  color: white;
+}
+
+.transactionStatus.success {
+  background-color: #086c06;
+  color: white;
+}
+
 .pendingTransactions {
   display: flex;
   width: 100%;
   justify-content: space-between;
-  margin: 40px 0px 20px 0px;
+  margin: 30px 0px 20px 0px;
 }
 
 @media only screen and (max-width: 600px) {
   .indivTransDetails {
-    width: 50%;
+    width: 65%;
   }
 }

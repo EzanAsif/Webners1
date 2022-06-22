@@ -8,6 +8,7 @@ const IndividualTransaction = ({
   isDeposit = false,
   dateTime,
   transactionAmount,
+  transactionStatus = "pending",
   isPendingCard,
 }) => {
   return (
@@ -23,6 +24,19 @@ const IndividualTransaction = ({
         <div className="indivTransDetails">
           <div className="indivTransType">
             {isDeposit ? "Deposit" : "Withdraw"}
+            <div
+              className={`transactionStatus ${
+                transactionStatus == "pending"
+                  ? "pending"
+                  : transactionStatus == "success"
+                  ? "success"
+                  : transactionStatus == "rejected"
+                  ? "rejected"
+                  : null
+              }`}
+            >
+              {transactionStatus}
+            </div>
           </div>
           <div className="indivTransDateTime">{dateTime}</div>
         </div>
