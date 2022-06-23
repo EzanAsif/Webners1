@@ -17,7 +17,7 @@ import {
   fillUpState,
 } from "../../Store/Reducers/MetamaskAccount";
 
-const AppHeader = () => {
+const AppHeader = ({ isAdmin = false, isAdminLogoutFunc = () => {alert('logout')} }) => {
   const { auth, metamaskAccount } = useSelector((state) => state);
   const dispatch = useDispatch();
   console.log(metamaskAccount);
@@ -110,35 +110,45 @@ const AppHeader = () => {
           <Typography className="name-app-header" variant="h6">
             Sam's Club
           </Typography>
-          <CtaBtn
-            isFullWidth={false}
-            label={
-              metamaskAccount.loading ? (
-                <CircularProgress
-                  style={{
-                    justifySelf: "center",
-                    alignSelf: "center",
-                  }}
-                  size="26px"
-                  color="inherit"
-                />
-              ) : // "Wait..."
-              metamaskAccount.account.address ? (
-                metamaskAccount.account.address.substring(0, 6) +
-                "..." +
-                metamaskAccount.account.address.substring(37, 42)
-              ) : (
-                "Connect Wallet"
-              )
-            }
-            variant="contained"
-            size="large"
-            onClickFunc={() =>
-              metamaskAccount.account.address
-                ? alert("Already connected")
-                : loadWeb3ViaMetaMask()
-            }
-          />
+          {!isAdmin ? (
+            <CtaBtn
+              isFullWidth={false}
+              label={
+                metamaskAccount.loading ? (
+                  <CircularProgress
+                    style={{
+                      justifySelf: "center",
+                      alignSelf: "center",
+                    }}
+                    size="26px"
+                    color="inherit"
+                  />
+                ) : // "Wait..."
+                metamaskAccount.account.address ? (
+                  metamaskAccount.account.address.substring(0, 6) +
+                  "..." +
+                  metamaskAccount.account.address.substring(37, 42)
+                ) : (
+                  "Connect Wallet"
+                )
+              }
+              variant="contained"
+              size="large"
+              onClickFunc={() =>
+                metamaskAccount.account.address
+                  ? alert("Already connected")
+                  : loadWeb3ViaMetaMask()
+              }
+            />
+          ) : (
+            <CtaBtn
+              color={"error"}
+              isFullWidth={false}
+              label={"logout"}
+              variant="outlined"
+              onClickFunc={isAdminLogoutFunc}
+            />
+          )}
         </Toolbar>
       </Container>
     </AppBar>

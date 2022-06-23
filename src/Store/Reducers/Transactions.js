@@ -80,6 +80,7 @@ const TransactionReducer = createSlice({
     },
     clearTransactionsList: (state, action) => {
       state.transactionsList = [];
+      state.pendingTransactionsList = [];
       state.status = "Ok";
       state.error = "none";
       state.updatedBalance = 0;

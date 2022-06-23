@@ -2,17 +2,23 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import IndividualTransaction from "../../Components/IndividualTransaction";
 import "./styles.css";
-import { Backdrop, Button, CircularProgress, Typography } from "@mui/material";
+import { Backdrop, Button, CircularProgress } from "@mui/material";
 import AppHeader from "../../Components/AppHeader/AppHeader";
 import {
   GetPendingTransactions,
   AdminGetAllTransactions,
   ApproveTransaction,
   RejectTransaction,
+  clearTransactionsList,
 } from "../../Store/Reducers/Transactions";
 import { newTokenFetch } from "../../App/Helper/newTokenFetch";
-import { RefreshToken } from "../../Store/Reducers/AuthReducer";
+import {
+  RefreshToken,
+  removeuserDataFromLocalStorage,
+  UserLogout,
+} from "../../Store/Reducers/AuthReducer";
 import showAlertAndLoader from "../../App/Helper/showAlertAndLoader";
+import { useNavigate } from "react-router-dom";
 
 const PendingTransactions = ({ muiAlert, setMuiAlert }) => {
   const { auth, transactions } = useSelector((state) => state);
@@ -21,6 +27,7 @@ const PendingTransactions = ({ muiAlert, setMuiAlert }) => {
   const [transactionType, setTransactionType] = useState("pending");
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(GetPendingTransactions())
@@ -226,6 +233,30 @@ const PendingTransactions = ({ muiAlert, setMuiAlert }) => {
       });
   };
 
+  const logout = () => {
+    try {
+      let refreshToken = localStorage.getItem("refreshToken");
+      refreshToken = JSON.parse(refreshToken);
+      setOpen(true);
+      dispatch(UserLogout({ refreshToken }))
+        .unwrap()
+        .then(() => {
+          dispatch(clearTransactionsList());
+          setMuiAlert({
+            open: true,
+            alertStatus: "success",
+            alertMessage: "User Logout Success",
+          });
+          dispatch(removeuserDataFromLocalStorage());
+          setMuiAlert({ ...muiAlert, open: false });
+          navigate("/");
+        })
+        .catch();
+    } catch (e) {
+      alert(e);
+    }
+  };
+
   return (
     <>
       <Backdrop
@@ -236,7 +267,7 @@ const PendingTransactions = ({ muiAlert, setMuiAlert }) => {
       >
         <CircularProgress color="inherit" />
       </Backdrop>
-      <AppHeader />
+      <AppHeader isAdmin={true} isAdminLogoutFunc={logout} />
       <div style={{ height: "95vh" }} className="App-wrapper">
         <h2>Transactions</h2>
         <div
