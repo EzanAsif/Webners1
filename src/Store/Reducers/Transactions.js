@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { BASE_URL } from "../../App/api.js";
-import { getRequest, postRequest } from "../../App/fetch";
+import { getRequest, postRequest, putRequest } from "../../App/fetch";
 
 const initialState = {
   transactionsList: [],
@@ -29,22 +29,19 @@ export const DepositTransaction = createAsyncThunk(
 
 export const RejectTransaction = createAsyncThunk(
   "RejectTransaction",
-  async (body, id) => {
-    const result = await postRequest(
-      `${BASE_URL}/transaction/cancel/${id}`,
-      body
-    );
-    return result.data;
+  async (body) => {
+    const url = `${BASE_URL}/transaction/cancel/${body.id}`;
+    const result = await putRequest(url, body);
+    return result;
   }
 );
 
 export const ApproveTransaction = createAsyncThunk(
   "ApproveTransaction",
-  async (body, id) => {
-    const result = await postRequest(
-      `${BASE_URL}/transaction/approve/${id}`,
-      body
-    );
+  async (body) => {
+    console.log(body);
+    const url = `${BASE_URL}/transaction/approve/${body.id}`;
+    const result = await putRequest(url, body);
     return result;
   }
 );
@@ -163,17 +160,17 @@ const TransactionReducer = createSlice({
       }
     },
     [GetPendingTransactions.pending]: (state, action) => {
-      state.transactionsList = [];
+      state.pendingTransactionsList = [];
       state.status = "Pending";
     },
     [GetPendingTransactions.rejected]: (state, action) => {
-      state.transactionsList = [];
+      state.pendingTransactionsList = [];
       state.status = "Error";
       state.error = action.error.message;
     },
     [GetPendingTransactions.fulfilled]: (state, action) => {
       if (action.payload) {
-        state.pendingTransactionsList = action.payload;
+        state.pendingTransactionsList = action.payload.history;
         state.status = "Ok";
         state.error = "none";
       }
@@ -189,7 +186,7 @@ const TransactionReducer = createSlice({
     },
     [AdminGetAllTransactions.fulfilled]: (state, action) => {
       if (action.payload) {
-        state.transactionsList = action.payload;
+        state.transactionsList = action.payload.history;
         state.status = "Ok";
         state.error = "none";
       }

@@ -101,20 +101,24 @@ const PendingTransactions = ({ muiAlert, setMuiAlert }) => {
 
   const approveTransaction = (item) => {
     // params mien id, body mien refreshToken, headers mien authorization
+    let refreshToken = localStorage.getItem("refreshToken");
+    let user = localStorage.getItem("user");
+    refreshToken = JSON.parse(refreshToken);
+    user = JSON.parse(user);
     let body = {
-      refreshToken: "",
-      password: "",
+      refreshToken: refreshToken,
+      password: "admin",
+      id: item._id,
     };
-    let id = item._id;
-    console.log(body, id, "params");
-    dispatch(ApproveTransaction(body, id))
+
+    dispatch(ApproveTransaction(body))
       .unwrap()
       .then((res) => {
         console.log(res);
         if (res && res.status == "rejected") {
           if (res.message == "Auth failed") {
             newTokenFetch(dispatch, RefreshToken, () => {
-              dispatch(ApproveTransaction(body, id));
+              dispatch(ApproveTransaction(body));
               dispatch(AdminGetAllTransactions());
               dispatch(GetPendingTransactions());
               showAlertAndLoader(
@@ -122,7 +126,7 @@ const PendingTransactions = ({ muiAlert, setMuiAlert }) => {
                 setMuiAlert,
                 setOpen,
                 "success",
-                `Rejected Transaction - ${res}`
+                `Transaction Approved`
               );
             });
           } else {
@@ -135,12 +139,14 @@ const PendingTransactions = ({ muiAlert, setMuiAlert }) => {
             );
           }
         } else if (res && res.status == "fulfilled") {
+          dispatch(AdminGetAllTransactions());
+          dispatch(GetPendingTransactions());
           showAlertAndLoader(
             muiAlert,
             setMuiAlert,
             setOpen,
             "success",
-            `Transaction Approved - ${res.message}`
+            `Transaction Approved`
           );
           return res;
         } else {
@@ -168,20 +174,23 @@ const PendingTransactions = ({ muiAlert, setMuiAlert }) => {
 
   const cancelTransaction = (item) => {
     // params mien id, body mien refreshToken, headers mien authorization
+    let refreshToken = localStorage.getItem("refreshToken");
+    let user = localStorage.getItem("user");
+    refreshToken = JSON.parse(refreshToken);
+    user = JSON.parse(user);
     let body = {
-      refreshToken: "",
-      password: "",
+      refreshToken: refreshToken,
+      password: "admin",
+      id: item._id,
     };
-    let id = item._id;
-    console.log(body, id, "params");
-    dispatch(RejectTransaction(body, id))
+    dispatch(RejectTransaction(body))
       .unwrap()
       .then((res) => {
         console.log(res);
         if (res && res.status == "rejected") {
           if (res.message == "Auth failed") {
             newTokenFetch(dispatch, RefreshToken, () => {
-              dispatch(RejectTransaction(body, id));
+              dispatch(RejectTransaction(body));
               dispatch(AdminGetAllTransactions());
               dispatch(GetPendingTransactions());
               showAlertAndLoader(
@@ -202,6 +211,8 @@ const PendingTransactions = ({ muiAlert, setMuiAlert }) => {
             );
           }
         } else if (res && res.status == "fulfilled") {
+          dispatch(AdminGetAllTransactions());
+          dispatch(GetPendingTransactions());
           showAlertAndLoader(
             muiAlert,
             setMuiAlert,
@@ -303,20 +314,6 @@ const PendingTransactions = ({ muiAlert, setMuiAlert }) => {
               Pending
             </Button>
           </div>
-
-          <IndividualTransaction
-            dateTime={obj.timeStamp}
-            transactionAmount={`${obj.amount}$`}
-            transactionStatus={obj.status}
-            type={obj.type}
-            isPendingCard={true}
-            rejectTransactionFunc={() => {
-              cancelTransaction(obj);
-            }}
-            approveTransactionFunc={() => {
-              approveTransaction(obj);
-            }}
-          />
           {transactionType == "pending"
             ? pendingTransactions.length
               ? pendingTransactions.map((obj, index) => {
@@ -328,6 +325,12 @@ const PendingTransactions = ({ muiAlert, setMuiAlert }) => {
                       transactionStatus={obj.status}
                       type={obj.type}
                       isPendingCard={true}
+                      rejectTransactionFunc={() => {
+                        cancelTransaction(obj);
+                      }}
+                      approveTransactionFunc={() => {
+                        approveTransaction(obj);
+                      }}
                     />
                   );
                 })

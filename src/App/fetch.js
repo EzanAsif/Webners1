@@ -51,16 +51,22 @@ export const getRequest = async (api, type) => {
 };
 
 export const putRequest = async (api, body) => {
-  const res = await fetch(api, {
-    method: "put",
-    headers: {
-      "Content-Type": "application/json",
-      //   Authorization: localStorage.getItem('token'),
-    },
-
-    body: JSON.stringify(body),
-  });
-  return await res.json();
+  try {
+    let token = await localStorage.getItem("token");
+    token = await JSON.parse(token);
+    const res = await axios.request({
+      method: "PUT",
+      url: api,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      data: body,
+    });
+    return res.data;
+  } catch (e) {
+    return e;
+  }
 };
 
 export const deleteRequest = async (api, body) => {
