@@ -53,7 +53,7 @@ export const UserLogout = createAsyncThunk(
 
 export const RefreshToken = createAsyncThunk("RefreshToken", async (body) => {
   const result = await postRequest(`${BASE_URL}/user/token`, body);
-  return result.data;
+  return result;
 });
 
 const AuthReducer = createSlice({

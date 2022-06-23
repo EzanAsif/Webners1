@@ -6,37 +6,50 @@ import AddCardIcon from "@mui/icons-material/AddCard";
 import CardGiftcardIcon from "@mui/icons-material/CardGiftcard";
 
 const IndividualTransaction = ({
-  isDeposit = false,
-  isBonus = false,
+  type,
   dateTime,
   transactionAmount,
   transactionStatus = "pending",
-  isPendingCard,
+  isPendingCard, //to show accept/reject buttons
 }) => {
   return (
     <div
       className={`indivTransCard ${
-        isDeposit ? "deposit" : isBonus ? "bonus" : "withdraw"
+        type == "deposit"
+          ? "deposit"
+          : type == "bonus"
+          ? "bonus"
+          : type == "withdraw" && "withdraw"
       }`}
     >
       <div className="indivTransactionUpperContainer">
-        <div className={`indivTransIcon ${isDeposit ? "deposit" : "withdraw"}`}>
-          {isDeposit ? (
+        <div
+          className={`indivTransIcon ${
+            type == "deposit"
+              ? "deposit"
+              : type == "withdraw"
+              ? "withdraw"
+              : type == "bonus" && "bonus"
+          }`}
+        >
+          {type == "deposit" ? (
             <AddCardIcon />
-          ) : isBonus ? (
+          ) : type == "bonus" ? (
             <CardGiftcardIcon />
           ) : (
-            <ArrowUpwardIcon style={{ transform: "rotate(225deg)" }} />
+            type == "withdraw" && (
+              <ArrowUpwardIcon style={{ transform: "rotate(225deg)" }} />
+            )
           )}
         </div>
         <div className="indivTransDetails">
           <div className="indivTransType">
-            {isDeposit ? "Deposit" : "Withdraw"}
+            {type}
             <div
               className={`transactionStatus ${
                 transactionStatus == "pending"
                   ? "pending"
-                  : transactionStatus == "success"
+                  : transactionStatus == "successful"
                   ? "success"
                   : transactionStatus == "rejected"
                   ? "rejected"

@@ -17,7 +17,7 @@
   background-color: #e4f7e18a;
 }
 .indivTransCard.bonus {
-  background-color: #fffed4;
+  background-color: #fffd9e7a;
 }
 
 .indivTransIcon {
@@ -34,15 +34,14 @@
   background-color: #f7e1e2;
 }
 
-
 .indivTransIcon.deposit {
   color: #276800;
   background-color: #e4f7e1;
 }
 
-.indivTransIcon.bonus{
-  background-color: #fffed4;
-  color: gold;
+.indivTransIcon.bonus {
+  background: #fcf4b0;
+  color: #bea201;
 }
 
 .indivTransDetails {
@@ -86,7 +85,7 @@
   background: black;
   padding: 2px 10px;
   border-radius: 30px;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 500;
   color: #2e2e2e;
   text-transform: capitalize;
@@ -116,5 +115,14 @@
 @media only screen and (max-width: 600px) {
   .indivTransDetails {
     width: 65%;
+  }
+  .transactionStatus {
+    margin-left: 10px;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  .transactionStatus {
+    margin-left: 5px;
   }
 }

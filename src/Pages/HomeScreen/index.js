@@ -212,7 +212,8 @@ const HomeScreen = () => {
                   <IndividualTransaction
                     dateTime={obj.timeStamp}
                     transactionAmount={`${obj.amount}$`}
-                    isDeposit={obj.type === "deposit" ? true : false}
+                    transactionStatus={obj.status}
+                    type={obj.type}
                     key={index}
                   />
                 );
