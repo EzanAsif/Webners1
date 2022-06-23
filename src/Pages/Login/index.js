@@ -76,27 +76,30 @@ const Login = ({ setMuiAlert, muiAlert }) => {
         if (res.status !== "rejected") {
           (async () => {
             setOpen(false);
+            console.log(res);
+            await setTokenAndUser(res.token, res.user, res.refreshToken);
             setMuiAlert({
               open: true,
               alertStatus: "success",
               alertMessage: "User Loggedin Success",
             });
-            await setTokenAndUser(res.token, res.user, res.refreshToken);
-            dispatch(GetTransactions())
-              .then((result) => {
-                let { payload } = result;
-                let res = payload;
-                if (res.status === "rejected") {
-                  if (res.message === "Auth failed") {
-                    newTokenFetchForTransaction();
+            if (!res.user.isAdmin) {
+              dispatch(GetTransactions())
+                .then((result) => {
+                  let { payload } = result;
+                  let res = payload;
+                  if (res.status === "rejected") {
+                    if (res.message === "Auth failed") {
+                      newTokenFetchForTransaction();
+                    }
+                  } else {
+                    return res;
                   }
-                } else {
-                  return res;
-                }
-              })
-              .catch((e) => {
-                return e;
-              });
+                })
+                .catch((e) => {
+                  return e;
+                });
+            }
             setTimeout(() => {
               setMuiAlert({ ...muiAlert, open: false });
               // navigate("/");

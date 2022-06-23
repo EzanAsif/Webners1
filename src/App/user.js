@@ -3,15 +3,15 @@ export const getUserDataFunc = async () => {
     let token;
     let user;
     let refreshToken;
-    token = await localStorage.getItem("token");
-    user = await localStorage.getItem("user");
-    refreshToken = await localStorage.getItem("refreshToken");
+    token = localStorage.getItem("token");
+    user = localStorage.getItem("user");
+    refreshToken = localStorage.getItem("refreshToken");
     token = await JSON.parse(token);
     user = await JSON.parse(user);
     refreshToken = await JSON.parse(refreshToken);
     return { token, user, refreshToken };
   } catch (e) {
-    return(e);
+    return e;
   }
 };
 

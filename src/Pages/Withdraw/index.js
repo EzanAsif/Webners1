@@ -88,9 +88,7 @@ const Withdraw = () => {
                 }}
               >
                 Your balance is : $
-                {!transactions.balanceChanged
-                  ? auth.userData.user.balance
-                  : transactions.updatedBalance}
+                {auth.userData.user.balance}
               </Typography>
             </div>
             <Button

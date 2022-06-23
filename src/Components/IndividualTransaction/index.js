@@ -11,6 +11,8 @@ const IndividualTransaction = ({
   transactionAmount,
   transactionStatus = "pending",
   isPendingCard, //to show accept/reject buttons
+  approveTransactionFunc,
+  rejectTransactionFunc,
 }) => {
   return (
     <div
@@ -70,11 +72,13 @@ const IndividualTransaction = ({
             variant="outlined"
             label="Reject"
             color={"error"}
+            onClickFunc={rejectTransactionFunc}
           />
           <CtaBtn
             style={{ width: "47%" }}
             variant="contained"
             label="Approve"
+            onClickFunc={approveTransactionFunc}
           />
         </div>
       ) : null}

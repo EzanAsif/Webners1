@@ -16,6 +16,7 @@ export const postRequest = async (api, body) => {
     return res.data;
   } catch (e) {
     console.log(e);
+    return e;
   }
 };
 

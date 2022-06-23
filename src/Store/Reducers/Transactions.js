@@ -29,17 +29,23 @@ export const DepositTransaction = createAsyncThunk(
 
 export const RejectTransaction = createAsyncThunk(
   "RejectTransaction",
-  async (body) => {
-    const result = await postRequest(`${BASE_URL}/transaction/withdraw`, body);
+  async (body, id) => {
+    const result = await postRequest(
+      `${BASE_URL}/transaction/cancel/${id}`,
+      body
+    );
     return result.data;
   }
 );
 
 export const ApproveTransaction = createAsyncThunk(
   "ApproveTransaction",
-  async (body) => {
-    const result = await postRequest(`${BASE_URL}/transaction/withdraw`, body);
-    return result.data;
+  async (body, id) => {
+    const result = await postRequest(
+      `${BASE_URL}/transaction/approve/${id}`,
+      body
+    );
+    return result;
   }
 );
 
@@ -51,7 +57,16 @@ export const GetTransactions = createAsyncThunk("GetTransactions", async () => {
 export const GetPendingTransactions = createAsyncThunk(
   "GetPendingTransactions",
   async () => {
-    const result = await getRequest(`${BASE_URL}/transaction/history`);
+    const result = await getRequest(
+      `${BASE_URL}/transaction/pendingTransactionsForAdmin`
+    );
+    return result.data;
+  }
+);
+export const AdminGetAllTransactions = createAsyncThunk(
+  "AdminGetAllTransactions",
+  async () => {
+    const result = await getRequest(`${BASE_URL}/transaction/historyForAdmin`);
     return result.data;
   }
 );
@@ -73,15 +88,15 @@ const TransactionReducer = createSlice({
   },
   extraReducers: {
     [ApproveTransaction.pending]: (state, action) => {
-      state.status = "Pending";
+      // state.status = "Pending";
     },
     [ApproveTransaction.rejected]: (state, action) => {
       state.status = "Error";
       state.error = action.error.message;
     },
     [ApproveTransaction.fulfilled]: (state, action) => {
+      state.status = "Ok";
       if (action.payload) {
-        state.status = "Ok";
         state.error = "none";
       }
     },
@@ -93,8 +108,8 @@ const TransactionReducer = createSlice({
       state.error = action.error.message;
     },
     [RejectTransaction.fulfilled]: (state, action) => {
+      state.status = "Ok";
       if (action.payload) {
-        state.status = "Ok";
         state.error = "none";
       }
     },
@@ -157,7 +172,23 @@ const TransactionReducer = createSlice({
     },
     [GetPendingTransactions.fulfilled]: (state, action) => {
       if (action.payload) {
-        state.pendingTransactionsList = action.payload.history;
+        state.pendingTransactionsList = action.payload;
+        state.status = "Ok";
+        state.error = "none";
+      }
+    },
+    [AdminGetAllTransactions.pending]: (state, action) => {
+      state.transactionsList = [];
+      state.status = "Pending";
+    },
+    [AdminGetAllTransactions.rejected]: (state, action) => {
+      state.transactionsList = [];
+      state.status = "Error";
+      state.error = action.error.message;
+    },
+    [AdminGetAllTransactions.fulfilled]: (state, action) => {
+      if (action.payload) {
+        state.transactionsList = action.payload;
         state.status = "Ok";
         state.error = "none";
       }

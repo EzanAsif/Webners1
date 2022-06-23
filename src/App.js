@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import "./App.css";
 import { useDispatch } from "react-redux";
-import {
-  userDataFromLocalStorage,
-} from "./Store/Reducers/AuthReducer";
+import { userDataFromLocalStorage } from "./Store/Reducers/AuthReducer";
 import { getUserDataFunc } from "./App/user";
 import AppRoutes from "./Navigation";
 import { createTheme, Snackbar } from "@mui/material";
@@ -13,25 +11,6 @@ import { Alert, IconButton } from "@mui/material";
 import Slide from "@mui/material/Slide";
 
 const UserAuthenticated = () => {
-  const dispatch = useDispatch();
-
-  React.useEffect(() => {
-    (async () => {
-      await getUserDataFunc().then((res) => {
-        const { user } = res;
-        if (user) {
-          try {
-            dispatch(userDataFromLocalStorage(res));
-          } catch (e) {
-            return e
-          }
-        }
-      });
-    })().catch((err) => {
-      console.error(err);
-    });
-  }, [localStorage]);
-
   return null;
 };
 
@@ -51,9 +30,38 @@ function App() {
     return <Slide {...props} direction="right" />;
   }
 
+  const dispatch = useDispatch();
+
+  React.useEffect(() => {
+    (async () => {
+      let userData = localStorage.getItem("user");
+      let refreshToken = localStorage.getItem("refreshToken");
+      let token = localStorage.getItem("token");
+      userData = await JSON.parse(userData);
+      let res = { user: {} };
+      try {
+        refreshToken = await JSON.parse(refreshToken);
+        token = await JSON.parse(token);
+        res = { user: userData, refreshToken, token };
+      } catch (e) {
+        res = { user: userData, refreshToken, token };
+      }
+      console.log(res);
+      if (res) {
+        try {
+          dispatch(userDataFromLocalStorage(res));
+        } catch (e) {
+          return e;
+        }
+      }
+    })().catch((err) => {
+      console.error(err);
+    });
+  }, [localStorage]);
+
   return (
     <>
-      <UserAuthenticated />
+      {/* <UserAuthenticated /> */}
       <ThemeProvider theme={theme}>
         {muiAlert.open && (
           <Snackbar
