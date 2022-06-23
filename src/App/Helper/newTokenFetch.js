@@ -6,6 +6,7 @@ export const newTokenFetch = (dispatch, RefreshToken, continuedFunc) => {
   )
     .unwrap()
     .then((res) => {
+      console.log(res, "res");
       let newRefreshToken = res.token;
       newRefreshToken = JSON.stringify(newRefreshToken);
       localStorage.setItem("token", newRefreshToken);
@@ -14,6 +15,7 @@ export const newTokenFetch = (dispatch, RefreshToken, continuedFunc) => {
       }
     })
     .catch((e) => {
-      return(e);
+      console.log(e, "e");
+      return e;
     });
 };

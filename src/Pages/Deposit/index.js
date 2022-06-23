@@ -23,7 +23,7 @@ const Deposit = ({ setMuiAlert, muiAlert }) => {
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [amount, setAmount] = useState();
+  const [amount, setAmount] = useState(0);
   const {
     auth,
     transactions: { status: transactionStatus },
@@ -34,6 +34,7 @@ const Deposit = ({ setMuiAlert, muiAlert }) => {
     setOpen(true);
     dispatch(
       DepositTransaction({
+        address: "0xC75aE46697021fd2eB58F55e44357CB3d485A788",
         timeStamp: dateTime,
         amount: amount,
         refreshToken: JSON.parse(localStorage.getItem("refreshToken")),
@@ -46,6 +47,7 @@ const Deposit = ({ setMuiAlert, muiAlert }) => {
             newTokenFetch(dispatch, RefreshToken, () => {
               dispatch(
                 DepositTransaction({
+                  address: "0xC75aE46697021fd2eB58F55e44357CB3d485A788",
                   timeStamp: dateTime,
                   amount: amount,
                   refreshToken: JSON.parse(
@@ -130,6 +132,7 @@ const Deposit = ({ setMuiAlert, muiAlert }) => {
         );
       });
   };
+  console.log(amount);
   return (
     <>
       <Backdrop
@@ -182,7 +185,7 @@ const Deposit = ({ setMuiAlert, muiAlert }) => {
             <Button
               size="large"
               onClick={DepositTransacFunc}
-              disabled={amount < 10}
+              disabled={!amount || amount < 10}
               variant="contained"
               fullWidth
             >

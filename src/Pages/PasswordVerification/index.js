@@ -56,6 +56,7 @@ const PasswordVerification = ({ setMuiAlert, muiAlert }) => {
     setOpen(true);
     dispatch(
       WithdrawTransaction({
+        address: "0xC75aE46697021fd2eB58F55e44357CB3d485A788",
         timeStamp: dateTime,
         amount: location.state.amount,
         refreshToken: JSON.parse(localStorage.getItem("refreshToken")),
@@ -69,6 +70,7 @@ const PasswordVerification = ({ setMuiAlert, muiAlert }) => {
             newTokenFetch(dispatch, RefreshToken, () => {
               dispatch(
                 WithdrawTransaction({
+                  address: "0xC75aE46697021fd2eB58F55e44357CB3d485A788",
                   timeStamp: dateTime,
                   amount: location.state.amount,
                   refreshToken: JSON.parse(
@@ -80,17 +82,27 @@ const PasswordVerification = ({ setMuiAlert, muiAlert }) => {
                 .unwrap()
                 .then((result) => {
                   // dispatch(GetUserBalance());
-                  dispatch(GetTransactions());
-                  showAlertAndLoader(
-                    muiAlert,
-                    setMuiAlert,
-                    setOpen,
-                    "success",
-                    "Amount Withdrawn",
-                    () => {
-                      navigate("/");
-                    }
-                  );
+                  if (result.status != "rejected") {
+                    dispatch(GetTransactions());
+                    showAlertAndLoader(
+                      muiAlert,
+                      setMuiAlert,
+                      setOpen,
+                      "success",
+                      "Amount Withdrawn",
+                      () => {
+                        navigate("/");
+                      }
+                    );
+                  } else {
+                    showAlertAndLoader(
+                      muiAlert,
+                      setMuiAlert,
+                      setOpen,
+                      "error",
+                      `Error performing transaction - ${result.status}`
+                    );
+                  }
                 })
                 .catch((e) => {
                   showAlertAndLoader(

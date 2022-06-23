@@ -14,7 +14,8 @@ export const WithdrawTransaction = createAsyncThunk(
   "WithdrawTransaction",
   async (body) => {
     const result = await postRequest(`${BASE_URL}/transaction/withdraw`, body);
-    return result.data;
+    console.log(result);
+    return result;
   }
 );
 
@@ -22,7 +23,7 @@ export const DepositTransaction = createAsyncThunk(
   "DepositTransaction",
   async (body) => {
     const result = await postRequest(`${BASE_URL}/transaction/deposit`, body);
-    return result.data;
+    return result;
   }
 );
 
