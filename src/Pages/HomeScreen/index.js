@@ -25,9 +25,11 @@ const HomeScreen = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [open, setOpen] = React.useState(false);
-  const { auth, transactions } = useSelector((state) => state);
+  const { auth, transactions, metamaskAccount } = useSelector((state) => state);
   const [data, setData] = useState([]);
   const isMounted = useRef(false);
+
+  const { address } = metamaskAccount.account;
 
   useEffect(() => {
     if (
@@ -143,7 +145,11 @@ const HomeScreen = () => {
               className="indivDepositWithdrawBtn"
               size="large"
               onClickFunc={() => {
-                navigate("/deposit");
+                if (address) {
+                  navigate("/deposit");
+                } else {
+                  alert("Connect wallet first!")
+                }
               }}
             />
             <CtaBtn
@@ -152,7 +158,11 @@ const HomeScreen = () => {
               variant="contained"
               size="large"
               onClickFunc={() => {
-                navigate("/withdraw");
+                if (address) {
+                  navigate("/withdraw");
+                } else {
+                  alert("Connect wallet first!")
+                }
               }}
             />
           </div>

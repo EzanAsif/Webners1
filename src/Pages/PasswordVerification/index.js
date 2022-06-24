@@ -31,6 +31,9 @@ const PasswordVerification = ({ setMuiAlert, muiAlert }) => {
     transactions: { status: transactionStatus },
   } = useSelector((state) => state);
 
+  const { metamaskAccount } = useSelector((state) => state);
+  const { address } = metamaskAccount.account;
+
   const [values, setValues] = React.useState({
     amount: "",
     password: "",
@@ -56,8 +59,7 @@ const PasswordVerification = ({ setMuiAlert, muiAlert }) => {
     setOpen(true);
     dispatch(
       WithdrawTransaction({
-        address: "0xC75aE46697021fd2eB58F55e44357CB3d485A788",
-        timeStamp: dateTime,
+        address,
         amount: location.state.amount,
         refreshToken: JSON.parse(localStorage.getItem("refreshToken")),
         password: values.password,
@@ -70,8 +72,7 @@ const PasswordVerification = ({ setMuiAlert, muiAlert }) => {
             newTokenFetch(dispatch, RefreshToken, () => {
               dispatch(
                 WithdrawTransaction({
-                  address: "0xC75aE46697021fd2eB58F55e44357CB3d485A788",
-                  timeStamp: dateTime,
+                  address,
                   amount: location.state.amount,
                   refreshToken: JSON.parse(
                     localStorage.getItem("refreshToken")

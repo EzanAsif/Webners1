@@ -61,7 +61,7 @@ const IndividualTransaction = ({
               {transactionStatus}
             </div>
           </div>
-          <div className="indivTransDateTime">{dateTime}</div>
+          <div className="indivTransDateTime">{new Date(dateTime).toLocaleString('en-US')}</div>
         </div>
         <div className="indivTransAmount">{transactionAmount}</div>
       </div>

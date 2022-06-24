@@ -29,13 +29,15 @@ const Deposit = ({ setMuiAlert, muiAlert }) => {
     transactions: { status: transactionStatus },
   } = useSelector((state) => state);
 
+  const { metamaskAccount } = useSelector((state) => state);
+  const { address } = metamaskAccount.account;
+
   const DepositTransacFunc = () => {
     let dateTime = new Date().toLocaleString();
     setOpen(true);
     dispatch(
       DepositTransaction({
-        address: "0xC75aE46697021fd2eB58F55e44357CB3d485A788",
-        timeStamp: dateTime,
+        address,
         amount: amount,
         refreshToken: JSON.parse(localStorage.getItem("refreshToken")),
       })
@@ -47,8 +49,7 @@ const Deposit = ({ setMuiAlert, muiAlert }) => {
             newTokenFetch(dispatch, RefreshToken, () => {
               dispatch(
                 DepositTransaction({
-                  address: "0xC75aE46697021fd2eB58F55e44357CB3d485A788",
-                  timeStamp: dateTime,
+                  address,
                   amount: amount,
                   refreshToken: JSON.parse(
                     localStorage.getItem("refreshToken")
