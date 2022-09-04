@@ -27,7 +27,13 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 const Login = ({ setMuiAlert, muiAlert }) => {
   const dispatch = useDispatch();
   const { auth } = useSelector((state) => state);
-
+const validateEmail = (email) => {
+  return String(email)
+    .toLowerCase()
+    .match(
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    );
+};
   const [open, setOpen] = useState(false);
   const [email, setEmail] = useState();
   const setTokenAndUser = async (token, userData, refreshToken) => {
@@ -184,6 +190,7 @@ const Login = ({ setMuiAlert, muiAlert }) => {
                   size="small"
                   fullWidth={true}
                 />
+                    {validateEmail(email) ? <p style={{ color : "red"}} > Please Enter correct Email <p/> : null}
               </div>
               <div style={{ margin: "0px 0px 20px" }}>
                 <InputLabel shrink="true" margin="dense">
